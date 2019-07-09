@@ -1,3 +1,7 @@
+Ear-training and sight-reading app for beginner cello students. Capstone project, Ada Developers Academy, C-11.
+
+# PlayThatNote
+Ear-training and sight-reading app for beginner cello students. Capstone project, Ada Developers Academy, C-11.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
