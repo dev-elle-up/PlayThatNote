@@ -21,11 +21,25 @@ class App extends Component {
     }
   }
 
-  startTimer = () => {
+  startGame = () => {
     this.setState({
-      time_started: Date.now
+      time_started: Date.now,
+      gameState: 'Game Page',
+      notes_played_correctly: 0,
+      notes_skipped: 0,
+      time_stopped: null,
+      time_played: null,
     })
-    console.log('in startTimer', this.state.time_started);
+    console.log('in startGame, time started: ', this.state.time_started);
+    console.log('in startGame, gameState: ', this.state.gameState);
+  }
+
+  finishGame = () => {
+    this.setState({
+      time_stopped: Date.now,
+      gameState: 'Summary Page'
+    })
+
   }
 
 
@@ -36,12 +50,19 @@ class App extends Component {
         <h1>Play That Note</h1>
 
         {this.state.gameState==='Start Page' && <Start
-          startTimerCallback={this.startTimer}
+          startGameCallback={this.startGame}
         />}
 
-        {this.state.gameState==='Playing' && <Game />}
+        {this.state.gameState==='Game Page' && <Game
+          finishGameCallback={this.finishGame}
+        />}
 
-        {this.state.gameState==='Summary Page' && <Summary />}
+        {this.state.gameState==='Summary Page' && <Summary
+          notes_played_correctly={this.state.notes_played_correctly}
+          notes_skipped={this.state.notes_skipped}
+          time_played={this.state.time_played}
+          restartGameCallback={this.startGame}
+        />}
 
       </section>
     );

@@ -24,10 +24,15 @@ class Game extends Component {
   }
 
 
+
+
   render() {
     return(
       <section>
-
+        <p> This is where the game goes!</p>
+        <button onClick={this.giveHint}>hint</button>
+        <button onClick={this.skipNote}>skip</button>
+        <button onClick={this.props.finishGameCallback}>finished</button>
       </section>
     );
   }

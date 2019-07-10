@@ -26,7 +26,7 @@ class Start extends Component {
       <section>
         <p>Ready to practice?</p>
 
-        <button onClick={this.props.startTimerCallback}>START</button>
+        <button onClick={this.props.startGameCallback}>START</button>
 
         <button onClick={this.toggleInfoShown}>{this.state.infoShown ? 'hide' : 'info'}</button>
 
