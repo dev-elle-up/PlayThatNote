@@ -1,14 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function Start(props) {
+class Start extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      infoShown: false
+    };
+    console.log('info shown', this.state.infoShown);
+    this.toggleInfoShown = this.toggleInfoShown.bind(this);
+  }
 
-  // functions go here
 
-  return (
-    <section>
-      <p>This is where the start page items will go.</p>
-    </section>
-  )
+  toggleInfoShown () {
+    console.log('in toggleInfoShown', this.state.infoShown);
+    this.state.infoShown ? this.setState({infoShown: false}) : this.setState({infoShown: true});
+    // if (this.state.infoShown) {
+    //   this.setState({infoShown: false});
+    // } else {
+    //   this.setState({infoShown: true});
+    // }
+  }
+
+  render() {
+    return (
+      <section>
+        <p>Ready to practice?</p>
+
+        <button onClick={this.props.startTimerCallback}>START</button>
+
+        <button onClick={this.toggleInfoShown}>{this.state.infoShown ? 'hide' : 'info'}</button>
+
+        {this.state.infoShown ? <p>User info will go here.</p> : ''}
+      </section>
+    )
+  };
 }
 
 export default Start;
