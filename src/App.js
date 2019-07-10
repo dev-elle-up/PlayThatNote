@@ -15,7 +15,7 @@ class App extends Component {
 
       notes_played_correctly: 0,
       notes_skipped: 0,
-      time_started: null, //this becomes undefined by startTimer, fix later
+      time_started: null, 
       time_stopped: null,
       time_played: null,
     }
@@ -23,7 +23,7 @@ class App extends Component {
 
   startGame = () => {
     this.setState({
-      time_started: Date.now,
+      time_started: Date.now(),
       gameState: 'Game Page',
       notes_played_correctly: 0,
       notes_skipped: 0,
@@ -40,6 +40,17 @@ class App extends Component {
       gameState: 'Summary Page'
     })
 
+    // FIX THIS - TIMER NEEDS TO SHOW MINUTES AND SECONDS ELAPSED
+    let timeElapsed = (this.state.time_stopped - this.state.time_started);
+    let timeDiff = new Date(timeElapsed)
+    let timePlayedString = timeDiff.getSeconds()
+    this.setState({
+      time_played: timePlayedString
+    })
+    console.log('time started: ', this.state.time_started);
+    console.log('time stopped: ', this.state.time_stopped);
+    console.log('time elapsed: ', this.state.timeElapsed);
+    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   }
 
 
