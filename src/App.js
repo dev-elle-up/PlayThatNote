@@ -15,7 +15,7 @@ class App extends Component {
 
       notes_played_correctly: 0,
       notes_skipped: 0,
-      time_started: null, 
+      time_started: null,
       time_stopped: null,
       time_played: null,
     }
@@ -30,8 +30,8 @@ class App extends Component {
       time_stopped: null,
       time_played: null,
     })
-    console.log('in startGame, time started: ', this.state.time_started);
-    console.log('in startGame, gameState: ', this.state.gameState);
+    // console.log('in App, startGame(), time started: ', this.state.time_started);
+    // console.log('in App, startGame(), gameState: ', this.state.gameState);
   }
 
   finishGame = () => {
@@ -47,9 +47,9 @@ class App extends Component {
     this.setState({
       time_played: timePlayedString
     })
-    console.log('time started: ', this.state.time_started);
-    console.log('time stopped: ', this.state.time_stopped);
-    console.log('time elapsed: ', this.state.timeElapsed);
+    // console.log('time started: ', this.state.time_started);
+    // console.log('time stopped: ', this.state.time_stopped);
+    // console.log('time elapsed: ', this.state.timeElapsed);
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   }
 

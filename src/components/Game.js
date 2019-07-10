@@ -14,7 +14,9 @@ class Game extends Component {
   }
 
   // functions go here
-  getMicrophoneFeed(){ // need keyword async at start of this line?
+
+
+  componentDidMount() { // need keyword async at start of this line?
     const userAudioFromMic = navigator.mediaDevices.getUserMedia({
       audio: true,
       video: false
@@ -23,7 +25,9 @@ class Game extends Component {
     console.log('in getMicrophoneFeed, userAudioFromMic: ', this.state.userAudioFromMic); // audio is now MediaStream
   }
 
-
+  componentWillUnmount() {
+    this.setState({userAudioFromMic: null})
+  }
 
 
   render() {
