@@ -18,7 +18,9 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
-    this.setState({userAudioFromMic: null})
+    this.state.userAudioFromMic.getTracks().forEach(track => track.stop());
+    this.setState({ userAudioFromMic: null });
+    // this.setState({userAudioFromMic: null})
   }
 
   async getMicrophoneFeed() {
