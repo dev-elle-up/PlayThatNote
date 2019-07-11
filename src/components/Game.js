@@ -13,38 +13,30 @@ class Game extends Component {
 
   }
 
-  // functions go here
-
-  async getMicrophoneFeed() { // need keyword async at start of this line?
-    const userAudioFromMic = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: false
-    });
-    this.setState({userAudioFromMic})
-    console.log('in getMicrophoneFeed, userAudioFromMic: ', this.state.userAudioFromMic);
-    return {userAudioFromMic}
-     // audio is now MediaStream
-  }
-
   componentDidMount(){
     this.getMicrophoneFeed();
-    console.log('in componentDidMount, userAudioFromMic: ', this.state.userAudioFromMic);
-  }
-
-
-
-
-  showMeTheState = () => {
-    console.log('in showMeTheState, userAudioFromMic: ', this.state.userAudioFromMic);
   }
 
   componentWillUnmount() {
     this.setState({userAudioFromMic: null})
   }
 
+  async getMicrophoneFeed() {
+    const userAudioFromMic = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: false
+    });
+    this.setState({userAudioFromMic})
+     // userAudioFromMic is now accessible in state as MediaStream
+  }
+
+
+  showMeTheState = () => {
+    console.log('in showMeTheState, userAudioFromMic: ', this.state.userAudioFromMic);
+  }
 
   render() {
-    console.log('in render, userAudioFromMic: ', this.state.userAudioFromMic);
+
     return(
       <section>
         <p> This is where the game goes!</p>
