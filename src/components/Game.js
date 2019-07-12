@@ -21,7 +21,7 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
-    this.state.processor.disconnect();
+    if (this.state.processor){this.state.processor.disconnect()}; // without this, error: Cannot read property 'disconnect' of null
   }
 
   async getMicrophoneFeed() {
