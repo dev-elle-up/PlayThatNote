@@ -32,25 +32,37 @@ class Game extends Component {
     this.setState({userAudioFromMic})
      // userAudioFromMic is now accessible in state as MediaStream
 
+     const devices = navigator.mediaDevices.enumerateDevices();
+     console.log('devices', devices);
   }
 
 
   showMeTheState = () => {
     console.log('in showMeTheState, userAudioFromMic: ', this.state.userAudioFromMic);
     console.log('in showMeTheState, userAudioFromMic type: ', typeof this.state.userAudioFromMic);
+    console.log('in showMeTheState, userAudioFromMic: ', this.state.userAudioFromMic);
+    // const numOfMics = this.state.userAudioFromMic.mediaStream.getAudioTracks();
+    // console.log('numOfMics: ', numOfMics);
+
+    // TEST
+    const audioTracks = this.state.userAudioFromMic.getAudioTracks();
+    console.log('audioTracks: ', audioTracks);
+
     const context = new AudioContext();
     const source = context.createMediaStreamSource(this.state.userAudioFromMic);
-    const processor = context.createScriptProcessor(1024, 1, 1);
+    const processor = context.createScriptProcessor(4096, 1, 1); //Creates a ScriptProcessorNode for direct audio processing. Arguments: bufferSize, numberOfInputChannels, numberOfOutputChannels
+    // bufferSize: Determines the buffer size in units of sample-frames. It must be one of the following values: 256, 512, 1024, 2048, 4096, 8192, 16384. This value controls how frequently the onaudioprocess event handler is called and how many sample-frames need to be processed each call.
     this.setState({processor: processor});
     source.connect(processor);
     processor.connect(context.destination);
      console.log('processor', processor);
     const detectPitch = Pitchfinder.AMDF();
+    // console.log('Pitchfinder.AMDF', Pitchfinder.AMDF);
 
     processor.onaudioprocess = function(audioBuffer) {
       // console.log(audioBuffer);
       // const float32Array = audioBuffer.getChannelData(0);
-      const pitch = detectPitch(audioBuffer.inputBuffer.getChannelData(0));
+      const pitch = detectPitch(audioBuffer.inputBuffer.getChannelData(1));
       console.log('pitch: ', pitch);
 
 
