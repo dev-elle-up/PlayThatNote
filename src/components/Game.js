@@ -38,40 +38,42 @@ class Game extends Component {
 
 
   showMeTheState = () => {
-    console.log('in showMeTheState, userAudioFromMic: ', this.state.userAudioFromMic);
-    console.log('in showMeTheState, userAudioFromMic type: ', typeof this.state.userAudioFromMic);
-    console.log('in showMeTheState, userAudioFromMic: ', this.state.userAudioFromMic);
+    // console.log('in showMeTheState, userAudioFromMic: ', this.state.userAudioFromMic);
+    // console.log('in showMeTheState, userAudioFromMic type: ', typeof this.state.userAudioFromMic);
+
     // const numOfMics = this.state.userAudioFromMic.mediaStream.getAudioTracks();
     // console.log('numOfMics: ', numOfMics);
 
     // TEST
-    const audioTracks = this.state.userAudioFromMic.getAudioTracks();
-    console.log('audioTracks: ', audioTracks);
+    // const audioTracks = this.state.userAudioFromMic.getAudioTracks();
+    // console.log('audioTracks: ', audioTracks);
 
     const context = new AudioContext();
     const source = context.createMediaStreamSource(this.state.userAudioFromMic);
-    const processor = context.createScriptProcessor(4096, 1, 1); //Creates a ScriptProcessorNode for direct audio processing. Arguments: bufferSize, numberOfInputChannels, numberOfOutputChannels
-    // bufferSize: Determines the buffer size in units of sample-frames. It must be one of the following values: 256, 512, 1024, 2048, 4096, 8192, 16384. This value controls how frequently the onaudioprocess event handler is called and how many sample-frames need to be processed each call.
-    this.setState({processor: processor});
-    source.connect(processor);
-    processor.connect(context.destination);
-     console.log('processor', processor);
+    const processor = context.createScriptProcessor(4096, 1, 1);
+    //Creates a ScriptProcessorNode for direct audio processing.
+    // Arguments: bufferSize, numberOfInputChannels, numberOfOutputChannels
+    // bufferSize: no. of units of sample-frames; values must be: 256, 512, 1024, 2048, 4096, 8192, or 16384. This value controls how frequently the onaudioprocess event handler is called and how many sample-frames need to be processed each call.
+    this.setState({processor: processor}); // the ScriptProcessorNode is now available in state as processor
+    source.connect(processor); // route the output of the source to the input of the processor; userAudioFromMic -->> ScriptProcessorNode
+    processor.connect(context.destination); // routes the output of the processor node to the destination node; required
+    // console.log('processor', processor);
     const detectPitch = Pitchfinder.AMDF();
     // console.log('Pitchfinder.AMDF', Pitchfinder.AMDF);
+
 
     processor.onaudioprocess = function(audioBuffer) {
       // console.log(audioBuffer);
       // const float32Array = audioBuffer.getChannelData(0);
-      const pitch = detectPitch(audioBuffer.inputBuffer.getChannelData(1));
+      const pitch = detectPitch(audioBuffer.inputBuffer.getChannelData(0));
+      // get a single channel of sound from the AudioBuffer object
+      // const pitch = detectPitch(float32Array);
+      // null if pitch cannot be identified
       console.log('pitch: ', pitch);
-
-
+      // each time the buffer is added to, the pitch is detected from the input
     }
   }
-  // const detectPitch = Pitchfinder.AMDF();
-  // const myAudioBuffer = getAudioBuffer(); // assume this returns a WebAudio AudioBuffer object
-  // const float32Array = myAudioBuffer.getChannelData(0); // get a single channel of sound
-  // const pitch = detectPitch(float32Array); // null if pitch cannot be identified
+
 
   render() {
 
