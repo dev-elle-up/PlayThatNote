@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import Analyzer from './Analyzer.js';
 
 class Game extends Component {
   constructor(props){
     super(props);
     this.state={
-      userAudioFromMic: null,
       // last_propmted_note: null,
       // current_prompted_note: null,
       // current_user_note: null,
@@ -13,29 +13,21 @@ class Game extends Component {
 
   }
 
-  componentDidMount(){
-    this.getMicrophoneFeed();
-  }
-
-  componentWillUnmount() {
-    this.state.userAudioFromMic.getTracks().forEach(track => track.stop());
-    this.setState({ userAudioFromMic: null });
-    // this.setState({userAudioFromMic: null})
-  }
-
-  async getMicrophoneFeed() {
-    const userAudioFromMic = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: false
-    });
-    this.setState({userAudioFromMic})
-     // userAudioFromMic is now accessible in state as MediaStream
-  }
 
 
   showMeTheState = () => {
-    console.log('in showMeTheState, userAudioFromMic: ', this.state.userAudioFromMic);
+    // console.log('in showMeTheState, userAudioFromMic: ', this.state.userAudioFromMic);
+    // console.log('in showMeTheState, userAudioFromMic type: ', typeof this.state.userAudioFromMic);
+
+    // const numOfMics = this.state.userAudioFromMic.mediaStream.getAudioTracks();
+    // console.log('numOfMics: ', numOfMics);
+
+    // TEST
+    // const audioTracks = this.state.userAudioFromMic.getAudioTracks();
+    // console.log('audioTracks: ', audioTracks);
+
   }
+
 
   render() {
 
@@ -46,6 +38,7 @@ class Game extends Component {
         <button onClick={this.skipNote}>skip</button>
         <button onClick={this.props.finishGameCallback}>finished</button>
         <button onClick={this.showMeTheState}>show me the state</button>
+        <Analyzer />
       </section>
     );
   }
