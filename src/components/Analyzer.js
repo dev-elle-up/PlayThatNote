@@ -16,7 +16,7 @@ class Analyzer extends Component {
   }
 
   componentWillUnmount() {
-    if (this.state.processor){this.state.processor.disconnect()}; // without this, error: Cannot read property 'disconnect' of null
+    if (this.state.processor){this.state.processor.disconnect()};
   }
 
   async runAnalyzer() {
