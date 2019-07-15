@@ -6,9 +6,9 @@ class Analyzer extends Component {
   constructor(){
     super();
     this.state={
-      processor: null
+      processor: null,
+      pitch: null,
     }
-
   }
 
   componentDidMount(){
@@ -47,12 +47,23 @@ class Analyzer extends Component {
        // const pitch = detectPitch(float32Array);
        // each time the buffer is added to, the pitch is detected from the input
        // null if pitch cannot be identified
+       this.setState({ pitch });
        console.log('pitch: ', pitch);
-      }
+      }.bind(this)
   }
 
   render(){
-    return(<div></div>);
+    if (this.state.pitch) {
+      return(
+      <div className="analyzer-debug">
+        <div className="tags has-addons">
+          <span className="tag">Pitch</span>
+          <span className="tag is-primary">{this.state.pitch}</span>
+        </div>
+      </div>);
+    }
+
+    return(<div className="tag is-warning">No pitch detected</div>)
   }
 
 }

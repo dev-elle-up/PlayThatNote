@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
-import './App.css';
 import Start from './components/Start.js';
 import Game from './components/Game.js';
 import Summary from './components/Summary.js';
 // import Time from 'time'; // CHECK ON THIS!!
 
+import 'bulma/css/bulma.min.css';
+import './App.css';
 
 class App extends Component {
   constructor(){
@@ -56,26 +57,30 @@ class App extends Component {
 
   render(){
     return (
-      <section className="App">
+      <div className="App">
+        <section className="hero is-fullheight">
+          <div className="hero-body">
+            <div className="container">
+              <h1 className="title">Play That Note</h1>
 
-        <h1>Play That Note</h1>
+            {this.state.gameState==='Start Page' && <Start
+              startGameCallback={this.startGame}
+            />}
 
-        {this.state.gameState==='Start Page' && <Start
-          startGameCallback={this.startGame}
-        />}
+            {this.state.gameState==='Game Page' && <Game
+              finishGameCallback={this.finishGame}
+            />}
 
-        {this.state.gameState==='Game Page' && <Game
-          finishGameCallback={this.finishGame}
-        />}
-
-        {this.state.gameState==='Summary Page' && <Summary
-          notes_played_correctly={this.state.notes_played_correctly}
-          notes_skipped={this.state.notes_skipped}
-          time_played={this.state.time_played}
-          restartGameCallback={this.startGame}
-        />}
-
+            {this.state.gameState==='Summary Page' && <Summary
+              notes_played_correctly={this.state.notes_played_correctly}
+              notes_skipped={this.state.notes_skipped}
+              time_played={this.state.time_played}
+              restartGameCallback={this.startGame}
+            />}
+          </div>
+        </div>
       </section>
+    </div>
     );
   }
 }
