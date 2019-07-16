@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserInfoModal from './UserInfo';
+import UserInfo from './UserInfo';
 
 class Start extends Component {
   constructor(props){
@@ -23,7 +23,7 @@ class Start extends Component {
           <button className="button" onClick={this.props.startGameCallback}>START</button>
           <button className="button" onClick={this.toggleInfoShown}>INFO</button>
         </div>
-        {this.state.infoShown ? <UserInfoModal onClose={this.toggleInfoShown.bind(this)} /> : ''}
+        {this.state.infoShown ? <UserInfo toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
       </div>
     )
   };
