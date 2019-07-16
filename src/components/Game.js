@@ -7,12 +7,20 @@ class Game extends Component {
     this.state={
       // last_propmted_note: null,
       // current_prompted_note: null,
-      // current_user_note: null,
+      currentUserNote: null,
       // note_matched: false
     }
 
   }
 
+  getCurrentUserNote = (note) => {
+    this.setState({currentUserNote: note})
+    console.log('in game, currentUserNote: ', this.state.currentUserNote);
+  }
+
+  componentWillUnmount() {
+    if (this.state.processor){this.state.processor.disconnect()};
+  }
 
 
   showMeTheState = () => {
@@ -40,7 +48,8 @@ class Game extends Component {
           <button className="button is-small" onClick={this.props.finishGameCallback}>finished</button>
           <button className="button is-small" onClick={this.showMeTheState}>show me the state</button>
         </div>
-        <Analyzer />
+        <Analyzer
+          getCurrentUserNoteCallback={this.getCurrentUserNote}/>
       </section>
     );
   }
