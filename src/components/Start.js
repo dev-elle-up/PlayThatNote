@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UserInfo from './UserInfo';
 
 class Start extends Component {
   constructor(props){
@@ -10,27 +11,19 @@ class Start extends Component {
     this.toggleInfoShown = this.toggleInfoShown.bind(this);
   }
 
-
   toggleInfoShown () {
-    console.log('in toggleInfoShown', this.state.infoShown);
-    this.state.infoShown ? this.setState({infoShown: false}) : this.setState({infoShown: true});
-    // if (this.state.infoShown) {
-    //   this.setState({infoShown: false});
-    // } else {
-    //   this.setState({infoShown: true});
-    // }
+    this.setState({ infoShown: !this.state.infoShown });
   }
 
   render() {
     return (
       <section>
-        <p>Ready to practice?</p>
-
-        <button onClick={this.props.startGameCallback}>START</button>
-
-        <button onClick={this.toggleInfoShown}>{this.state.infoShown ? 'hide' : 'info'}</button>
-
-        {this.state.infoShown ? <p>User info will go here.</p> : ''}
+        <p className="heading">Ready to practice?</p>
+        <div className="buttons">
+          <button className="button" onClick={this.props.startGameCallback}>START</button>
+          <button className="button" onClick={this.toggleInfoShown}>INFO</button>
+          {this.state.infoShown ? <UserInfo toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
+        </div>
       </section>
     )
   };

@@ -33,11 +33,13 @@ class Game extends Component {
 
     return(
       <section>
-        <p> This is where the game goes!</p>
-        <button onClick={this.giveHint}>hint</button>
-        <button onClick={this.skipNote}>skip</button>
-        <button onClick={this.props.finishGameCallback}>finished</button>
-        <button onClick={this.showMeTheState}>show me the state</button>
+        <p className="heading"> This is where the game goes!</p>
+        <div className="buttons">
+          <button className="button is-small" onClick={this.giveHint}>hint</button>
+          <button className="button is-small" onClick={this.skipNote}>skip</button>
+          <button className="button is-small" onClick={this.props.finishGameCallback}>finished</button>
+          <button className="button is-small" onClick={this.showMeTheState}>show me the state</button>
+        </div>
         <Analyzer />
       </section>
     );
