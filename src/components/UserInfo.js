@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function UserInfo (props) {
 
@@ -17,6 +18,10 @@ function UserInfo (props) {
     </div>
   )
 
+}
+
+UserInfo.propTypes = {
+  toggleInfoShownCallback: PropTypes.func.isRequired
 }
 
 export default UserInfo;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Analyzer from './Analyzer.js';
 
 class Game extends Component {
@@ -33,7 +34,6 @@ class Game extends Component {
     // TEST
     // const audioTracks = this.state.userAudioFromMic.getAudioTracks();
     // console.log('audioTracks: ', audioTracks);
-
   }
 
 
@@ -54,5 +54,10 @@ class Game extends Component {
     );
   }
 }
+
+Game.propTypes = {
+  finishGameCallback: PropTypes.func.isRequired
+};
+
 
 export default Game;

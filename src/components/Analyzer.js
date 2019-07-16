@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Pitchfinder from 'pitchfinder';
 // import a component if you want to return it in your render
 
@@ -12,6 +13,8 @@ class Analyzer extends Component {
   }
 
   componentDidMount(){
+    // Pitchfinder.module.exports.config.minFrequency = 60;
+    // console.log(Pitchfinder.AMDF);
     this.runAnalyzer();
   }
 
@@ -36,7 +39,7 @@ class Analyzer extends Component {
      source.connect(processor); // route the output of the source to the input of the processor; userAudioFromMic -->> ScriptProcessorNode
      processor.connect(context.destination); // routes the output of the processor node to the destination node; required
      // console.log('processor', processor);
-     const detectPitch = Pitchfinder.AMDF();
+     const detectPitch = Pitchfinder.AMDF({minFrequency: 60});
      // console.log('Pitchfinder.AMDF', Pitchfinder.AMDF);
 
 
@@ -61,6 +64,10 @@ class Analyzer extends Component {
     return(<div className="tag is-warning is-medium">No pitch detected</div>)
   }
 
+}
+
+Analyzer.propTypes = {
+  getCurrentUserNoteCallback: PropTypes.func.isRequired
 }
 
 export default Analyzer;

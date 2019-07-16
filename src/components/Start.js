@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import UserInfo from './UserInfo';
 
 class Start extends Component {
@@ -27,6 +28,10 @@ class Start extends Component {
       </section>
     )
   };
+}
+
+Start.propTypes = {
+  startGameCallback: PropTypes.func.isRequired
 }
 
 export default Start;
