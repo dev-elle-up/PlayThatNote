@@ -58,7 +58,7 @@ class App extends Component {
   render(){
     return (
       <div className="App">
-        <section className="hero is-fullheight">
+        <section className="hero is-medium">
           <div className="hero-body">
             <div className="container">
               <h1 className="title">Play That Note</h1>

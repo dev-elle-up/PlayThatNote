@@ -53,16 +53,10 @@ class Analyzer extends Component {
 
   render(){
     if (this.state.pitch) {
-      return(
-      <div className="analyzer-debug">
-        <div className="tags has-addons">
-          <span className="tag">Pitch</span>
-          <span className="tag is-primary">{this.state.pitch}</span>
-        </div>
-      </div>);
+      return( <div className="tag is-primary is-medium">{this.state.pitch} Hz</div> );
     }
 
-    return(<div className="tag is-warning">No pitch detected</div>)
+    return(<div className="tag is-warning is-medium">No pitch detected</div>)
   }
 
 }

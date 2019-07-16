@@ -17,14 +17,14 @@ class Start extends Component {
 
   render() {
     return (
-      <div>
+      <section>
         <p className="heading">Ready to practice?</p>
-        <div className="buttons mt-1">
+        <div className="buttons">
           <button className="button" onClick={this.props.startGameCallback}>START</button>
           <button className="button" onClick={this.toggleInfoShown}>INFO</button>
+          {this.state.infoShown ? <UserInfo toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
         </div>
-        {this.state.infoShown ? <UserInfo toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
-      </div>
+      </section>
     )
   };
 }
