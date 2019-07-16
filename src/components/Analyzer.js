@@ -47,8 +47,10 @@ class Analyzer extends Component {
        // each time the buffer is added to, the pitch is detected from the input
        // null if pitch cannot be identified
        this.setState({ pitch });
-       console.log('pitch: ', pitch);
+       this.props.getCurrentUserNoteCallback(pitch)
+       // console.log('pitch: ', pitch);
       }.bind(this)
+
   }
 
   render(){
