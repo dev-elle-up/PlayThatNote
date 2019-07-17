@@ -50,7 +50,7 @@ class Analyzer extends Component {
        // each time the buffer is added to, the pitch is detected from the input
        // null if pitch cannot be identified
        this.setState({ pitch });
-       this.props.getCurrentUserNoteCallback(pitch)
+       this.props.getUserPlayingNoteCallback(pitch)
        // console.log('pitch: ', pitch);
       }.bind(this)
 
@@ -67,7 +67,7 @@ class Analyzer extends Component {
 }
 
 Analyzer.propTypes = {
-  getCurrentUserNoteCallback: PropTypes.func.isRequired
+  getUserPlayingNoteCallback: PropTypes.func.isRequired
 }
 
 export default Analyzer;

@@ -1,22 +1,41 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Analyzer from './Analyzer.js';
+import notes from './NoteDetails';
 
 class Game extends Component {
   constructor(props){
     super(props);
     this.state={
-      // last_propmted_note: null,
-      // current_prompted_note: null,
-      currentUserNote: null,
+      lastPromptedNoteNum: null,
+      promptedNoteNum: null,
+      promptedNoteLetter: null,
+      userPlayingNote: null,
       // note_matched: false
     }
 
   }
 
-  getCurrentUserNote = (note) => {
-    this.setState({currentUserNote: note})
-    console.log('in game, currentUserNote: ', this.state.currentUserNote);
+  componentDidMount() {
+    this.getRandomIntInclusive(16, 42);
+  }
+
+  getRandomIntInclusive(min, max) {
+      const randInt = Math.floor(Math.random() * (max - min + 1)) + min;
+      this.setState({promptedNoteNum: randInt});
+      console.log('randInt: ', randInt);
+      this.getNoteDetails(randInt);
+    // while (randInt === this.lastPromptedNoteNum || this.lastPromptedNoteNum === null);
+  }
+
+  getNoteDetails(noteNum) {
+    let note = notes.noteNum;
+    this.setState({promptedNoteLetter: note.noteName})
+  }
+
+  getUserPlayingNote = (note) => {
+    this.setState({userPlayingNote: note})
+    // console.log('in game, userPlayingNote: ', this.state.userPlayingNote);
   }
 
   componentWillUnmount() {
@@ -47,9 +66,11 @@ class Game extends Component {
           <button className="button is-small" onClick={this.skipNote}>skip</button>
           <button className="button is-small" onClick={this.props.finishGameCallback}>finished</button>
           <button className="button is-small" onClick={this.showMeTheState}>show me the state</button>
+          <p>Play this note:</p>
+          <p></p>
         </div>
         <Analyzer
-          getCurrentUserNoteCallback={this.getCurrentUserNote}/>
+          getUserPlayingNoteCallback={this.getUserPlayingNote}/>
       </section>
     );
   }
