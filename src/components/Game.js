@@ -11,6 +11,7 @@ class Game extends Component {
       lastPromptedNoteNum: null,
       promptedNoteNum: null,
       promptedNoteLetter: null,
+      promptedNoteFreq: null,
       userPlayingNote: null,
       // note_matched: false
       infoShown: false
@@ -39,7 +40,10 @@ class Game extends Component {
     this.setState({
       promptedNoteNum: noteNum,
       promptedNoteLetter: noteDetails.noteName,
+      promptedNoteFreq: noteDetails.frequency
     });
+
+    console.log('promptedNoteNum: ', this.state.promptedNoteNum, 'promptedNoteFreq: ', this.state.promptedNoteFreq, 'promptedNoteLetter: ', this.state.promptedNoteLetter);
   }
 
   getRandomIntInclusive(min, max) {
@@ -88,9 +92,12 @@ class Game extends Component {
         <p>{this.state.promptedNoteLetter}</p>
 
         <Analyzer
-          getUserPlayingNoteCallback={this.getUserPlayingNote}/>
-          <button className="button" onClick={this.toggleInfoShown}>INFO</button>
-          {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
+          getUserPlayingNoteCallback={this.getUserPlayingNote}
+          />
+          <div>
+            <button className="button" onClick={this.toggleInfoShown}>INFO</button>
+            {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
+          </div>
       </section>
     );
   }
