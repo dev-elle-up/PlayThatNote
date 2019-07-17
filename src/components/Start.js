@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import UserInfo from './UserInfo';
+import Info from './Info';
+
+import 'bulma/css/bulma.min.css';
+import '../App.css';
 
 class Start extends Component {
   constructor(props){
@@ -23,7 +26,7 @@ class Start extends Component {
         <div className="buttons">
           <button className="button" onClick={this.props.startGameCallback}>START</button>
           <button className="button" onClick={this.toggleInfoShown}>INFO</button>
-          {this.state.infoShown ? <UserInfo toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
+          {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
         </div>
       </section>
     )

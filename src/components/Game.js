@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Analyzer from './Analyzer.js';
-import notes from './NoteDetails';
+import Notes from './NoteDetails.js';
+import Info from './Info.js';
 
 class Game extends Component {
   constructor(props){
@@ -12,25 +13,41 @@ class Game extends Component {
       promptedNoteLetter: null,
       userPlayingNote: null,
       // note_matched: false
+      infoShown: false
     }
+  this.toggleInfoShown = this.toggleInfoShown.bind(this);
+}
 
-  }
+toggleInfoShown () {
+  this.setState({ infoShown: !this.state.infoShown });
+}
 
   componentDidMount() {
-    this.getRandomIntInclusive(16, 42);
+    this.setNewNote();
+  }
+
+
+  setNewNote() {
+    const noteNum = this.getRandomIntInclusive(16, 42);
+    // while (randInt === this.lastPromptedNoteNum || this.lastPromptedNoteNum === null);
+    const noteDetails = this.getNoteDetails(noteNum);
+    this.setState({
+      promptedNoteNum: noteNum,
+      promptedNoteLetter: noteDetails.noteName,
+    });
   }
 
   getRandomIntInclusive(min, max) {
       const randInt = Math.floor(Math.random() * (max - min + 1)) + min;
-      this.setState({promptedNoteNum: randInt});
       console.log('randInt: ', randInt);
-      this.getNoteDetails(randInt);
-    // while (randInt === this.lastPromptedNoteNum || this.lastPromptedNoteNum === null);
+      return randInt;
   }
 
   getNoteDetails(noteNum) {
-    let note = notes.noteNum;
-    this.setState({promptedNoteLetter: note.noteName})
+    // noteNum = 16;
+    let note = Notes[noteNum];
+    console.log('note: ', note);
+    return note;
   }
 
   getUserPlayingNote = (note) => {
@@ -71,6 +88,8 @@ class Game extends Component {
         </div>
         <Analyzer
           getUserPlayingNoteCallback={this.getUserPlayingNote}/>
+          <button className="button" onClick={this.toggleInfoShown}>INFO</button>
+          {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
       </section>
     );
   }
