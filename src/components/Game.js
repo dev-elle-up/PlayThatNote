@@ -16,21 +16,26 @@ class Game extends Component {
       infoShown: false
     }
   this.toggleInfoShown = this.toggleInfoShown.bind(this);
-}
+  this.increaseSkippedCountCallback = props.increaseSkippedCountCallback.bind(this);
+  }
 
-toggleInfoShown () {
-  this.setState({ infoShown: !this.state.infoShown });
-}
+  toggleInfoShown () {
+    this.setState({ infoShown: !this.state.infoShown });
+  }
 
   componentDidMount() {
     this.setNewNote();
   }
 
-
   setNewNote() {
-    const noteNum = this.getRandomIntInclusive(16, 42);
-    // while (randInt === this.lastPromptedNoteNum || this.lastPromptedNoteNum === null);
-    const noteDetails = this.getNoteDetails(noteNum);
+    let noteNum = null;
+    let noteDetails = null;
+    while(noteNum === null || noteDetails === undefined || noteNum === this.state.lastPromptedNoteNum) {
+      noteNum = this.getRandomIntInclusive(16, 42);
+      console.log('noteNum in setNewNote: ', noteNum);
+      noteDetails = this.getNoteDetails(noteNum);
+    }
+
     this.setState({
       promptedNoteNum: noteNum,
       promptedNoteLetter: noteDetails.noteName,
@@ -39,12 +44,11 @@ toggleInfoShown () {
 
   getRandomIntInclusive(min, max) {
       const randInt = Math.floor(Math.random() * (max - min + 1)) + min;
-      console.log('randInt: ', randInt);
+      console.log('randInt in getRandomIntInclusive: ', randInt);
       return randInt;
   }
 
   getNoteDetails(noteNum) {
-    // noteNum = 16;
     let note = Notes[noteNum];
     console.log('note: ', note);
     return note;
@@ -59,17 +63,13 @@ toggleInfoShown () {
     if (this.state.processor){this.state.processor.disconnect()};
   }
 
+  skipNote = () => {
+    this.increaseSkippedCountCallback();
+    this.setNewNote();
+  }
 
-  showMeTheState = () => {
-    // console.log('in showMeTheState, userAudioFromMic: ', this.state.userAudioFromMic);
-    // console.log('in showMeTheState, userAudioFromMic type: ', typeof this.state.userAudioFromMic);
-
-    // const numOfMics = this.state.userAudioFromMic.mediaStream.getAudioTracks();
-    // console.log('numOfMics: ', numOfMics);
-
-    // TEST
-    // const audioTracks = this.state.userAudioFromMic.getAudioTracks();
-    // console.log('audioTracks: ', audioTracks);
+  debugHelper = () => {
+    this.setNewNote();
   }
 
 
@@ -82,10 +82,11 @@ toggleInfoShown () {
           <button className="button is-small" onClick={this.giveHint}>hint</button>
           <button className="button is-small" onClick={this.skipNote}>skip</button>
           <button className="button is-small" onClick={this.props.finishGameCallback}>finished</button>
-          <button className="button is-small" onClick={this.showMeTheState}>show me the state</button>
-          <p>Play this note:</p>
-          <p></p>
+          <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
         </div>
+        <p>Play this note:</p>
+        <p>{this.state.promptedNoteLetter}</p>
+
         <Analyzer
           getUserPlayingNoteCallback={this.getUserPlayingNote}/>
           <button className="button" onClick={this.toggleInfoShown}>INFO</button>
@@ -96,7 +97,8 @@ toggleInfoShown () {
 }
 
 Game.propTypes = {
-  finishGameCallback: PropTypes.func.isRequired
+  finishGameCallback: PropTypes.func.isRequired,
+  increaseSkippedCountCallback: PropTypes.func.isRequired
 };
 
 

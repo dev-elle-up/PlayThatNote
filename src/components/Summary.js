@@ -7,8 +7,8 @@ function Summary(props) {
   return (
     <section>
       <p>Great job!</p>
-      <p>Notes played correctly: </p>
-      <p>Notes skipped: </p>
+      <p>Notes played correctly: {props.notesPlayedCorrectly}</p>
+      <p>Notes skipped: {props.notesSkipped}</p>
       <p>Time played: {props.time_played}</p>
       <button className="button mt-1" onClick={props.restartGameCallback}>play again</button>
     </section>
