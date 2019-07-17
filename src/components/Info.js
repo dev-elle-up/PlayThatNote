@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function UserInfo (props) {
+function Info (props) {
 
   return (
     <div className='modal is-active'>
@@ -20,8 +20,8 @@ function UserInfo (props) {
 
 }
 
-UserInfo.propTypes = {
+Info.propTypes = {
   toggleInfoShownCallback: PropTypes.func.isRequired
 }
 
-export default UserInfo;
+export default Info;
