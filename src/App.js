@@ -35,6 +35,11 @@ class App extends Component {
     // console.log('in App, startGame(), gameState: ', this.state.gameState);
   }
 
+  increaseSkippedCount = () => {
+    const newSkippedCount = this.state.notesSkipped + 1;
+    this.setState({notesSkipped: newSkippedCount});
+  }
+
   finishGame = () => {
     this.setState({
       time_stopped: Date.now,
@@ -69,6 +74,7 @@ class App extends Component {
 
             {this.state.gameState==='Game Page' && <Game
               finishGameCallback={this.finishGame}
+              increaseSkippedCountCallback={this.increaseSkippedCount}
             />}
 
             {this.state.gameState==='Summary Page' && <Summary

@@ -1,39 +1,79 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Analyzer from './Analyzer.js';
+import Notes from './NoteDetails.js';
+import Info from './Info.js';
 
 class Game extends Component {
   constructor(props){
     super(props);
     this.state={
-      // last_propmted_note: null,
-      // current_prompted_note: null,
-      currentUserNote: null,
+      lastPromptedNoteNum: null,
+      promptedNoteNum: null,
+      promptedNoteLetter: null,
+      promptedNoteFreq: null,
+      userPlayingNote: null,
       // note_matched: false
+      infoShown: false
     }
-
+  this.toggleInfoShown = this.toggleInfoShown.bind(this);
+  this.increaseSkippedCountCallback = props.increaseSkippedCountCallback.bind(this);
   }
 
-  getCurrentUserNote = (note) => {
-    this.setState({currentUserNote: note})
-    console.log('in game, currentUserNote: ', this.state.currentUserNote);
+  toggleInfoShown () {
+    this.setState({ infoShown: !this.state.infoShown });
+  }
+
+  componentDidMount() {
+    this.setNewNote();
+  }
+
+  setNewNote() {
+    let noteNum = null;
+    let noteDetails = null;
+    while(noteNum === null || noteDetails === undefined || noteNum === this.state.lastPromptedNoteNum) {
+      noteNum = this.getRandomIntInclusive(16, 42);
+      console.log('noteNum in setNewNote: ', noteNum);
+      noteDetails = this.getNoteDetails(noteNum);
+    }
+
+    this.setState({
+      promptedNoteNum: noteNum,
+      promptedNoteLetter: noteDetails.noteName,
+      promptedNoteFreq: noteDetails.frequency
+    });
+
+    console.log('promptedNoteNum: ', this.state.promptedNoteNum, 'promptedNoteFreq: ', this.state.promptedNoteFreq, 'promptedNoteLetter: ', this.state.promptedNoteLetter);
+  }
+
+  getRandomIntInclusive(min, max) {
+      const randInt = Math.floor(Math.random() * (max - min + 1)) + min;
+      console.log('randInt in getRandomIntInclusive: ', randInt);
+      return randInt;
+  }
+
+  getNoteDetails(noteNum) {
+    let note = Notes[noteNum];
+    console.log('note: ', note);
+    return note;
+  }
+
+  getUserPlayingNote = (note) => {
+    this.setState({userPlayingNote: note})
+    // console.log('in game, userPlayingNote: ', this.state.userPlayingNote);
   }
 
   componentWillUnmount() {
     if (this.state.processor){this.state.processor.disconnect()};
   }
 
+  skipNote = () => {
+    this.increaseSkippedCountCallback();
+    this.setNewNote();
+  }
 
-  showMeTheState = () => {
-    // console.log('in showMeTheState, userAudioFromMic: ', this.state.userAudioFromMic);
-    // console.log('in showMeTheState, userAudioFromMic type: ', typeof this.state.userAudioFromMic);
-
-    // const numOfMics = this.state.userAudioFromMic.mediaStream.getAudioTracks();
-    // console.log('numOfMics: ', numOfMics);
-
-    // TEST
-    // const audioTracks = this.state.userAudioFromMic.getAudioTracks();
-    // console.log('audioTracks: ', audioTracks);
+  debugHelper = () => {
+    this.setNewNote();
   }
 
 
@@ -46,17 +86,26 @@ class Game extends Component {
           <button className="button is-small" onClick={this.giveHint}>hint</button>
           <button className="button is-small" onClick={this.skipNote}>skip</button>
           <button className="button is-small" onClick={this.props.finishGameCallback}>finished</button>
-          <button className="button is-small" onClick={this.showMeTheState}>show me the state</button>
+          <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
         </div>
+        <p>Play this note:</p>
+        <p>{this.state.promptedNoteLetter}</p>
+
         <Analyzer
-          getCurrentUserNoteCallback={this.getCurrentUserNote}/>
+          getUserPlayingNoteCallback={this.getUserPlayingNote}
+          />
+          <div>
+            <button className="button" onClick={this.toggleInfoShown}>INFO</button>
+            {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
+          </div>
       </section>
     );
   }
 }
 
 Game.propTypes = {
-  finishGameCallback: PropTypes.func.isRequired
+  finishGameCallback: PropTypes.func.isRequired,
+  increaseSkippedCountCallback: PropTypes.func.isRequired
 };
 
 
