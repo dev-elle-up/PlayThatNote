@@ -40,9 +40,10 @@ class Game extends Component {
     }
 
 // the next three lines might need to move up into the setNewNote function
+    const difficultyModifier = 0.5
     const targetFreq = noteDetails.frequency
-    let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806))
-    let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973))
+    let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806)*difficultyModifier)
+    let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*difficultyModifier)
 //            ^^^^ those three lines ^^^
 
     this.setState({
@@ -74,10 +75,12 @@ class Game extends Component {
     if (note <= this.state.targetFreqRangeUpper && note >= this.state.targetFreqRangeLower) {
       this.toggleNoteMatched();
     }
+    // add an else here to reset state to false if the time requirement isn't reached
   }
 
   toggleNoteMatched = () => {
-    this.state.noteMatched ? this.setState({noteMatched: true}) : this.setState({noteMatched: true})
+    // this.state.noteMatched ? this.setState({noteMatched: false}) : this.setState({noteMatched: true})
+    this.setState({noteMatched: true});
     console.log(this.state.noteMatched);
   }
 
