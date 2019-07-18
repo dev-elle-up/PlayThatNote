@@ -12,8 +12,10 @@ class Game extends Component {
       promptedNoteNum: null,
       promptedNoteLetter: null,
       promptedNoteFreq: null,
+      targetFreqRangeLower: null,
+      targetFreqRangeUpper: null,
       userPlayingNote: null,
-      // note_matched: false
+      noteMatched: false,
       infoShown: false
     }
   this.toggleInfoShown = this.toggleInfoShown.bind(this);
@@ -37,13 +39,22 @@ class Game extends Component {
       noteDetails = this.getNoteDetails(noteNum);
     }
 
+// the next three lines might need to move up into the setNewNote function
+    const difficultyModifier = 0.5
+    const targetFreq = noteDetails.frequency
+    let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806)*difficultyModifier)
+    let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*difficultyModifier)
+//            ^^^^ those three lines ^^^
+
     this.setState({
       promptedNoteNum: noteNum,
       promptedNoteLetter: noteDetails.noteName,
-      promptedNoteFreq: noteDetails.frequency
+      promptedNoteFreq: noteDetails.frequency,
+      targetFreqRangeLower: targetFreqRangeLower,
+      targetFreqRangeUpper: targetFreqRangeUpper
     });
 
-    console.log('promptedNoteNum: ', this.state.promptedNoteNum, 'promptedNoteFreq: ', this.state.promptedNoteFreq, 'promptedNoteLetter: ', this.state.promptedNoteLetter);
+    console.log(`promptedNoteNum: ${this.state.promptedNoteNum}, promptedNoteFreq: ${this.state.promptedNoteFreq}, promptedNoteLetter: ${this.state.promptedNoteLetter}, Acceptable Frequency Range: ${this.state.targetFreqRangeLower}Hz - ${this.state.targetFreqRangeUpper}Hz`);
   }
 
   getRandomIntInclusive(min, max) {
@@ -61,6 +72,16 @@ class Game extends Component {
   getUserPlayingNote = (note) => {
     this.setState({userPlayingNote: note})
     // console.log('in game, userPlayingNote: ', this.state.userPlayingNote);
+    if (note <= this.state.targetFreqRangeUpper && note >= this.state.targetFreqRangeLower) {
+      this.toggleNoteMatched();
+    }
+    // add an else here to reset state to false if the time requirement isn't reached
+  }
+
+  toggleNoteMatched = () => {
+    // this.state.noteMatched ? this.setState({noteMatched: false}) : this.setState({noteMatched: true})
+    this.setState({noteMatched: true});
+    console.log(this.state.noteMatched);
   }
 
   componentWillUnmount() {
