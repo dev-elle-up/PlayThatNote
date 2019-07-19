@@ -4,6 +4,8 @@ import Analyzer from './Analyzer.js';
 import Notes from './NoteDetails.js';
 import Info from './Info.js';
 
+import { log } from '../modules/helpers';
+
 class Game extends Component {
   constructor(props){
     super(props);
@@ -56,7 +58,7 @@ class Game extends Component {
 
     this.setState({lastPromptedNoteNum: this.state.promptedNoteNum});
     // const numOfNotesAvailable = this.state.availableNotes.length;
-    console.log(`numOfNotesAvailable: ${this.state.availableNotes.length}`);
+    log(`numOfNotesAvailable: ${this.state.availableNotes.length}`);
 
     let lastNoteIndex = null;
     let noteIndex = null;
