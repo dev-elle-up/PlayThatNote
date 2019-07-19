@@ -23,7 +23,7 @@ class Game extends Component {
 
       infoShown: false,
 
-      availableNotes: []
+      availableNotes: Notes
     }
   this.toggleInfoShown = this.toggleInfoShown.bind(this);
   this.increaseSkippedCountCallback = props.increaseSkippedCountCallback.bind(this);
@@ -36,36 +36,37 @@ class Game extends Component {
 
   componentDidMount() {
     // console.log('Component mounted. notes in state: ', this.state.availableNotes);
-    async function getAvail() {
-      await this.getAvailableNotes();
-      await this.setNewNote();
-    }
-    getAvail();
-  };
 
-  getAvailableNotes() {
-    const allNotes= Notes;
-    const availableNotes = allNotes.map(
-      note => {
-        return note;
-    });
-    this.setState({ availableNotes }, () => {console.log(this.state.availableNotes, this.state.availableNotes.length);})
-  };
+      // this.getAvailableNotes();
+      this.setNewNote();
+    }
+
+
+
+  // getAvailableNotes() {
+  //   const allNotes= Notes;
+  //   const availableNotes = allNotes.map(
+  //     note => {
+  //       return note;
+  //   });
+  //   this.setState({ availableNotes }, () => {console.log(this.state.availableNotes, this.state.availableNotes.length);})
+  // };
 
   setNewNote = () => {
 
     this.setState({lastPromptedNoteNum: this.state.promptedNoteNum});
-    const numOfNotesAvailable = this.state.availableNotes.length;
-    console.log(`numOfNotesAvailable: ${numOfNotesAvailable}`);
+    // const numOfNotesAvailable = this.state.availableNotes.length;
+    console.log(`numOfNotesAvailable: ${this.state.availableNotes.length}`);
+
     let lastNoteIndex = null;
     let noteIndex = null;
     let noteObject = null;
-    // while(noteIndex === lastNoteIndex) { // removed condition noteObject === undefined ||
-      const newNoteIndex = this.getRandomIntInclusive(0, numOfNotesAvailable);
-      this.noteIndex = newNoteIndex;
+    while(noteIndex === lastNoteIndex) { // removed condition noteObject === undefined ||
+      const newNoteIndex = this.getRandomIntInclusive(0, this.state.availableNotes.length-1);
+      noteIndex = newNoteIndex;
       noteObject = this.state.availableNotes[noteIndex];
       console.log(`Random new noteIndex in setNewNote: ${noteIndex}, lastNoteIndex: ${lastNoteIndex}`);
-    // }
+    }
 
     const difficultyModifier = 0.5
     const targetFreq = noteObject.frequency
