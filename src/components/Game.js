@@ -8,8 +8,8 @@ class Game extends Component {
   constructor(props){
     super(props);
     this.state={
-      lastPromptedNoteNum: null,
-      promptedNoteNum: null,
+      lastPromptedNoteNum: null, // noteObject.noteNum
+      promptedNoteNum: null, // noteObject.noteNum
       promptedNoteLetter: null,
       promptedNoteFreq: null,
       targetFreqRangeLower: null,
@@ -17,12 +17,17 @@ class Game extends Component {
 
       userPlayingPitch: null,
       noteMatched: false,
-      // startTime: null,
+      startTime: null,
+      targetTime: null,
+      targetTimeReached: false,
 
-      infoShown: false
+      infoShown: false,
+
+      availableNotes: []
     }
   this.toggleInfoShown = this.toggleInfoShown.bind(this);
   this.increaseSkippedCountCallback = props.increaseSkippedCountCallback.bind(this);
+  // this.testAvailableNotes = this.availableNotes.bind(this)
   }
 
   toggleInfoShown () {
@@ -30,34 +35,54 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    this.setNewNote();
-  }
-
-  setNewNote() {
-    let noteNum = null;
-    let noteDetails = null;
-    while(noteNum === null || noteDetails === undefined || noteNum === this.state.lastPromptedNoteNum) {
-      noteNum = this.getRandomIntInclusive(16, 42);
-      console.log('noteNum in setNewNote: ', noteNum);
-      noteDetails = this.getNoteDetails(noteNum);
+    // console.log('Component mounted. notes in state: ', this.state.availableNotes);
+    async function getAvail() {
+      await this.getAvailableNotes();
+      await this.setNewNote();
     }
+    getAvail();
+  };
 
-// the next three lines might need to move up into the setNewNote function
+  getAvailableNotes() {
+    const allNotes= Notes;
+    const availableNotes = allNotes.map(
+      note => {
+        return note;
+    });
+    this.setState({ availableNotes }, () => {console.log(this.state.availableNotes, this.state.availableNotes.length);})
+  };
+
+  setNewNote = () => {
+
+    this.setState({lastPromptedNoteNum: this.state.promptedNoteNum});
+    const numOfNotesAvailable = this.state.availableNotes.length;
+    console.log(`numOfNotesAvailable: ${numOfNotesAvailable}`);
+    let lastNoteIndex = null;
+    let noteIndex = null;
+    let noteObject = null;
+    // while(noteIndex === lastNoteIndex) { // removed condition noteObject === undefined ||
+      const newNoteIndex = this.getRandomIntInclusive(0, numOfNotesAvailable);
+      this.noteIndex = newNoteIndex;
+      noteObject = this.state.availableNotes[noteIndex];
+      console.log(`Random new noteIndex in setNewNote: ${noteIndex}, lastNoteIndex: ${lastNoteIndex}`);
+    // }
+
     const difficultyModifier = 0.5
-    const targetFreq = noteDetails.frequency
+    const targetFreq = noteObject.frequency
     let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806)*difficultyModifier)
     let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*difficultyModifier)
-//            ^^^^ those three lines ^^^
 
     this.setState({
-      promptedNoteNum: noteNum,
-      promptedNoteLetter: noteDetails.noteName,
-      promptedNoteFreq: noteDetails.frequency,
+      promptedNoteNum: noteObject.noteNum,
+      // promptedNoteLetter: noteObject.noteName,
+      promptedNoteLetter: noteObject.noteNameOctave,
+      promptedNoteFreq: noteObject.frequency,
       targetFreqRangeLower: targetFreqRangeLower,
       targetFreqRangeUpper: targetFreqRangeUpper
     }, () => {
-      console.log(`promptedNoteNum: ${this.state.promptedNoteNum}, promptedNoteFreq: ${this.state.promptedNoteFreq}, promptedNoteLetter: ${this.state.promptedNoteLetter}, Acceptable Frequency Range: ${this.state.targetFreqRangeLower}Hz - ${this.state.targetFreqRangeUpper}Hz`)
+      console.log(`***** End of setNewNote ***** lastPromptedNoteNum: ${this.state.lastPromptedNoteNum}, current promptedNoteNum: ${this.state.promptedNoteNum}, promptedNoteLetter: ${this.state.promptedNoteLetter}`)
     });
+    // promptedNoteFreq: ${this.state.promptedNoteFreq}, Acceptable Frequency Range: ${this.state.targetFreqRangeLower}Hz - ${this.state.targetFreqRangeUpper}Hz
   }
 
   getRandomIntInclusive(min, max) {
@@ -66,11 +91,11 @@ class Game extends Component {
       return randInt;
   }
 
-  getNoteDetails(noteNum) {
-    let note = Notes[noteNum];
-    console.log('note: ', note);
-    return note;
-  }
+  // getNoteDetails(noteNum) {
+  //   let note = Notes[noteNum];
+  //   console.log('note: ', note);
+  //   return note;
+  // }
 
   getuserPlayingPitch = (pitch) => {
     const oldPitch = this.state.userPlayingPitch;
