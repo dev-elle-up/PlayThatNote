@@ -14,8 +14,11 @@ class Game extends Component {
       promptedNoteFreq: null,
       targetFreqRangeLower: null,
       targetFreqRangeUpper: null,
-      userPlayingNote: null,
+
+      userPlayingPitch: null,
       noteMatched: false,
+      // startTime: null,
+
       infoShown: false
     }
   this.toggleInfoShown = this.toggleInfoShown.bind(this);
@@ -52,9 +55,9 @@ class Game extends Component {
       promptedNoteFreq: noteDetails.frequency,
       targetFreqRangeLower: targetFreqRangeLower,
       targetFreqRangeUpper: targetFreqRangeUpper
+    }, () => {
+      console.log(`promptedNoteNum: ${this.state.promptedNoteNum}, promptedNoteFreq: ${this.state.promptedNoteFreq}, promptedNoteLetter: ${this.state.promptedNoteLetter}, Acceptable Frequency Range: ${this.state.targetFreqRangeLower}Hz - ${this.state.targetFreqRangeUpper}Hz`)
     });
-
-    console.log(`promptedNoteNum: ${this.state.promptedNoteNum}, promptedNoteFreq: ${this.state.promptedNoteFreq}, promptedNoteLetter: ${this.state.promptedNoteLetter}, Acceptable Frequency Range: ${this.state.targetFreqRangeLower}Hz - ${this.state.targetFreqRangeUpper}Hz`);
   }
 
   getRandomIntInclusive(min, max) {
@@ -69,19 +72,27 @@ class Game extends Component {
     return note;
   }
 
-  getUserPlayingNote = (note) => {
-    this.setState({userPlayingNote: note})
-    // console.log('in game, userPlayingNote: ', this.state.userPlayingNote);
-    if (note <= this.state.targetFreqRangeUpper && note >= this.state.targetFreqRangeLower) {
-      this.toggleNoteMatched();
+  getuserPlayingPitch = (pitch) => {
+    const oldPitch = this.state.userPlayingPitch;
+
+    if (oldPitch !== pitch ){
+      this.setState({userPlayingPitch: pitch}, ()=>{
+        // console.log('in game, userPlayingPitch: ', this.state.userPlayingPitch);
+        if (pitch <= this.state.targetFreqRangeUpper && pitch >= this.state.targetFreqRangeLower) {
+          this.toggleNoteMatched();
+        }
+      });
     }
+
     // add an else here to reset state to false if the time requirement isn't reached
   }
 
   toggleNoteMatched = () => {
     // this.state.noteMatched ? this.setState({noteMatched: false}) : this.setState({noteMatched: true})
-    this.setState({noteMatched: true});
-    console.log(this.state.noteMatched);
+    this.setState({noteMatched: true},()=>{
+      console.log(this.state.noteMatched);
+    });
+
   }
 
   componentWillUnmount() {
@@ -113,7 +124,7 @@ class Game extends Component {
         <p>{this.state.promptedNoteLetter}</p>
 
         <Analyzer
-          getUserPlayingNoteCallback={this.getUserPlayingNote}
+          getuserPlayingPitchCallback={this.getuserPlayingPitch}
           />
           <div>
             <button className="button" onClick={this.toggleInfoShown}>INFO</button>

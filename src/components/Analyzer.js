@@ -33,7 +33,7 @@ class Analyzer extends Component {
      const source = context.createMediaStreamSource(userAudioFromMic);
      const processor = context.createScriptProcessor(4096, 1, 1);
      //Creates a ScriptProcessorNode for direct audio processing.
-     // Arguments: bufferSize, numberOfInputChannels, numberOfOutputChannels
+     // Arguments: bufferSize (bytes), numberOfInputChannels, numberOfOutputChannels
      // bufferSize: no. of units of sample-frames; values must be: 256, 512, 1024, 2048, 4096, 8192, or 16384. This value controls how frequently the onaudioprocess event handler is called and how many sample-frames need to be processed each call.
      this.setState({ processor }); // the ScriptProcessorNode is now available in state as processor
      source.connect(processor); // route the output of the source to the input of the processor; userAudioFromMic -->> ScriptProcessorNode
@@ -49,8 +49,14 @@ class Analyzer extends Component {
        // const pitch = detectPitch(float32Array);
        // each time the buffer is added to, the pitch is detected from the input
        // null if pitch cannot be identified
-       this.setState({ pitch });
-       this.props.getUserPlayingNoteCallback(pitch)
+       const oldPitch = this.state.pitch;
+
+       if (oldPitch !== pitch ){
+         this.setState({ pitch },()=>{
+           this.props.getuserPlayingPitchCallback(pitch)
+         });
+       }
+
        // console.log('pitch: ', pitch);
       }.bind(this)
 
@@ -67,7 +73,7 @@ class Analyzer extends Component {
 }
 
 Analyzer.propTypes = {
-  getUserPlayingNoteCallback: PropTypes.func.isRequired
+  getuserPlayingPitchCallback: PropTypes.func.isRequired
 }
 
 export default Analyzer;
