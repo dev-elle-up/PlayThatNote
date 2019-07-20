@@ -20,6 +20,7 @@ class App extends Component {
       timeStopped: null,
       timePlayed: '',
     }
+    console.log(process.env.NODE_ENV);
   }
 
   startGame = () => {
