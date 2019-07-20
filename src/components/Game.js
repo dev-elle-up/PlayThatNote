@@ -94,8 +94,10 @@ class Game extends Component {
           this.setNoteMatchedTrue();
           this.checkTimer();
 
-        } else {
+        } else if (pitch > this.state.targetFreqRangeUpper && pitch < this.state.targetFreqRangeLower){
           this.setNoteMatchedFalse()};
+          console.log('????????????');
+          // this.voidTargetTime();
       });
     }
 
@@ -109,19 +111,6 @@ class Game extends Component {
   //   // this.setState({noteMatched: true},()=>{
   //   //   console.log(this.state.noteMatched);
   //   };
-  checkTimer = () => {
-      if (!this.state.targetTime) {
-        this.getTargetTime();
-      }
-  };
-
-  getTargetTime = () => {
-    const sustainTimeMilliseconds = 1000;
-    const now = new Date().getTime();
-    const newTargetTime = now + sustainTimeMilliseconds ;
-    this.setState({targetTime: newTargetTime}, () => {console.log(`now: ${now}, targetTime: ${this.state.targetTime}`);});
-  };
-
   setNoteMatchedTrue = () => {
     this.setState({noteMatched: true},()=>{console.log(this.state.noteMatched)});
   };
@@ -130,6 +119,34 @@ class Game extends Component {
     this.setState({noteMatched: false},()=>{console.log(this.state.noteMatched)});
 
   };
+
+  checkTimer = () => {
+    const currentTime = new Date().getTime();
+    const targetTime = this.state.targetTime;
+      if (!this.state.targetTime) {
+        this.setTargetTime();
+      } else if (this.state.targetTime && (currentTime < targetTime)) {
+        console.log('Hold that note!');
+      } else if (currentTime > targetTime) {
+        this.setNewNote();
+      } else {
+        console.log('@ @ @ @ @ -- HELP! THIS STATE SHOULD NOT BE REACHABLE! -- @ @ @ @ @ ');
+      }
+
+  };
+
+  setTargetTime = () => {
+    const sustainTimeMilliseconds = 2500;
+    const now = new Date().getTime();
+    const newTargetTime = now + sustainTimeMilliseconds ;
+    this.setState({targetTime: newTargetTime}, () => {console.log(`now: ${now}, targetTime: ${this.state.targetTime}`);});
+  };
+
+  voidTargetTime = () => {
+    this.setState({targetTime: null}, () => {console.log(`targetTime: ${this.state.targetTime}`);});
+  }
+
+
 
   componentWillUnmount() { // NEED THIS?
     if (this.state.processor){this.state.processor.disconnect()};
