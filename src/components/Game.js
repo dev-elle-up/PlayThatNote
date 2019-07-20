@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Analyzer from './Analyzer.js';
-import Notes from './NoteDetails.js';
+import { notes } from './NoteDetails.js';
 import Info from './Info.js';
 
 class Game extends Component {
   constructor(props){
     super(props);
     this.state={
-      lastPromptedNoteNum: null, // noteObject.noteNum
-      promptedNoteNum: null, // noteObject.noteNum
+      lastPrompedNote: null,
+      promptedNote: null,
       promptedNoteLetter: null,
-      promptedNoteFreq: null,
       targetFreqRangeLower: null,
       targetFreqRangeUpper: null,
+      promptedNoteFreq: 'loading',
 
       userPlayingPitch: null,
       noteMatched: false,
@@ -23,11 +23,10 @@ class Game extends Component {
 
       infoShown: false,
 
-      availableNotes: Notes
+      availableNotes: notes
     }
-  this.toggleInfoShown = this.toggleInfoShown.bind(this);
-  this.increaseSkippedCountCallback = props.increaseSkippedCountCallback.bind(this);
-  // this.testAvailableNotes = this.availableNotes.bind(this)
+    this.toggleInfoShown = this.toggleInfoShown.bind(this);
+    this.increaseSkippedCountCallback = props.increaseSkippedCountCallback.bind(this);
   }
 
   toggleInfoShown () {
@@ -35,14 +34,10 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    // console.log('Component mounted. notes in state: ', this.state.availableNotes);
-
-      // this.getAvailableNotes();
       this.setNewNote();
     }
 
-
-
+// USE THIS WHEN ADDING FILTERS (DIFFICULTY LEVEL, SINGLE STRING, WHOLE NOTES ONLY, ETC)
   // getAvailableNotes() {
   //   const allNotes= Notes;
   //   const availableNotes = allNotes.map(
@@ -53,20 +48,22 @@ class Game extends Component {
   // };
 
   setNewNote = () => {
+    let lastNote = this.state.promptedNote;
+    let availableNotes = this.state.availableNotes;
+    let newNote = lastNote;
+    console.log(`**** numOfNotesAvailable: ${availableNotes.length} ****`);
+    console.log(`lastNote: ${lastNote}, newNote: ${newNote}`);
 
-    this.setState({lastPromptedNoteNum: this.state.promptedNoteNum});
-    // const numOfNotesAvailable = this.state.availableNotes.length;
-    console.log(`numOfNotesAvailable: ${this.state.availableNotes.length}`);
 
-    let lastNoteIndex = null;
-    let noteIndex = null;
-    let noteObject = null;
-    while(noteIndex === lastNoteIndex) { // removed condition noteObject === undefined ||
-      const newNoteIndex = this.getRandomIntInclusive(0, this.state.availableNotes.length-1);
-      noteIndex = newNoteIndex;
-      noteObject = this.state.availableNotes[noteIndex];
-      console.log(`Random new noteIndex in setNewNote: ${noteIndex}, lastNoteIndex: ${lastNoteIndex}`);
+    while(newNote === lastNote) {
+      const newNoteIndex = this.getRandomIntInclusive(0, availableNotes.length-1);
+      newNote = availableNotes[newNoteIndex];
+      console.log(`Random new noteIndex in while loop: ${newNoteIndex}`);
     }
+    this.setState({lastPromptedNote: lastNote, promptedNote: newNote});
+    console.log(`new noteNum: ${newNote}, lastNoteNum: ${lastNote}`);
+    let noteObject = newNote;
+
 
     const difficultyModifier = 0.5
     const targetFreq = noteObject.frequency
@@ -74,16 +71,13 @@ class Game extends Component {
     let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*difficultyModifier)
 
     this.setState({
-      promptedNoteNum: noteObject.noteNum,
       // promptedNoteLetter: noteObject.noteName,
-      promptedNoteLetter: noteObject.noteNameOctave,
+      promptedNoteLetter: noteObject.noteNameOctave, // CHANGE THIS ONCE GRAPHPICS ARE IN!
       promptedNoteFreq: noteObject.frequency,
       targetFreqRangeLower: targetFreqRangeLower,
       targetFreqRangeUpper: targetFreqRangeUpper
-    }, () => {
-      console.log(`***** End of setNewNote ***** lastPromptedNoteNum: ${this.state.lastPromptedNoteNum}, current promptedNoteNum: ${this.state.promptedNoteNum}, promptedNoteLetter: ${this.state.promptedNoteLetter}`)
-    });
-    // promptedNoteFreq: ${this.state.promptedNoteFreq}, Acceptable Frequency Range: ${this.state.targetFreqRangeLower}Hz - ${this.state.targetFreqRangeUpper}Hz
+    }
+  );
   }
 
   getRandomIntInclusive(min, max) {
@@ -91,12 +85,6 @@ class Game extends Component {
       console.log('randInt in getRandomIntInclusive: ', randInt);
       return randInt;
   }
-
-  // getNoteDetails(noteNum) {
-  //   let note = Notes[noteNum];
-  //   console.log('note: ', note);
-  //   return note;
-  // }
 
   getuserPlayingPitch = (pitch) => {
     const oldPitch = this.state.userPlayingPitch;
@@ -121,7 +109,7 @@ class Game extends Component {
 
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() { // NEED THIS?
     if (this.state.processor){this.state.processor.disconnect()};
   }
 
@@ -148,6 +136,7 @@ class Game extends Component {
         </div>
         <p>Play this note:</p>
         <p>{this.state.promptedNoteLetter}</p>
+        <p>{this.state.promptedNoteFreq}</p>
 
         <Analyzer
           getuserPlayingPitchCallback={this.getuserPlayingPitch}
