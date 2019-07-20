@@ -13,8 +13,6 @@ class Analyzer extends Component {
   }
 
   componentDidMount(){
-    // Pitchfinder.module.exports.config.minFrequency = 60;
-    // console.log(Pitchfinder.AMDF);
     this.runAnalyzer();
   }
 
@@ -56,8 +54,6 @@ class Analyzer extends Component {
            this.props.getuserPlayingPitchCallback(pitch)
          });
        }
-
-       // console.log('pitch: ', pitch);
       }.bind(this)
 
   }

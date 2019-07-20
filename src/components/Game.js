@@ -15,7 +15,7 @@ class Game extends Component {
       targetFreqRangeUpper: null,
       promptedNoteFreq: 'loading',
 
-      userPlayingPitch: null,
+      userPlayingPitch: null, //number, Hz
       noteMatched: false,
       startTime: null,
       targetTime: null,
@@ -64,7 +64,7 @@ class Game extends Component {
     console.log(`new noteNum: ${newNote}, lastNoteNum: ${lastNote}`);
 
 
-    const difficultyModifier = 0.5
+    const difficultyModifier = 0.7
     const targetFreq = newNote.frequency
     let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806)*difficultyModifier)
     let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*difficultyModifier)
@@ -91,21 +91,45 @@ class Game extends Component {
       this.setState({userPlayingPitch: pitch}, ()=>{
         // console.log('in game, userPlayingPitch: ', this.state.userPlayingPitch);
         if (pitch <= this.state.targetFreqRangeUpper && pitch >= this.state.targetFreqRangeLower) {
-          this.toggleNoteMatched();
-        }
+          this.setNoteMatchedTrue();
+          this.checkTimer();
+
+        } else {
+          this.setNoteMatchedFalse()};
       });
     }
 
     // add an else here to reset state to false if the time requirement isn't reached
-  }
+  };
 
-  toggleNoteMatched = () => {
-    // this.state.noteMatched ? this.setState({noteMatched: false}) : this.setState({noteMatched: true})
-    this.setState({noteMatched: true},()=>{
-      console.log(this.state.noteMatched);
-    });
+  // toggleNoteMatched = () => {
+  //   this.state.noteMatched ?
+  //   this.setState({noteMatched: false},()=>{console.log(this.state.noteMatched)}) :
+  //   this.setState({noteMatched: true},()=>{ console.log(this.state.noteMatched)})
+  //   // this.setState({noteMatched: true},()=>{
+  //   //   console.log(this.state.noteMatched);
+  //   };
+  checkTimer = () => {
+      if (!this.state.targetTime) {
+        this.getTargetTime();
+      }
+  };
 
-  }
+  getTargetTime = () => {
+    const sustainTimeMilliseconds = 1000;
+    const now = new Date().getTime();
+    const newTargetTime = now + sustainTimeMilliseconds ;
+    this.setState({targetTime: newTargetTime}, () => {console.log(`now: ${now}, targetTime: ${this.state.targetTime}`);});
+  };
+
+  setNoteMatchedTrue = () => {
+    this.setState({noteMatched: true},()=>{console.log(this.state.noteMatched)});
+  };
+
+  setNoteMatchedFalse = () => {
+    this.setState({noteMatched: false},()=>{console.log(this.state.noteMatched)});
+
+  };
 
   componentWillUnmount() { // NEED THIS?
     if (this.state.processor){this.state.processor.disconnect()};
