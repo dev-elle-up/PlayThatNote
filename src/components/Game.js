@@ -62,22 +62,20 @@ class Game extends Component {
     }
     this.setState({lastPromptedNote: lastNote, promptedNote: newNote});
     console.log(`new noteNum: ${newNote}, lastNoteNum: ${lastNote}`);
-    let noteObject = newNote;
 
 
     const difficultyModifier = 0.5
-    const targetFreq = noteObject.frequency
+    const targetFreq = newNote.frequency
     let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806)*difficultyModifier)
     let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*difficultyModifier)
 
     this.setState({
-      // promptedNoteLetter: noteObject.noteName,
-      promptedNoteLetter: noteObject.noteNameOctave, // CHANGE THIS ONCE GRAPHPICS ARE IN!
-      promptedNoteFreq: noteObject.frequency,
+      // promptedNoteLetter: newNote.noteName,
+      promptedNoteLetter: newNote.noteNameOctave, // CHANGE THIS ONCE GRAPHPICS ARE IN!
+      promptedNoteFreq: newNote.frequency,
       targetFreqRangeLower: targetFreqRangeLower,
       targetFreqRangeUpper: targetFreqRangeUpper
-    }
-  );
+    });
   }
 
   getRandomIntInclusive(min, max) {
