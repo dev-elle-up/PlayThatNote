@@ -41,6 +41,11 @@ class App extends Component {
     this.setState({notesSkipped: newSkippedCount});
   }
 
+  increaseNotesPlayedCorrectly = () => {
+    const newNotesPlayedCorrectlyCount = this.state.notesPlayedCorrectly + 1;
+    this.setState({notesPlayedCorrectly: newNotesPlayedCorrectlyCount});
+  }
+
   finishGame = () => {
     this.setState({
       time_stopped: Date.now,
@@ -76,6 +81,7 @@ class App extends Component {
             {this.state.gameState==='Game Page' && <Game
               finishGameCallback={this.finishGame}
               increaseSkippedCountCallback={this.increaseSkippedCount}
+              increaseNotesPlayedCorrectlyCallback={this.increaseNotesPlayedCorrectly}
             />}
 
             {this.state.gameState==='Summary Page' && <Summary

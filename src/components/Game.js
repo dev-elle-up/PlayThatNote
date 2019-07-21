@@ -16,7 +16,7 @@ class Game extends Component {
       promptedNoteFreq: 'loading',
 
       userPlayingPitch: null, //number, Hz
-      noteMatched: false,
+      // noteMatched: false,
       startTime: null,
       targetTime: null,
       targetTimeReached: false,
@@ -27,6 +27,7 @@ class Game extends Component {
     }
     this.toggleInfoShown = this.toggleInfoShown.bind(this);
     this.increaseSkippedCountCallback = props.increaseSkippedCountCallback.bind(this);
+    this.increaseNotesPlayedCorrectlyCallback = props.increaseNotesPlayedCorrectlyCallback.bind(this);
   }
 
   toggleInfoShown () {
@@ -76,7 +77,7 @@ class Game extends Component {
       targetFreqRangeLower: targetFreqRangeLower,
       targetFreqRangeUpper: targetFreqRangeUpper
     });
-  }
+  };
 
   getRandomIntInclusive(min, max) {
       const randInt = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -88,66 +89,96 @@ class Game extends Component {
     const oldPitch = this.state.userPlayingPitch;
 
     if (oldPitch !== pitch ){
-      this.setState({userPlayingPitch: pitch}, ()=>{
-        console.log(`pitch changed to: ${pitch}`);
+      this.setState({userPlayingPitch: pitch}, ()=>{console.log(`pitch changed to: ${pitch}`)});
+      this.handlePitchChange(pitch);
+    } else {
+      // check has timer been reached; if so sparkles and if not do nothing
+      // also check if pitch is now null
+    };
+  };
 
-        if (pitch <= this.state.targetFreqRangeUpper && pitch >= this.state.targetFreqRangeLower) { // inside target range
-          this.setNoteMatchedTrue();
-          this.checkTargetTimeReached();
+  checkPitchInRange = (pitch) => {
+    if (pitch <= this.state.targetFreqRangeUpper && pitch >= this.state.targetFreqRangeLower) {return true} else {return false};
+  };
 
-        } else if (pitch > this.state.targetFreqRangeUpper || pitch < this.state.targetFreqRangeLower){ // outside target range
-          this.setNoteMatchedFalse();
+  checkTimerStarted = () => {
+    if (this.state.targetTime) {return true} else {return false};
+  }
 
-          const targetTimeReached = this.checkTargetTimeReached();
-          console.log(`pitch: ${pitch}, targetTimeReached: ${targetTimeReached}`);
+  handlePitchChange = (pitch) => {
+    let pitchInRange = this.checkPitchInRange(pitch); // true or false
+    // if (pitchInRange){this.setNoteMatchedTrue()};
+    let timerStarted = this.checkTimerStarted();
+    let targetTimeReached = this.checkTargetTimeReached();
 
-          if (targetTimeReached === false) {
-            // this.voidTargetTime();
-            console.log('void targetTime here #1');
-            // this.setNoteMatchedFalse();
-          } else if (targetTimeReached === true) {
-            this.setNewNote();
-          };
-        };
-      });
+    if (pitchInRange) { // A
+      // this.setNoteMatchedTrue();
+
+      if (timerStarted) { // A1
+        if (targetTimeReached) { // A1a
+          console.log('* ... sparkles ... * success');
+        } else { // A1b
+          console.log('keep playing');
+        }
+      } else { // A2
+          this.setTargetTime();
+      }
+
+    } else { // B note is out of target range ("wrong") or null
+      // this.setNoteMatchedFalse();
+      if (timerStarted) { // B1
+        if (targetTimeReached) { // B1a note changed to null or wrong note, timer has finished
+          this.handleSuccessfulRound();
+        } else { // B1b
+          this.voidTargetTime();
+          console.log('TIMER VOIDED (B1b)');
+        }
+      } else { // B2
+        // do nothing
+        return;
+      }
     }
 
-    // add an else here to reset state to false if the time requirement isn't reached
-    
   };
 
-  setNoteMatchedTrue = () => {
-    this.setState({noteMatched: true},()=>{console.log(this.state.noteMatched)});
-  };
+  handleSuccessfulRound = () => {
+    this.props.increaseNotesPlayedCorrectlyCallback();
+    this.setNewNote();
+    this.voidTargetTime();
+    console.log(`You got a point! Here's a new note.`);
+  }
 
-  setNoteMatchedFalse = () => {
-    this.setState({noteMatched: false},()=>{console.log(this.state.noteMatched)});
-
-  };
+  // setNoteMatchedTrue = () => {
+  //   this.setState({noteMatched: true},()=>{console.log(this.state.noteMatched)});
+  // };
+  //
+  // setNoteMatchedFalse = () => {
+  //   this.setState({noteMatched: false},()=>{console.log(this.state.noteMatched)});
+  // };
 
   checkTargetTimeReached = () => {
     const currentTime = new Date().getTime();
     const targetTime = this.state.targetTime;
 
-    if (!this.state.targetTime) { // no timer started
-      this.setTargetTime();
-      return false;
-    } else if (this.state.targetTime && (currentTime < targetTime)) { // targetTime not reached
-      console.log('Hold that note!');
-      return false;
-    } else if (this.state.targetTime && (currentTime > targetTime)) { // targetTime reached
-      console.log('* ... sparkles ... *');
-      return true;
-    } else {
-      console.log('@ @ @ @ @ -- HELP! THIS STATE SHOULD NOT BE REACHABLE! -- @ @ @ @ @ ');
-    }
+    if (currentTime >= targetTime) {return true} else {return false};
+
+    // if (!this.state.targetTime) { // no timer started
+    //   this.setTargetTime();
+    //   return false;
+    // } else if (this.state.targetTime && (currentTime < targetTime)) { // targetTime not reached
+    //   console.log('Hold that note!');
+    //   return false;
+    // } else if (this.state.targetTime && (currentTime > targetTime)) { // targetTime reached
+    //   console.log('* ... sparkles ... *');
+    //   return true;
+    // } else {
+    //   console.log('@ @ @ @ @ -- HELP! THIS STATE SHOULD NOT BE REACHABLE! -- @ @ @ @ @ ');
+    // }
 
   };
 
-
-
   setTargetTime = () => {
-    const sustainTimeMilliseconds = 1500;
+    const sustainTimeMilliseconds = 1000;
     const now = new Date().getTime();
     const newTargetTime = now + sustainTimeMilliseconds ;
     this.setState({targetTime: newTargetTime}, () => {console.log(`in setTargetTime, now: ${now}, targetTime: ${this.state.targetTime}`);});
@@ -202,8 +233,8 @@ class Game extends Component {
 
 Game.propTypes = {
   finishGameCallback: PropTypes.func.isRequired,
-  increaseSkippedCountCallback: PropTypes.func.isRequired
+  increaseSkippedCountCallback: PropTypes.func.isRequired,
+  increaseNotesPlayedCorrectlyCallback: PropTypes.func.isRequired
 };
-
 
 export default Game;
