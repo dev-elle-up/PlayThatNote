@@ -51,19 +51,17 @@ class Game extends Component {
     let lastNote = this.state.promptedNote;
     let availableNotes = this.state.availableNotes;
     let newNote = lastNote;
-    console.log(`HERE IS A NEW NOTE TO PLAY`);
-    // console.log(`**** numOfNotesAvailable: ${availableNotes.length} ****`);
-
+    console.log(`**** numOfNotesAvailable: ${availableNotes.length} ****`);
+    console.log(`lastNote: ${lastNote}, newNote: ${newNote}`);
 
 
     while(newNote === lastNote) {
       const newNoteIndex = this.getRandomIntInclusive(0, availableNotes.length-1);
       newNote = availableNotes[newNoteIndex];
-      // console.log(`Random new noteIndex in while loop: ${newNoteIndex}`);
+      console.log(`Random new noteIndex in while loop: ${newNoteIndex}`);
     }
-    this.setState({lastPromptedNote: lastNote, promptedNote: newNote}, ()=>{console.log(`newNote: ${newNote.noteNameOctave}`)});
-    // console.log(`new noteNum: ${newNote}, lastNoteNum: ${lastNote}`);
-
+    this.setState({lastPromptedNote: lastNote, promptedNote: newNote});
+    console.log(`new noteNum: ${newNote}, lastNoteNum: ${lastNote}`);
 
 
     const difficultyModifier = 0.7
@@ -82,7 +80,7 @@ class Game extends Component {
 
   getRandomIntInclusive(min, max) {
       const randInt = Math.floor(Math.random() * (max - min + 1)) + min;
-      // console.log('randInt in getRandomIntInclusive: ', randInt);
+      console.log('randInt in getRandomIntInclusive: ', randInt);
       return randInt;
   }
 
@@ -95,70 +93,52 @@ class Game extends Component {
 
         if (pitch <= this.state.targetFreqRangeUpper && pitch >= this.state.targetFreqRangeLower) { // inside target range
           this.setNoteMatchedTrue();
-          const targetTimeReached = this.checkTargetTimeReached(true);
-          console.log(`IN RANGE: pitch: ${pitch}, targetTimeReached: ${targetTimeReached}`);
+          this.checkTargetTimeReached();
 
         } else if (pitch > this.state.targetFreqRangeUpper || pitch < this.state.targetFreqRangeLower){ // outside target range
           this.setNoteMatchedFalse();
-          const targetTimeReached = this.checkTargetTimeReached(false);
-          console.log(`OUT OF RANGE: pitch: ${pitch}, targetTimeReached: ${targetTimeReached}`);
 
+          const targetTimeReached = this.checkTargetTimeReached();
+          console.log(`pitch: ${pitch}, targetTimeReached: ${targetTimeReached}`);
 
-              if (targetTimeReached === false) {
-                this.voidTargetTime();
-                console.log('void targetTime here #1: note went out of range before timer reached');
-              } else if (targetTimeReached === true) {
-
-                this.setNewNote();
-                // this.voidTargetTime();
-                // console.log('void targetTime here #2: note went out of range after timer reached');
-                console.log('setNewNote called');
-                console.log(`You get a point! += 1 and you should get a new note now, too.`);
-              };
-
+          if (targetTimeReached === false) {
+            // this.voidTargetTime();
+            console.log('void targetTime here #1');
+            // this.setNoteMatchedFalse();
+          } else if (targetTimeReached === true) {
+            this.setNewNote();
+          };
         };
       });
     }
 
     // add an else here to reset state to false if the time requirement isn't reached
+    
   };
 
   setNoteMatchedTrue = () => {
-    this.setState({noteMatched: true});
-    // ,()=>{console.log(this.state.noteMatched)}
+    this.setState({noteMatched: true},()=>{console.log(this.state.noteMatched)});
   };
 
   setNoteMatchedFalse = () => {
-    this.setState({noteMatched: false});
-    // ,()=>{console.log(this.state.noteMatched)}
+    this.setState({noteMatched: false},()=>{console.log(this.state.noteMatched)});
+
   };
 
-  checkTargetTimeReached = (pitchInRange) => {
+  checkTargetTimeReached = () => {
     const currentTime = new Date().getTime();
     const targetTime = this.state.targetTime;
-    // const targetReached = this.state.targetTimeReached;
 
-    if (!targetTime && pitchInRange) { // no timer started
+    if (!this.state.targetTime) { // no timer started
       this.setTargetTime();
       return false;
-    }
-      else if (!targetTime && !pitchInRange) {
-      return false;
-    }
-      else if (targetTime && pitchInRange && !(currentTime < targetTime)) { // targetTime not reached
-      console.log('target time set, pitch in range, target time NOT reached');
+    } else if (this.state.targetTime && (currentTime < targetTime)) { // targetTime not reached
       console.log('Hold that note!');
       return false;
-    }
-      else if (targetTime && pitchInRange && (currentTime < targetTime)) { // targetTime reached
-      this.setState({targetTimeReached: true}, () => {console.log('* ... sparkles ... *   target time set, pitch IN range, target time IS reached')});
+    } else if (this.state.targetTime && (currentTime > targetTime)) { // targetTime reached
+      console.log('* ... sparkles ... *');
       return true;
-    }
-      else if (targetTime && !pitchInRange && (currentTime < targetTime)) { // targetTime reached
-      this.setState({targetTimeReached: true}, () => {console.log('target time set, pitch OUT of range, target time IS reached')});
-      return true;
-    }
-      else {
+    } else {
       console.log('@ @ @ @ @ -- HELP! THIS STATE SHOULD NOT BE REACHABLE! -- @ @ @ @ @ ');
     }
 
@@ -167,7 +147,7 @@ class Game extends Component {
 
 
   setTargetTime = () => {
-    const sustainTimeMilliseconds = 1000;
+    const sustainTimeMilliseconds = 1500;
     const now = new Date().getTime();
     const newTargetTime = now + sustainTimeMilliseconds ;
     this.setState({targetTime: newTargetTime}, () => {console.log(`in setTargetTime, now: ${now}, targetTime: ${this.state.targetTime}`);});
