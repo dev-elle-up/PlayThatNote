@@ -79,6 +79,8 @@ class Game extends Component {
       targetFreqRangeUpper: targetFreqRangeUpper
     });
 
+    this.props.increaseNotesTriedCallback();
+
     console.log(`*** NEW NOTE *** `);
     if (lastNote) {console.log(`lastNote: ${lastNote.noteNum}`);}
     if (newNote) {console.log(`newNote: ${newNote.noteNum}`);}
@@ -88,6 +90,8 @@ class Game extends Component {
       const randInt = Math.floor(Math.random() * (max - min + 1)) + min;
       return randInt;
   }
+
+
 
 
   // *** GET USER PITCH ***
@@ -235,7 +239,8 @@ class Game extends Component {
 Game.propTypes = {
   finishGameCallback: PropTypes.func.isRequired,
   increaseSkippedCountCallback: PropTypes.func.isRequired,
-  increaseNotesPlayedCorrectlyCallback: PropTypes.func.isRequired
+  increaseNotesPlayedCorrectlyCallback: PropTypes.func.isRequired,
+  increaseNotesTriedCallback: PropTypes.func.isRequired
 };
 
 export default Game;

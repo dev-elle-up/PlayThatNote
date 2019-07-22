@@ -7,6 +7,7 @@ function Summary(props) {
   return (
     <section>
       <p>Great job!</p>
+      <p>Notes attempted: {props.notesTried}</p>
       <p>Notes played correctly: {props.notesPlayedCorrectly}</p>
       <p>Notes skipped: {props.notesSkipped}</p>
       <p>Time played: {props.time_played}</p>
@@ -18,6 +19,7 @@ function Summary(props) {
 Summary.propTypes = {
   notesPlayedCorrectly: PropTypes.number.isRequired,
   notesSkipped: PropTypes.number.isRequired,
+  notesTried: PropTypes.number.isRequired,
   timePlayed: PropTypes.string.isRequired,
   restartGameCallback: PropTypes.func.isRequired
 }

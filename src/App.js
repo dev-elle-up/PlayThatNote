@@ -16,6 +16,7 @@ class App extends Component {
 
       notesPlayedCorrectly: 0,
       notesSkipped: 0,
+      notesTried: -1,
       timeStarted: null,
       timeStopped: null,
       timePlayed: '',
@@ -44,6 +45,11 @@ class App extends Component {
   increaseNotesPlayedCorrectly = () => {
     const newNotesPlayedCorrectlyCount = this.state.notesPlayedCorrectly + 1;
     this.setState({notesPlayedCorrectly: newNotesPlayedCorrectlyCount});
+  }
+
+  increaseNotesTried = () => {
+    const newNotesTried = this.state.notesTried +1;
+    this.setState({notesTried: newNotesTried});
   }
 
   finishGame = () => {
@@ -82,11 +88,13 @@ class App extends Component {
               finishGameCallback={this.finishGame}
               increaseSkippedCountCallback={this.increaseSkippedCount}
               increaseNotesPlayedCorrectlyCallback={this.increaseNotesPlayedCorrectly}
+              increaseNotesTriedCallback={this.increaseNotesTried}
             />}
 
             {this.state.gameState==='Summary Page' && <Summary
               notesPlayedCorrectly={this.state.notesPlayedCorrectly}
               notesSkipped={this.state.notesSkipped}
+              notesTried={this.state.notesTried}
               timePlayed={this.state.timePlayed}
               restartGameCallback={this.startGame}
             />}
