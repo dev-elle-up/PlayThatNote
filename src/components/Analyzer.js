@@ -30,7 +30,7 @@ class Analyzer extends Component {
      const context = new AudioContext();
      const source = context.createMediaStreamSource(userAudioFromMic);
      const processor = context.createScriptProcessor(4096, 1, 1);
-     //Creates a ScriptProcessorNode for direct audio processing.
+     // Creates a ScriptProcessorNode for direct audio processing.
      // Arguments: bufferSize (bytes), numberOfInputChannels, numberOfOutputChannels
      // bufferSize: no. of units of sample-frames; values must be: 256, 512, 1024, 2048, 4096, 8192, or 16384. This value controls how frequently the onaudioprocess event handler is called and how many sample-frames need to be processed each call.
      this.setState({ processor }); // the ScriptProcessorNode is now available in state as processor
@@ -42,28 +42,34 @@ class Analyzer extends Component {
 
 
      processor.onaudioprocess = function(audioBuffer) {
-       const pitch = detectPitch(audioBuffer.inputBuffer.getChannelData(0));
        // get a single channel of sound from the AudioBuffer object
-       // const pitch = detectPitch(float32Array);
+       // const detectedPitch = detectPitch(float32Array);
        // each time the buffer is added to, the pitch is detected from the input
        // null if pitch cannot be identified
+
+       const detectedPitch = detectPitch(audioBuffer.inputBuffer.getChannelData(0));
+       let pitch = detectedPitch ? detectedPitch.toFixed(2) : detectedPitch; // truncate detected pitch to 2 decimal places
+
        const oldPitch = this.state.pitch;
 
        if (oldPitch !== pitch ){
          this.setState({ pitch },()=>{
            this.props.getuserPlayingPitchCallback(pitch)
          });
+       } else {
+         this.props.getuserPlayingPitchCallback(pitch);
        }
       }.bind(this)
 
   }
+
 
   render(){
     if (this.state.pitch) {
       return( <div className="tag is-primary is-medium">{this.state.pitch} Hz</div> );
     }
 
-    return(<div className="tag is-warning is-medium">No pitch detected</div>)
+    return(<div className="tag is-warning is-medium">listening...</div>)
   }
 
 }
