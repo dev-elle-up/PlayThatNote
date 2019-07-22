@@ -42,12 +42,14 @@ class Analyzer extends Component {
 
 
      processor.onaudioprocess = function(audioBuffer) {
-       const pitch = this.round(detectPitch(audioBuffer.inputBuffer.getChannelData(0)), 2); // round detected pitch to 2 decimal places
-
        // get a single channel of sound from the AudioBuffer object
-       // const pitch = detectPitch(float32Array);
+       // const detectedPitch = detectPitch(float32Array);
        // each time the buffer is added to, the pitch is detected from the input
        // null if pitch cannot be identified
+
+       const detectedPitch = detectPitch(audioBuffer.inputBuffer.getChannelData(0));
+       let pitch = detectedPitch ? detectedPitch.toFixed(2) : detectedPitch; // truncate detected pitch to 2 decimal places
+
        const oldPitch = this.state.pitch;
 
        if (oldPitch !== pitch ){
@@ -61,13 +63,6 @@ class Analyzer extends Component {
 
   }
 
-  round(pitch, numDigits) {
-    if(pitch){
-      return Math.round(pitch*10**numDigits)/(10**numDigits);
-    }else{
-      return null
-    }
-  }
 
   render(){
     if (this.state.pitch) {
