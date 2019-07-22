@@ -16,18 +16,18 @@ class Game extends Component {
       promptedNoteFreq: 'loading',
 
       userPlayingPitch: null, //number, Hz
-      // noteMatched: false,
-      startTime: null,
+
+      // startTime: null,
       targetTime: null,
-      targetTimeReached: false,
+      // targetTimeReached: false,
 
       infoShown: false,
 
       availableNotes: notes
     }
     this.toggleInfoShown = this.toggleInfoShown.bind(this);
-    this.increaseSkippedCountCallback = props.increaseSkippedCountCallback.bind(this);
-    this.increaseNotesPlayedCorrectlyCallback = props.increaseNotesPlayedCorrectlyCallback.bind(this);
+    // this.increaseSkippedCountCallback = props.increaseSkippedCountCallback.bind(this);
+    // this.increaseNotesPlayedCorrectlyCallback = props.increaseNotesPlayedCorrectlyCallback.bind(this);
   }
 
   toggleInfoShown () {
@@ -87,13 +87,19 @@ class Game extends Component {
 
   getuserPlayingPitch = (pitch) => {
     const oldPitch = this.state.userPlayingPitch;
-
+    console.log(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
     if (oldPitch !== pitch ){
       this.setState({userPlayingPitch: pitch}, ()=>{console.log(`pitch changed to: ${pitch}`)});
       this.handlePitchChange(pitch);
-    } else {
-      // check has timer been reached; if so sparkles and if not do nothing
-      // also check if pitch is now null
+    } else { // C pitch has not changed
+      if (this.state.targetTime && this.checkTargetTimeReached()) { // C1
+        this.generateSparkles();
+        console.log('sparkles in C1');
+      } else { // C2
+        if (pitch) {
+          console.log(`Keep going, you're SO CONSISTENT!`);
+        }
+      }
     };
   };
 
@@ -116,7 +122,7 @@ class Game extends Component {
 
       if (timerStarted) { // A1
         if (targetTimeReached) { // A1a
-          console.log('* ... sparkles ... * success');
+          this.generateSparkles();
         } else { // A1b
           console.log('keep playing');
         }
@@ -141,6 +147,10 @@ class Game extends Component {
 
   };
 
+  generateSparkles = () => {
+    console.log('* ... sparkles ... * success');
+  };
+
   handleSuccessfulRound = () => {
     this.props.increaseNotesPlayedCorrectlyCallback();
     this.setNewNote();
@@ -148,32 +158,12 @@ class Game extends Component {
     console.log(`You got a point! Here's a new note.`);
   }
 
-  // setNoteMatchedTrue = () => {
-  //   this.setState({noteMatched: true},()=>{console.log(this.state.noteMatched)});
-  // };
-  //
-  // setNoteMatchedFalse = () => {
-  //   this.setState({noteMatched: false},()=>{console.log(this.state.noteMatched)});
-  // };
-
   checkTargetTimeReached = () => {
     const currentTime = new Date().getTime();
     const targetTime = this.state.targetTime;
 
+    // if (!targetTime) return false;
     if (currentTime >= targetTime) {return true} else {return false};
-
-    // if (!this.state.targetTime) { // no timer started
-    //   this.setTargetTime();
-    //   return false;
-    // } else if (this.state.targetTime && (currentTime < targetTime)) { // targetTime not reached
-    //   console.log('Hold that note!');
-    //   return false;
-    // } else if (this.state.targetTime && (currentTime > targetTime)) { // targetTime reached
-    //   console.log('* ... sparkles ... *');
-    //   return true;
-    // } else {
-    //   console.log('@ @ @ @ @ -- HELP! THIS STATE SHOULD NOT BE REACHABLE! -- @ @ @ @ @ ');
-    // }
 
   };
 
@@ -195,7 +185,7 @@ class Game extends Component {
   }
 
   skipNote = () => {
-    this.increaseSkippedCountCallback();
+    this.props.increaseSkippedCountCallback();
     this.setNewNote();
   }
 

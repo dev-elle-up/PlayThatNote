@@ -42,7 +42,8 @@ class Analyzer extends Component {
 
 
      processor.onaudioprocess = function(audioBuffer) {
-       const pitch = detectPitch(audioBuffer.inputBuffer.getChannelData(0));
+       const pitch = this.round(detectPitch(audioBuffer.inputBuffer.getChannelData(0)), 2); // round detected pitch to 2 decimal places
+
        // get a single channel of sound from the AudioBuffer object
        // const pitch = detectPitch(float32Array);
        // each time the buffer is added to, the pitch is detected from the input
@@ -53,9 +54,19 @@ class Analyzer extends Component {
          this.setState({ pitch },()=>{
            this.props.getuserPlayingPitchCallback(pitch)
          });
+       } else {
+         this.props.getuserPlayingPitchCallback(pitch);
        }
       }.bind(this)
 
+  }
+
+  round(pitch, numDigits) {
+    if(pitch){
+      return Math.round(pitch*10**numDigits)/(10**numDigits);
+    }else{
+      return null
+    }
   }
 
   render(){
@@ -63,7 +74,7 @@ class Analyzer extends Component {
       return( <div className="tag is-primary is-medium">{this.state.pitch} Hz</div> );
     }
 
-    return(<div className="tag is-warning is-medium">No pitch detected</div>)
+    return(<div className="tag is-warning is-medium">listening...</div>)
   }
 
 }
