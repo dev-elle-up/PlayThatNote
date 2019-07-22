@@ -4,6 +4,7 @@ import Start from './components/Start.js';
 import Game from './components/Game.js';
 import Summary from './components/Summary.js';
 // import Time from 'time'; // CHECK ON THIS!!
+import {devLogger} from './modules/helperFunctions.js';
 
 import 'bulma/css/bulma.min.css';
 import './App.css';
@@ -21,7 +22,7 @@ class App extends Component {
       timeStopped: null,
       timePlayed: '',
     }
-    console.log(process.env.NODE_ENV);
+    devLogger('NODE_ENV: ', process.env.NODE_ENV); // ok to delete
   }
 
   startGame = () => {

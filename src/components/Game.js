@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Analyzer from './Analyzer.js';
 import { notes } from './NoteDetails.js';
 import Info from './Info.js';
+import {devLogger} from '../modules/helperFunctions.js';
 
 class Game extends Component {
   constructor(props){
@@ -48,7 +49,7 @@ class Game extends Component {
   //     note => {
   //       return note;
   //   });
-  //   this.setState({ availableNotes }, () => {console.log(this.state.availableNotes, this.state.availableNotes.length);})
+  //   this.setState({ availableNotes }, () => {devLogger(this.state.availableNotes, this.state.availableNotes.length);})
   // };
 
 
@@ -81,9 +82,9 @@ class Game extends Component {
 
     this.props.increaseNotesTriedCallback();
 
-    console.log(`*** NEW NOTE *** `);
-    if (lastNote) {console.log(`lastNote: ${lastNote.noteNum}`);}
-    if (newNote) {console.log(`newNote: ${newNote.noteNum}`);}
+    devLogger(`*** NEW NOTE *** `);
+    if (lastNote) {devLogger(`lastNote: ${lastNote.noteNum}`);}
+    if (newNote) {devLogger(`newNote: ${newNote.noteNum}`);}
   };
 
   getRandomIntInclusive(min, max) {
@@ -97,7 +98,7 @@ class Game extends Component {
   // *** GET USER PITCH ***
   getuserPlayingPitch = (pitch) => {
     const oldPitch = this.state.userPlayingPitch;
-    console.log(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
+    devLogger(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
     this.checkPitchChange(oldPitch, pitch);
   };
 
@@ -105,7 +106,7 @@ class Game extends Component {
   // *** GAME LOGIC ***
   checkPitchChange(oldPitch, pitch) {
     if (oldPitch !== pitch ){ // pitch has changed, A or B
-      this.setState({userPlayingPitch: pitch}, ()=>{console.log(`pitch changed to: ${pitch}`)});
+      this.setState({userPlayingPitch: pitch}, ()=>{devLogger(`pitch changed to: ${pitch}`)});
       this.handlePitchChange(pitch);
     } else { // pitch has not changed, C
       this.handlePitchNoChange(pitch);
@@ -130,7 +131,7 @@ class Game extends Component {
         if (targetTimeReached) { // A1a
           this.generateSparkles();
         } else { // A1b
-          console.log('keep playing');
+          devLogger('keep playing');
         }
       } else { // A2
           this.setTargetTime();
@@ -142,7 +143,7 @@ class Game extends Component {
           this.handleSuccessfulRound();
         } else { // B1b
           this.voidTargetTime();
-          console.log('TIMER VOIDED (B1b)');
+          devLogger('TIMER VOIDED (B1b)');
         }
       } else { // B2
         // do nothing
@@ -155,10 +156,10 @@ class Game extends Component {
   handlePitchNoChange(pitch) { // C
     if (this.state.targetTime && this.checkTargetTimeReached()) { // C1
       this.generateSparkles();
-      console.log('sparkles in C1');
+      devLogger('sparkles in C1');
     } else { // C2
       if (pitch) {
-        console.log(`Keep going, you're SO CONSISTENT!`);
+        devLogger(`Keep going, you're SO CONSISTENT!`);
       }
     }
   };
@@ -166,14 +167,14 @@ class Game extends Component {
 
   // GAME LOGIC HELPERS
   generateSparkles = () => {
-    console.log('* ... sparkles ... * success');
+    devLogger('* ... sparkles ... * success');
   };
 
   handleSuccessfulRound = () => {
     this.props.increaseNotesPlayedCorrectlyCallback();
     this.setNewNote();
     this.voidTargetTime();
-    console.log(`You got a point! Here's a new note.`);
+    devLogger(`You got a point! Here's a new note.`);
   }
 
   checkTargetTimeReached = () => {
@@ -189,12 +190,12 @@ class Game extends Component {
     const newTargetTime = now + sustainTimeMilliseconds ;
     this.setState(
       {targetTime: newTargetTime},
-      () => {console.log(`in setTargetTime, now: ${now}, targetTime: ${this.state.targetTime}`);}
+      () => {devLogger(`in setTargetTime, now: ${now}, targetTime: ${this.state.targetTime}`);}
     );
   };
 
   voidTargetTime = () => {
-    this.setState({targetTime: null}, () => {console.log(`in voidTargetTime, targetTime: ${this.state.targetTime}`);});
+    this.setState({targetTime: null}, () => {devLogger(`in voidTargetTime, targetTime: ${this.state.targetTime}`);});
   }
 
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Pitchfinder from 'pitchfinder';
+// import {devLogger} from '../modules/helperFunctions.js';
 // import a component if you want to return it in your render
 
 class Analyzer extends Component {
@@ -36,9 +37,9 @@ class Analyzer extends Component {
      this.setState({ processor }); // the ScriptProcessorNode is now available in state as processor
      source.connect(processor); // route the output of the source to the input of the processor; userAudioFromMic -->> ScriptProcessorNode
      processor.connect(context.destination); // routes the output of the processor node to the destination node; required
-     // console.log('processor', processor);
+     // devLogger('processor', processor);
      const detectPitch = Pitchfinder.AMDF({minFrequency: 60});
-     // console.log('Pitchfinder.AMDF', Pitchfinder.AMDF);
+     // devLogger('Pitchfinder.AMDF', Pitchfinder.AMDF);
 
 
      processor.onaudioprocess = function(audioBuffer) {
