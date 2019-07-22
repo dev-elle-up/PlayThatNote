@@ -16,27 +16,30 @@ class Game extends Component {
       promptedNoteFreq: 'loading',
 
       userPlayingPitch: null, //number, Hz
-
-      // startTime: null,
       targetTime: null,
-      // targetTimeReached: false,
 
       infoShown: false,
-
       availableNotes: notes
     }
     this.toggleInfoShown = this.toggleInfoShown.bind(this);
-    // this.increaseSkippedCountCallback = props.increaseSkippedCountCallback.bind(this);
-    // this.increaseNotesPlayedCorrectlyCallback = props.increaseNotesPlayedCorrectlyCallback.bind(this);
   }
 
-  toggleInfoShown () {
-    this.setState({ infoShown: !this.state.infoShown });
-  }
 
   componentDidMount() {
       this.setNewNote();
     }
+
+
+  // *** GAME BUTTONS ***
+  toggleInfoShown () {
+    this.setState({ infoShown: !this.state.infoShown });
+  }
+
+  skipNote = () => {
+    this.props.increaseSkippedCountCallback();
+    this.setNewNote();
+  }
+
 
 // USE THIS WHEN ADDING FILTERS (DIFFICULTY LEVEL, SINGLE STRING, WHOLE NOTES ONLY, ETC)
   // getAvailableNotes() {
@@ -48,21 +51,19 @@ class Game extends Component {
   //   this.setState({ availableNotes }, () => {console.log(this.state.availableNotes, this.state.availableNotes.length);})
   // };
 
+
+  // *** NEW NOTE GENERATOR ***
   setNewNote = () => {
     let lastNote = this.state.promptedNote;
     let availableNotes = this.state.availableNotes;
     let newNote = lastNote;
-    console.log(`**** numOfNotesAvailable: ${availableNotes.length} ****`);
-    console.log(`lastNote: ${lastNote}, newNote: ${newNote}`);
-
 
     while(newNote === lastNote) {
       const newNoteIndex = this.getRandomIntInclusive(0, availableNotes.length-1);
       newNote = availableNotes[newNoteIndex];
-      console.log(`Random new noteIndex in while loop: ${newNoteIndex}`);
     }
+
     this.setState({lastPromptedNote: lastNote, promptedNote: newNote});
-    console.log(`new noteNum: ${newNote}, lastNoteNum: ${lastNote}`);
 
 
     const difficultyModifier = 0.7
@@ -71,37 +72,41 @@ class Game extends Component {
     let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*difficultyModifier)
 
     this.setState({
-      // promptedNoteLetter: newNote.noteName,
-      promptedNoteLetter: newNote.noteNameOctave, // CHANGE THIS ONCE GRAPHPICS ARE IN!
+      promptedNoteLetter: newNote.noteName,
+      // promptedNoteLetter: newNote.noteNameOctave, // @@@@@ DELETE THIS ONCE GRAPHPICS ARE IN! @@@@@
       promptedNoteFreq: newNote.frequency,
       targetFreqRangeLower: targetFreqRangeLower,
       targetFreqRangeUpper: targetFreqRangeUpper
     });
+
+    console.log(`*** NEW NOTE *** `);
+    if (lastNote) {console.log(`lastNote: ${lastNote.noteNum}`);}
+    if (newNote) {console.log(`newNote: ${newNote.noteNum}`);}
   };
 
   getRandomIntInclusive(min, max) {
       const randInt = Math.floor(Math.random() * (max - min + 1)) + min;
-      console.log('randInt in getRandomIntInclusive: ', randInt);
       return randInt;
   }
 
+
+  // *** GET USER PITCH ***
   getuserPlayingPitch = (pitch) => {
     const oldPitch = this.state.userPlayingPitch;
     console.log(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
-    if (oldPitch !== pitch ){
+    this.checkPitchChange(oldPitch, pitch);
+  };
+
+
+  // *** GAME LOGIC ***
+  checkPitchChange(oldPitch, pitch) {
+    if (oldPitch !== pitch ){ // pitch has changed, A or B
       this.setState({userPlayingPitch: pitch}, ()=>{console.log(`pitch changed to: ${pitch}`)});
       this.handlePitchChange(pitch);
-    } else { // C pitch has not changed
-      if (this.state.targetTime && this.checkTargetTimeReached()) { // C1
-        this.generateSparkles();
-        console.log('sparkles in C1');
-      } else { // C2
-        if (pitch) {
-          console.log(`Keep going, you're SO CONSISTENT!`);
-        }
-      }
+    } else { // pitch has not changed, C
+      this.handlePitchNoChange(pitch);
     };
-  };
+  }
 
   checkPitchInRange = (pitch) => {
     if (pitch <= this.state.targetFreqRangeUpper && pitch >= this.state.targetFreqRangeLower) {return true} else {return false};
@@ -113,13 +118,10 @@ class Game extends Component {
 
   handlePitchChange = (pitch) => {
     let pitchInRange = this.checkPitchInRange(pitch); // true or false
-    // if (pitchInRange){this.setNoteMatchedTrue()};
     let timerStarted = this.checkTimerStarted();
     let targetTimeReached = this.checkTargetTimeReached();
 
     if (pitchInRange) { // A
-      // this.setNoteMatchedTrue();
-
       if (timerStarted) { // A1
         if (targetTimeReached) { // A1a
           this.generateSparkles();
@@ -131,7 +133,6 @@ class Game extends Component {
       }
 
     } else { // B note is out of target range ("wrong") or null
-      // this.setNoteMatchedFalse();
       if (timerStarted) { // B1
         if (targetTimeReached) { // B1a note changed to null or wrong note, timer has finished
           this.handleSuccessfulRound();
@@ -147,6 +148,19 @@ class Game extends Component {
 
   };
 
+  handlePitchNoChange(pitch) { // C
+    if (this.state.targetTime && this.checkTargetTimeReached()) { // C1
+      this.generateSparkles();
+      console.log('sparkles in C1');
+    } else { // C2
+      if (pitch) {
+        console.log(`Keep going, you're SO CONSISTENT!`);
+      }
+    }
+  };
+
+
+  // GAME LOGIC HELPERS
   generateSparkles = () => {
     console.log('* ... sparkles ... * success');
   };
@@ -162,16 +176,17 @@ class Game extends Component {
     const currentTime = new Date().getTime();
     const targetTime = this.state.targetTime;
 
-    // if (!targetTime) return false;
     if (currentTime >= targetTime) {return true} else {return false};
-
   };
 
   setTargetTime = () => {
     const sustainTimeMilliseconds = 1000;
     const now = new Date().getTime();
     const newTargetTime = now + sustainTimeMilliseconds ;
-    this.setState({targetTime: newTargetTime}, () => {console.log(`in setTargetTime, now: ${now}, targetTime: ${this.state.targetTime}`);});
+    this.setState(
+      {targetTime: newTargetTime},
+      () => {console.log(`in setTargetTime, now: ${now}, targetTime: ${this.state.targetTime}`);}
+    );
   };
 
   voidTargetTime = () => {
@@ -179,15 +194,11 @@ class Game extends Component {
   }
 
 
-
-  componentWillUnmount() { // NEED THIS?
+  // WRAP UP
+  componentWillUnmount() { // @@@@@ NEED THIS? @@@@@
     if (this.state.processor){this.state.processor.disconnect()};
   }
 
-  skipNote = () => {
-    this.props.increaseSkippedCountCallback();
-    this.setNewNote();
-  }
 
   debugHelper = () => {
     this.setNewNote();

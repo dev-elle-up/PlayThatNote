@@ -11,7 +11,6 @@ class Start extends Component {
     this.state={
       infoShown: false
     };
-    // console.log('info shown', this.state.infoShown);
     this.toggleInfoShown = this.toggleInfoShown.bind(this);
   }
 
