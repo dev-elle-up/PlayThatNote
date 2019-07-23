@@ -17,6 +17,7 @@ class Game extends Component {
       promptedNoteFreq: 'loading',
 
       userPlayingPitch: null, //number, Hz
+      userPlayingNote: null, // noteNameOctave
       targetTime: null,
 
       infoShown: false,
@@ -101,31 +102,27 @@ class Game extends Component {
     // devLogger(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
     this.checkPitchChange(oldPitch, pitch);
     let userNote = this.findUserNoteByPitch(pitch);
-    if (userNote) {devLogger(`userNote: ${userNote.noteNameOctave}`)};
+    if (userNote) this.setState(
+      {userPlayingNote: userNote.noteNameOctave},
+      devLogger(`userNote: ${userNote.noteNameOctave}`));
   };
 
 
   // *** FIND NOTE THAT MATCHES USER PITCH ***
-  // findUserNote = (pitch) => {
-  //   let result = this.state.availableNotes.filter(noteObject => pitch > 6 && pitch < );
-  // }
-
   findUserNoteByPitch(pitch) {
     const availableNotes = this.state.availableNotes;
     const thisPitch = pitch;
-    // devLogger(`lowerBound: ${targetFreqRangeLower}, upperBound: ${targetFreqRangeUpper}`);
     for (var i = 1; i < availableNotes.length-1; i++) {
       let thisNoteFreqRangeLower = (availableNotes[i].frequency-(availableNotes[i].frequency*0.02806))
       let thisNoteFreqRangeUpper = (availableNotes[i].frequency+(availableNotes[i].frequency*0.02973))
       // devLogger(`%%%% range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`)
         if ((thisPitch > thisNoteFreqRangeLower) && (thisPitch < thisNoteFreqRangeUpper)) {
-
-          devLogger(`&&&&&&&&&&&& targetFreq: ${this.state.promptedNoteFreq}, range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`);
+          // devLogger(`&&&&&&&&&&&& targetFreq: ${this.state.promptedNoteFreq}, range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`);
             return availableNotes[i];
         }
     }
     return null;
-}
+  }
 
 
 
@@ -250,6 +247,8 @@ class Game extends Component {
         <p>Play this note:</p>
         <p>{this.state.promptedNoteLetter}</p>
         <p>{this.state.promptedNoteFreq}</p>
+        <p>You are playing:</p>
+        <p>{this.state.userPlayingNote}</p>
 
         <Analyzer
           getuserPlayingPitchCallback={this.getuserPlayingPitch}
