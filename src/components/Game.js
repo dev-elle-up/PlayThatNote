@@ -75,7 +75,7 @@ class Game extends Component {
     this.setState({
       promptedNoteLetter: newNote.noteName,
       // promptedNoteLetter: newNote.noteNameOctave, // @@@@@ DELETE THIS ONCE GRAPHPICS ARE IN! @@@@@
-      promptedNoteFreq: newNote.frequency,
+      promptedNoteFreq: newNote.frequency.toFixed(2),
       targetFreqRangeLower: targetFreqRangeLower,
       targetFreqRangeUpper: targetFreqRangeUpper
     });
