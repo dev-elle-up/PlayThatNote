@@ -67,10 +67,10 @@ class Game extends Component {
     this.setState({lastPromptedNote: lastNote, promptedNote: newNote});
 
 
-    const difficultyModifier = 0.7
+
     const targetFreq = newNote.frequency
-    let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806)*difficultyModifier)
-    let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*difficultyModifier)
+    let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806)*this.props.tuningDifficultyModifier)
+    let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*this.props.tuningDifficultyModifier)
 
     this.setState({
       promptedNoteLetter: newNote.noteName,
@@ -83,8 +83,8 @@ class Game extends Component {
     this.props.increaseNotesTriedCallback();
 
     devLogger(`*** NEW NOTE *** `);
-    if (lastNote) {devLogger(`lastNote: ${lastNote.noteNum}`);}
-    if (newNote) {devLogger(`newNote: ${newNote.noteNum}`);}
+    if (lastNote) {devLogger(`lastNote: ${lastNote.noteNameOctave}`);}
+    if (newNote) {devLogger(`newNote: ${newNote.noteNameOctave}`);}
   };
 
   getRandomIntInclusive(min, max) {
@@ -98,10 +98,10 @@ class Game extends Component {
   // *** GET USER PITCH ***
   getuserPlayingPitch = (pitch) => {
     const oldPitch = this.state.userPlayingPitch;
-    devLogger(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
+    // devLogger(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
     this.checkPitchChange(oldPitch, pitch);
-    let userNote= this.findUserNote(this.state.availableNotes, this.state.promptedNoteFreq, pitch);
-    devLogger(`userNote: ${userNote}`);
+    let userNote = this.findUserNoteByPitch(pitch);
+    if (userNote) {devLogger(`userNote: ${userNote.noteNameOctave}`)};
   };
 
 
@@ -110,9 +110,17 @@ class Game extends Component {
   //   let result = this.state.availableNotes.filter(noteObject => pitch > 6 && pitch < );
   // }
 
-  findUserNoteByPitch(availableNotes, frequency, pitch) {
-    for (var i = 0; i < availableNotes.length; i++) {
-        if (pitch > availableNotes[i-1][frequency] && pitch < availableNotes[i+1]) {
+  findUserNoteByPitch(pitch) {
+    const availableNotes = this.state.availableNotes;
+    const thisPitch = pitch;
+    // devLogger(`lowerBound: ${targetFreqRangeLower}, upperBound: ${targetFreqRangeUpper}`);
+    for (var i = 1; i < availableNotes.length-1; i++) {
+      let thisNoteFreqRangeLower = (availableNotes[i].frequency-(availableNotes[i].frequency*0.02806))
+      let thisNoteFreqRangeUpper = (availableNotes[i].frequency+(availableNotes[i].frequency*0.02973))
+      // devLogger(`%%%% range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`)
+        if ((thisPitch > thisNoteFreqRangeLower) && (thisPitch < thisNoteFreqRangeUpper)) {
+
+          devLogger(`&&&&&&&&&&&& targetFreq: ${this.state.promptedNoteFreq}, range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`);
             return availableNotes[i];
         }
     }
@@ -149,7 +157,7 @@ class Game extends Component {
         if (targetTimeReached) { // A1a
           this.generateSparkles();
         } else { // A1b
-          devLogger('keep playing');
+          // devLogger('keep playing');
         }
       } else { // A2
           this.setTargetTime();
@@ -161,7 +169,7 @@ class Game extends Component {
           this.handleSuccessfulRound();
         } else { // B1b
           this.voidTargetTime();
-          devLogger('TIMER VOIDED (B1b)');
+          // devLogger('TIMER VOIDED (B1b)');
         }
       } else { // B2
         // do nothing
@@ -174,10 +182,10 @@ class Game extends Component {
   handlePitchNoChange(pitch) { // C
     if (this.state.targetTime && this.checkTargetTimeReached()) { // C1
       this.generateSparkles();
-      devLogger('sparkles in C1');
+      // devLogger('sparkles in C1');
     } else { // C2
       if (pitch) {
-        devLogger(`Keep going, you're SO CONSISTENT!`);
+        // devLogger(`Keep going, you're SO CONSISTENT!`);
       }
     }
   };
@@ -185,14 +193,14 @@ class Game extends Component {
 
   // GAME LOGIC HELPERS
   generateSparkles = () => {
-    devLogger('* ... sparkles ... * success');
+    // devLogger('* ... sparkles ... * success');
   };
 
   handleSuccessfulRound = () => {
     this.props.increaseNotesPlayedCorrectlyCallback();
     this.setNewNote();
     this.voidTargetTime();
-    devLogger(`You got a point! Here's a new note.`);
+    // devLogger(`You got a point! Here's a new note.`);
   }
 
   checkTargetTimeReached = () => {
@@ -259,7 +267,8 @@ Game.propTypes = {
   finishGameCallback: PropTypes.func.isRequired,
   increaseSkippedCountCallback: PropTypes.func.isRequired,
   increaseNotesPlayedCorrectlyCallback: PropTypes.func.isRequired,
-  increaseNotesTriedCallback: PropTypes.func.isRequired
+  increaseNotesTriedCallback: PropTypes.func.isRequired,
+  tuningDifficultyModifier: PropTypes.number.isRequired
 };
 
 export default Game;
