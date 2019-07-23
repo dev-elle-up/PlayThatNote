@@ -114,11 +114,11 @@ class Game extends Component {
   }
 
   checkPitchInRange = (pitch) => {
-    if (pitch <= this.state.targetFreqRangeUpper && pitch >= this.state.targetFreqRangeLower) {return true} else {return false};
+    return (pitch <= this.state.targetFreqRangeUpper && pitch >= this.state.targetFreqRangeLower);
   };
 
   checkTimerStarted = () => {
-    if (this.state.targetTime) {return true} else {return false};
+    return (this.state.targetTime);
   }
 
   handlePitchChange = (pitch) => {
@@ -181,7 +181,7 @@ class Game extends Component {
     const currentTime = new Date().getTime();
     const targetTime = this.state.targetTime;
 
-    if (currentTime >= targetTime) {return true} else {return false};
+    return (currentTime >= targetTime);
   };
 
   setTargetTime = () => {

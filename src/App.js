@@ -22,7 +22,6 @@ class App extends Component {
       timeStopped: null,
       timePlayed: '',
     }
-    devLogger('NODE_ENV: ', process.env.NODE_ENV); // ok to delete
   }
 
   startGame = () => {

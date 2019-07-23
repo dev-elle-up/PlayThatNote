@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Info from './Info';
 
-// import {devLogger} from '../modules/helperFunctions.js';
-
 import 'bulma/css/bulma.min.css';
 import '../App.css';
 
