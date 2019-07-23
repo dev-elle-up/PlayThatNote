@@ -58,7 +58,7 @@ export const notes = [
 {
     noteNum: 23,
     noteName: "G",
-    noteNameOctave: "C2",
+    noteNameOctave: "G2",
     isAccidental: false,
     frequency: 97.99886,
     string: "G"
