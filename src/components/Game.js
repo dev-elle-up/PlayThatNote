@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Analyzer from './Analyzer.js';
 import { notes } from './NoteDetails.js';
 import Info from './Info.js';
-import {devLogger} from '../modules/helperFunctions.js';
+import { devLogger } from '../modules/helperFunctions.js';
 
 class Game extends Component {
   constructor(props){
