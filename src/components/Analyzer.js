@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Pitchfinder from 'pitchfinder';
-// import {devLogger} from '../modules/helperFunctions.js';
 // import a component if you want to return it in your render
 
 class Analyzer extends Component {

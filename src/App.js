@@ -4,7 +4,7 @@ import Start from './components/Start.js';
 import Game from './components/Game.js';
 import Summary from './components/Summary.js';
 // import Time from 'time'; // CHECK ON THIS!!
-import {devLogger} from './modules/helperFunctions.js';
+// import { devLogger } from './modules/helperFunctions.js';
 
 import 'bulma/css/bulma.min.css';
 import './App.css';
@@ -30,6 +30,7 @@ class App extends Component {
       gameState: 'Game Page',
       notesPlayedCorrectly: 0,
       notesSkipped: 0,
+      notesTried: -1,
       timeStopped: null,
       timePlayed: '',
     })
