@@ -100,7 +100,25 @@ class Game extends Component {
     const oldPitch = this.state.userPlayingPitch;
     devLogger(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
     this.checkPitchChange(oldPitch, pitch);
+    let userNote= this.findUserNote(this.state.availableNotes, this.state.promptedNoteFreq, pitch);
+    devLogger(`userNote: ${userNote}`);
   };
+
+
+  // *** FIND NOTE THAT MATCHES USER PITCH ***
+  // findUserNote = (pitch) => {
+  //   let result = this.state.availableNotes.filter(noteObject => pitch > 6 && pitch < );
+  // }
+
+  findUserNoteByPitch(availableNotes, frequency, pitch) {
+    for (var i = 0; i < availableNotes.length; i++) {
+        if (pitch > availableNotes[i-1][frequency] && pitch < availableNotes[i+1]) {
+            return availableNotes[i];
+        }
+    }
+    return null;
+}
+
 
 
   // *** GAME LOGIC ***
