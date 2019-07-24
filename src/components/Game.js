@@ -101,29 +101,11 @@ class Game extends Component {
     const oldPitch = this.state.userPlayingPitch;
     // devLogger(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
     this.checkPitchChange(oldPitch, pitch);
-    let userNote = this.findUserNoteByPitch(pitch);
-    if (userNote) this.setState(
-      {userPlayingNote: userNote.noteNameOctave},
-      devLogger(`userNote: ${userNote.noteNameOctave}`));
+    // let userNote = this.findUserNoteByPitch(pitch);
+    // if (userNote) this.setState(
+    //   {userPlayingNote: userNote.noteNameOctave},
+    //   devLogger(`userNote: ${userNote.noteNameOctave}`));
   };
-
-
-  // *** FIND NOTE THAT MATCHES USER PITCH ***
-  findUserNoteByPitch(pitch) {
-    const availableNotes = this.state.availableNotes;
-    const thisPitch = pitch;
-    for (var i = 1; i < availableNotes.length-1; i++) {
-      let thisNoteFreqRangeLower = (availableNotes[i].frequency-(availableNotes[i].frequency*0.02806))
-      let thisNoteFreqRangeUpper = (availableNotes[i].frequency+(availableNotes[i].frequency*0.02973))
-      // devLogger(`%%%% range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`)
-        if ((thisPitch > thisNoteFreqRangeLower) && (thisPitch < thisNoteFreqRangeUpper)) {
-          // devLogger(`&&&&&&&&&&&& targetFreq: ${this.state.promptedNoteFreq}, range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`);
-            return availableNotes[i];
-        }
-    }
-    return null;
-  }
-
 
 
   // *** GAME LOGIC ***
@@ -131,6 +113,7 @@ class Game extends Component {
     if (oldPitch !== pitch ){ // pitch has changed, A or B
       this.setState({userPlayingPitch: pitch}, ()=>{devLogger(`pitch changed to: ${pitch}`)});
       this.handlePitchChange(pitch);
+      this.findUserNoteByPitch(pitch);
     } else { // pitch has not changed, C
       this.handlePitchNoChange(pitch);
     };
@@ -220,6 +203,42 @@ class Game extends Component {
   voidTargetTime = () => {
     this.setState({targetTime: null}, () => {devLogger(`in voidTargetTime, targetTime: ${this.state.targetTime}`);});
   }
+
+  // *** FIND NOTE THAT MATCHES USER PITCH ***
+  findUserNoteByPitch(pitch) {
+    let userNote;
+    const availableNotes = this.state.availableNotes;
+    const thisPitch = pitch;
+    // let i = 0;
+
+    if (!pitch) {this.setState({userPlayingNote: null})};
+    for (let i = 0; i < availableNotes.length; i++) {
+    // while (!userNote) {
+      // if (i === 0) {
+      //   let thisNoteFreqRangeLower = (availableNotes[i].frequency-(availableNotes[i].frequency*0.02806))
+      //   let thisNoteFreqRangeUpper = (availableNotes[i].frequency+(availableNotes[i].frequency*0.02973))
+      // }
+      //
+      // if (i === availableNotes.length-1) {
+      //
+      // }
+
+      let thisNoteFreqRangeLower = (availableNotes[i].frequency-(availableNotes[i].frequency*0.02806))
+      let thisNoteFreqRangeUpper = (availableNotes[i].frequency+(availableNotes[i].frequency*0.02973))
+      // devLogger(`%%%% range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`)
+
+      if ((thisPitch > thisNoteFreqRangeLower) && (thisPitch < thisNoteFreqRangeUpper)) {
+        // devLogger(`&&&&&&&&&&&& targetFreq: ${this.state.promptedNoteFreq}, range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`);
+        userNote = availableNotes[i];
+      }
+      // return null;
+      if (userNote) this.setState(
+        {userPlayingNote: userNote.noteNameOctave},
+        devLogger(`userNote: ${userNote.noteNameOctave}`));
+      }
+      // i += 1;
+    };
+
 
 
   // WRAP UP
