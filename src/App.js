@@ -21,6 +21,8 @@ class App extends Component {
       timeStarted: null,
       timeStopped: null,
       timePlayed: '',
+
+      tuningDifficultyModifier: 0.7
     }
   }
 
@@ -90,6 +92,7 @@ class App extends Component {
               increaseSkippedCountCallback={this.increaseSkippedCount}
               increaseNotesPlayedCorrectlyCallback={this.increaseNotesPlayedCorrectly}
               increaseNotesTriedCallback={this.increaseNotesTried}
+              tuningDifficultyModifier={this.state.tuningDifficultyModifier}
             />}
 
             {this.state.gameState==='Summary Page' && <Summary

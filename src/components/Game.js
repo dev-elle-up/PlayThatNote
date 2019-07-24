@@ -17,6 +17,7 @@ class Game extends Component {
       promptedNoteFreq: 'loading',
 
       userPlayingPitch: null, //number, Hz
+      userPlayingNote: null, // noteNameOctave
       targetTime: null,
 
       infoShown: false,
@@ -67,15 +68,15 @@ class Game extends Component {
     this.setState({lastPromptedNote: lastNote, promptedNote: newNote});
 
 
-    const difficultyModifier = 0.7
+
     const targetFreq = newNote.frequency
-    let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806)*difficultyModifier)
-    let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*difficultyModifier)
+    let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806)*this.props.tuningDifficultyModifier)
+    let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*this.props.tuningDifficultyModifier)
 
     this.setState({
       promptedNoteLetter: newNote.noteName,
       // promptedNoteLetter: newNote.noteNameOctave, // @@@@@ DELETE THIS ONCE GRAPHPICS ARE IN! @@@@@
-      promptedNoteFreq: newNote.frequency,
+      promptedNoteFreq: newNote.frequency.toFixed(2),
       targetFreqRangeLower: targetFreqRangeLower,
       targetFreqRangeUpper: targetFreqRangeUpper
     });
@@ -83,8 +84,8 @@ class Game extends Component {
     this.props.increaseNotesTriedCallback();
 
     devLogger(`*** NEW NOTE *** `);
-    if (lastNote) {devLogger(`lastNote: ${lastNote.noteNum}`);}
-    if (newNote) {devLogger(`newNote: ${newNote.noteNum}`);}
+    if (lastNote) {devLogger(`lastNote: ${lastNote.noteNameOctave}`);}
+    if (newNote) {devLogger(`newNote: ${newNote.noteNameOctave}`);}
   };
 
   getRandomIntInclusive(min, max) {
@@ -98,7 +99,7 @@ class Game extends Component {
   // *** GET USER PITCH ***
   getuserPlayingPitch = (pitch) => {
     const oldPitch = this.state.userPlayingPitch;
-    devLogger(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
+    // devLogger(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
     this.checkPitchChange(oldPitch, pitch);
   };
 
@@ -108,6 +109,7 @@ class Game extends Component {
     if (oldPitch !== pitch ){ // pitch has changed, A or B
       this.setState({userPlayingPitch: pitch}, ()=>{devLogger(`pitch changed to: ${pitch}`)});
       this.handlePitchChange(pitch);
+      this.findUserNoteByPitch(pitch);
     } else { // pitch has not changed, C
       this.handlePitchNoChange(pitch);
     };
@@ -131,7 +133,7 @@ class Game extends Component {
         if (targetTimeReached) { // A1a
           this.generateSparkles();
         } else { // A1b
-          devLogger('keep playing');
+          // devLogger('keep playing');
         }
       } else { // A2
           this.setTargetTime();
@@ -143,7 +145,7 @@ class Game extends Component {
           this.handleSuccessfulRound();
         } else { // B1b
           this.voidTargetTime();
-          devLogger('TIMER VOIDED (B1b)');
+          // devLogger('TIMER VOIDED (B1b)');
         }
       } else { // B2
         // do nothing
@@ -156,10 +158,10 @@ class Game extends Component {
   handlePitchNoChange(pitch) { // C
     if (this.state.targetTime && this.checkTargetTimeReached()) { // C1
       this.generateSparkles();
-      devLogger('sparkles in C1');
+      // devLogger('sparkles in C1');
     } else { // C2
       if (pitch) {
-        devLogger(`Keep going, you're SO CONSISTENT!`);
+        // devLogger(`Keep going, you're SO CONSISTENT!`);
       }
     }
   };
@@ -167,14 +169,14 @@ class Game extends Component {
 
   // GAME LOGIC HELPERS
   generateSparkles = () => {
-    devLogger('* ... sparkles ... * success');
+    // devLogger('* ... sparkles ... * success');
   };
 
   handleSuccessfulRound = () => {
     this.props.increaseNotesPlayedCorrectlyCallback();
     this.setNewNote();
     this.voidTargetTime();
-    devLogger(`You got a point! Here's a new note.`);
+    // devLogger(`You got a point! Here's a new note.`);
   }
 
   checkTargetTimeReached = () => {
@@ -197,6 +199,33 @@ class Game extends Component {
   voidTargetTime = () => {
     this.setState({targetTime: null}, () => {devLogger(`in voidTargetTime, targetTime: ${this.state.targetTime}`);});
   }
+
+  // *** FIND NOTE THAT MATCHES USER PITCH ***
+  findUserNoteByPitch(pitch) {
+    let userNote;
+    const availableNotes = this.state.availableNotes;
+    const thisPitch = pitch;
+    // let i = 0;
+
+    if (!pitch) {this.setState({userPlayingNote: null})};
+
+    for (let i = 0; i < availableNotes.length; i+=1) {
+    // while (!userNote) {
+      let thisNoteFreqRangeLower = (availableNotes[i].frequency-(availableNotes[i].frequency*0.02806))
+      let thisNoteFreqRangeUpper = (availableNotes[i].frequency+(availableNotes[i].frequency*0.02973))
+      // devLogger(`%%%% range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`)
+
+      if ((thisPitch > thisNoteFreqRangeLower) && (thisPitch < thisNoteFreqRangeUpper)) {
+        userNote = availableNotes[i];
+      }
+      // return null;
+      if (userNote) this.setState(
+        {userPlayingNote: userNote.noteNameOctave},
+        devLogger(`userNote: ${userNote.noteNameOctave}`));
+      }
+      // i += 1;
+    };
+
 
 
   // WRAP UP
@@ -224,6 +253,8 @@ class Game extends Component {
         <p>Play this note:</p>
         <p>{this.state.promptedNoteLetter}</p>
         <p>{this.state.promptedNoteFreq}</p>
+        <p>You are playing:</p>
+        <p>{this.state.userPlayingNote}</p>
 
         <Analyzer
           getuserPlayingPitchCallback={this.getuserPlayingPitch}
@@ -241,7 +272,8 @@ Game.propTypes = {
   finishGameCallback: PropTypes.func.isRequired,
   increaseSkippedCountCallback: PropTypes.func.isRequired,
   increaseNotesPlayedCorrectlyCallback: PropTypes.func.isRequired,
-  increaseNotesTriedCallback: PropTypes.func.isRequired
+  increaseNotesTriedCallback: PropTypes.func.isRequired,
+  tuningDifficultyModifier: PropTypes.number.isRequired
 };
 
 export default Game;
