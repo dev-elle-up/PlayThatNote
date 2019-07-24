@@ -101,10 +101,6 @@ class Game extends Component {
     const oldPitch = this.state.userPlayingPitch;
     // devLogger(`oldPitch: ${oldPitch}, newPitch: ${pitch}`);
     this.checkPitchChange(oldPitch, pitch);
-    // let userNote = this.findUserNoteByPitch(pitch);
-    // if (userNote) this.setState(
-    //   {userPlayingNote: userNote.noteNameOctave},
-    //   devLogger(`userNote: ${userNote.noteNameOctave}`));
   };
 
 
@@ -212,23 +208,14 @@ class Game extends Component {
     // let i = 0;
 
     if (!pitch) {this.setState({userPlayingNote: null})};
-    for (let i = 0; i < availableNotes.length; i++) {
-    // while (!userNote) {
-      // if (i === 0) {
-      //   let thisNoteFreqRangeLower = (availableNotes[i].frequency-(availableNotes[i].frequency*0.02806))
-      //   let thisNoteFreqRangeUpper = (availableNotes[i].frequency+(availableNotes[i].frequency*0.02973))
-      // }
-      //
-      // if (i === availableNotes.length-1) {
-      //
-      // }
 
+    for (let i = 0; i < availableNotes.length; i+=1) {
+    // while (!userNote) {
       let thisNoteFreqRangeLower = (availableNotes[i].frequency-(availableNotes[i].frequency*0.02806))
       let thisNoteFreqRangeUpper = (availableNotes[i].frequency+(availableNotes[i].frequency*0.02973))
       // devLogger(`%%%% range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`)
 
       if ((thisPitch > thisNoteFreqRangeLower) && (thisPitch < thisNoteFreqRangeUpper)) {
-        // devLogger(`&&&&&&&&&&&& targetFreq: ${this.state.promptedNoteFreq}, range: ${thisNoteFreqRangeLower} - ${thisNoteFreqRangeUpper}, pitch: ${thisPitch}`);
         userNote = availableNotes[i];
       }
       // return null;
