@@ -204,7 +204,7 @@ class Game extends Component {
   findUserNoteByPitch(pitch) {
     let userNote;
     const availableNotes = this.state.availableNotes;
-    const thisPitch = pitch;
+    const thisPitch = pitch; // this could be removed and use pitch below...?
     // let i = 0;
 
     if (!pitch) {this.setState({userPlayingNote: null})};

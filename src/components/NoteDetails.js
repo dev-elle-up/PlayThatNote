@@ -71,148 +71,148 @@ export const notes = [
   //   frequency: 103.8262,
   //   string: "G"
   // },
-  // {
-  //   noteNum: 25,
-  //   noteName: "A",
-  //   noteNameOctave: "A2",
-  //   isAccidental: false,
-  //   frequency: 110,
-  //   string: "G"
-  // },
-  // {
-  //   noteNum: 26,
-  //   noteName: "B-Flat", // can also be A-Sharp
-  //   noteNameOctave: "A#2",
-  //   isAccidental: true,
-  //   frequency: 116.5409,
-  //   string: "G"
-  // },
-  // {
-  //   noteNum: 27,
-  //   noteName: "B",
-  //   noteNameOctave: "B2",
-  //   isAccidental: false,
-  //   frequency: 123.4708,
-  //   string: "G"
-  // },
-  // {
-  //   noteNum: 28,
-  //   noteName: "C",
-  //   noteNameOctave: "C3",
-  //   isAccidental: false,
-  //   frequency: 130.8128,
-  //   string: "G"
-  // },
-  // //{
-  // //   noteNum: 29
-  // //   noteName: "C-Sharp",
-  // //   noteNameOctave: "C#3",
-  // //   isAccidental: true,
-  // //   frequency: 138.5913,
-  // //   string: "G"
-  // // },
-  // {
-  //   noteNum: 30,
-  //   noteName: "D",
-  //   noteNameOctave: "D3",
-  //   isAccidental: false,
-  //   frequency: 146.8324,
-  //   string: "D"
-  // },
-  // // {
-  // //   noteNum: 31,
-  // //   noteName: "E-Flat", // can also be D-Sharp
-  // //   noteNameOctave: "D#3",
-  // //   isAccidental: true,
-  // //   frequency: 155.5635,
-  // //   string: "D"
-  // // },
-  // {
-  //   noteNum: 32,
-  //   noteName: "E",
-  //   noteNameOctave: "E3",
-  //   isAccidental: false,
-  //   frequency: 164.8138,
-  //   string: "D"
-  // },
-  // {
-  //   noteNum: 33,
-  //   noteName: "F",
-  //   noteNameOctave: "F3",
-  //   isAccidental: false,
-  //   frequency: 174.6141,
-  //   string: "D"
-  // },
-  // {
-  //   noteNum: 34,
-  //   noteName: "F-Sharp",
-  //   noteNameOctave: "F#3",
-  //   isAccidental: true,
-  //   frequency: 184.9972,
-  //   string: "D"
-  // },
-  // {
-  //   noteNum: 35,
-  //   noteName: "G",
-  //   noteNameOctave: "G3",
-  //   isAccidental: false,
-  //   frequency: 195.9977,
-  //   string: "D"
-  // },
-  // //{ noteNum: 36,
-  // //   noteName: "G-Sharp", // can also be A-Flat
-  // //   noteNameOctave: "G#3",
-  // //   isAccidental: true,
-  // //   frequency: 207.6523,
-  // //   string: "D"
-  // // },
-  // {
-  //   noteNum: 37,
-  //   noteName: "A",
-  //   noteNameOctave: "A3",
-  //   isAccidental: false,
-  //   frequency: 220,
-  //   string: "A"
-  // },
-  // // { noteNum: 38,
-  // //   noteName: "A-Sharp",
-  // //   noteNameOctave: "A#3",
-  // //   isAccidental: true,
-  // //   frequency: 233.0819,
-  // //   string: "A"
-  // // },
-  // {
-  //   noteNum: 39,
-  //   noteName: "B",
-  //   noteNameOctave: "B3",
-  //   isAccidental: false,
-  //   frequency: 246.9417,
-  //   string: "A"
-  // },
-  // {
-  //   noteNum: 40,
-  //   noteName: "C",
-  //   noteNameOctave: "C4", // middle C
-  //   isAccidental: false,
-  //   frequency: 261.6256,
-  //   string: "A"
-  // },
-  // {
-  //   noteNum: 41,
+  {
+    noteNum: 25,
+    noteName: "A",
+    noteNameOctave: "A2",
+    isAccidental: false,
+    frequency: 110,
+    string: "G"
+  },
+  {
+    noteNum: 26,
+    noteName: "B-Flat", // can also be A-Sharp
+    noteNameOctave: "A#2",
+    isAccidental: true,
+    frequency: 116.5409,
+    string: "G"
+  },
+  {
+    noteNum: 27,
+    noteName: "B",
+    noteNameOctave: "B2",
+    isAccidental: false,
+    frequency: 123.4708,
+    string: "G"
+  },
+  {
+    noteNum: 28,
+    noteName: "C",
+    noteNameOctave: "C3",
+    isAccidental: false,
+    frequency: 130.8128,
+    string: "G"
+  },
+  //{
+  //   noteNum: 29
   //   noteName: "C-Sharp",
-  //   noteNameOctave: "C#4",
+  //   noteNameOctave: "C#3",
   //   isAccidental: true,
-  //   frequency: 277.1826,
+  //   frequency: 138.5913,
+  //   string: "G"
+  // },
+  {
+    noteNum: 30,
+    noteName: "D",
+    noteNameOctave: "D3",
+    isAccidental: false,
+    frequency: 146.8324,
+    string: "D"
+  },
+  // {
+  //   noteNum: 31,
+  //   noteName: "E-Flat", // can also be D-Sharp
+  //   noteNameOctave: "D#3",
+  //   isAccidental: true,
+  //   frequency: 155.5635,
+  //   string: "D"
+  // },
+  {
+    noteNum: 32,
+    noteName: "E",
+    noteNameOctave: "E3",
+    isAccidental: false,
+    frequency: 164.8138,
+    string: "D"
+  },
+  {
+    noteNum: 33,
+    noteName: "F",
+    noteNameOctave: "F3",
+    isAccidental: false,
+    frequency: 174.6141,
+    string: "D"
+  },
+  {
+    noteNum: 34,
+    noteName: "F-Sharp",
+    noteNameOctave: "F#3",
+    isAccidental: true,
+    frequency: 184.9972,
+    string: "D"
+  },
+  {
+    noteNum: 35,
+    noteName: "G",
+    noteNameOctave: "G3",
+    isAccidental: false,
+    frequency: 195.9977,
+    string: "D"
+  },
+  //{ noteNum: 36,
+  //   noteName: "G-Sharp", // can also be A-Flat
+  //   noteNameOctave: "G#3",
+  //   isAccidental: true,
+  //   frequency: 207.6523,
+  //   string: "D"
+  // },
+  {
+    noteNum: 37,
+    noteName: "A",
+    noteNameOctave: "A3",
+    isAccidental: false,
+    frequency: 220,
+    string: "A"
+  },
+  // { noteNum: 38,
+  //   noteName: "A-Sharp",
+  //   noteNameOctave: "A#3",
+  //   isAccidental: true,
+  //   frequency: 233.0819,
   //   string: "A"
   // },
-  // {
-  //   noteNum: 42,
-  //   noteName: "D",
-  //   noteNameOctave: "D4",
-  //   isAccidental: false,
-  //   frequency: 293.6648,
-  //   string: "A"
-  // }
+  {
+    noteNum: 39,
+    noteName: "B",
+    noteNameOctave: "B3",
+    isAccidental: false,
+    frequency: 246.9417,
+    string: "A"
+  },
+  {
+    noteNum: 40,
+    noteName: "C",
+    noteNameOctave: "C4", // middle C
+    isAccidental: false,
+    frequency: 261.6256,
+    string: "A"
+  },
+  {
+    noteNum: 41,
+    noteName: "C-Sharp",
+    noteNameOctave: "C#4",
+    isAccidental: true,
+    frequency: 277.1826,
+    string: "A"
+  },
+  {
+    noteNum: 42,
+    noteName: "D",
+    noteNameOctave: "D4",
+    isAccidental: false,
+    frequency: 293.6648,
+    string: "A"
+  }
 ]
 
 export default notes;
