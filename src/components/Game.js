@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Analyzer from './Analyzer.js';
+import MusicCanvas from './MusicCanvas.js'
 import { notes } from './NoteDetails.js';
 import Info from './Info.js';
 import { devLogger } from '../modules/helperFunctions.js';
@@ -19,6 +20,7 @@ class Game extends Component {
       userPlayingPitch: null, //number, Hz
       userPlayingNote: null, // noteNameOctave
       targetTime: null,
+      noteColorFeedback: null,
 
       infoShown: false,
       availableNotes: notes
@@ -256,13 +258,21 @@ class Game extends Component {
         <p>You are playing:</p>
         <p>{this.state.userPlayingNote}</p>
 
-        <Analyzer
+        < Analyzer
           getuserPlayingPitchCallback={this.getuserPlayingPitch}
           />
-          <div>
-            <button className="button" onClick={this.toggleInfoShown}>INFO</button>
-            {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
-          </div>
+
+        < MusicCanvas
+          currentUserNote={this.state.userPlayingNote}
+          currentPromptedNote={this.state.currentPromptedNote}
+          noteColorFeedback={this.state.noteColorFeedback}
+          />
+
+        <div>
+          <button className="button" onClick={this.toggleInfoShown}>INFO</button>
+          {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
+        </div>
+
       </section>
     );
   }

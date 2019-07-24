@@ -83,11 +83,11 @@ class App extends Component {
             <div className="container">
               <h1 className="title">Play That Note</h1>
 
-            {this.state.gameState==='Start Page' && <Start
+            {this.state.gameState==='Start Page' && < Start
               startGameCallback={this.startGame}
             />}
 
-            {this.state.gameState==='Game Page' && <Game
+            {this.state.gameState==='Game Page' && < Game
               finishGameCallback={this.finishGame}
               increaseSkippedCountCallback={this.increaseSkippedCount}
               increaseNotesPlayedCorrectlyCallback={this.increaseNotesPlayedCorrectly}
@@ -95,7 +95,7 @@ class App extends Component {
               tuningDifficultyModifier={this.state.tuningDifficultyModifier}
             />}
 
-            {this.state.gameState==='Summary Page' && <Summary
+            {this.state.gameState==='Summary Page' && < Summary
               notesPlayedCorrectly={this.state.notesPlayedCorrectly}
               notesSkipped={this.state.notesSkipped}
               notesTried={this.state.notesTried}
