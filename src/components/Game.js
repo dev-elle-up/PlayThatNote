@@ -244,7 +244,7 @@ class Game extends Component {
   render() {
 
     return(
-      <section>
+      <div class="is-paddingless is-marginless">
         <p className="heading"> This is where the game goes!</p>
         <div className="buttons">
           <button className="button is-small" onClick={this.giveHint}>hint</button>
@@ -273,7 +273,7 @@ class Game extends Component {
           {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
         </div>
 
-      </section>
+      </div>
     );
   }
 }
