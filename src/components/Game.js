@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Analyzer from './Analyzer.js';
+import MusicCanvas from './MusicCanvas.js'
 import { notes } from './NoteDetails.js';
 import Info from './Info.js';
 import { devLogger } from '../modules/helperFunctions.js';
@@ -19,6 +20,7 @@ class Game extends Component {
       userPlayingPitch: null, //number, Hz
       userPlayingNote: null, // noteNameOctave
       targetTime: null,
+      noteColorFeedback: null,
 
       infoShown: false,
       availableNotes: notes
@@ -240,9 +242,9 @@ class Game extends Component {
 
 
   render() {
-
+    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "(no note detected)"
     return(
-      <section>
+      <div class="is-paddingless is-marginless">
         <p className="heading"> This is where the game goes!</p>
         <div className="buttons">
           <button className="button is-small" onClick={this.giveHint}>hint</button>
@@ -254,16 +256,24 @@ class Game extends Component {
         <p>{this.state.promptedNoteLetter}</p>
         <p>{this.state.promptedNoteFreq}</p>
         <p>You are playing:</p>
-        <p>{this.state.userPlayingNote}</p>
+        <p>{isNoteDetected}</p>
 
-        <Analyzer
+        < Analyzer
           getuserPlayingPitchCallback={this.getuserPlayingPitch}
           />
-          <div>
-            <button className="button" onClick={this.toggleInfoShown}>INFO</button>
-            {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
-          </div>
-      </section>
+
+        < MusicCanvas
+          currentUserNote={this.state.userPlayingNote}
+          currentPromptedNote={this.state.currentPromptedNote}
+          noteColorFeedback={this.state.noteColorFeedback}
+          />
+
+        <div>
+          <button className="button" onClick={this.toggleInfoShown}>INFO</button>
+          {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
+        </div>
+
+      </div>
     );
   }
 }
