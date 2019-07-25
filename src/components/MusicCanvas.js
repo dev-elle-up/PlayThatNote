@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { devLogger } from '../modules/helperFunctions.js';
 
-import { ReactComponent as TestBassClef} from '../images/testBassClef.svg'
+// import { ReactComponent as TestBassClef} from '../images/testBassClef.svg'
 // import { ReactComponent as FClef } from '../images/FClef.svg';
 
 function MusicCanvas(props) {

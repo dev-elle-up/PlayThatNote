@@ -242,7 +242,7 @@ class Game extends Component {
 
 
   render() {
-
+    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "(no note detected)"
     return(
       <div class="is-paddingless is-marginless">
         <p className="heading"> This is where the game goes!</p>
@@ -256,7 +256,7 @@ class Game extends Component {
         <p>{this.state.promptedNoteLetter}</p>
         <p>{this.state.promptedNoteFreq}</p>
         <p>You are playing:</p>
-        <p>{this.state.userPlayingNote}</p>
+        <p>{isNoteDetected}</p>
 
         < Analyzer
           getuserPlayingPitchCallback={this.getuserPlayingPitch}
