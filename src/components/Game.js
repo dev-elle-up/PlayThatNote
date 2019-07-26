@@ -21,6 +21,7 @@ class Game extends Component {
       userPlayingNote: null, // noteNameOctave
       targetTime: null,
       noteColorFeedback: "no note detected",
+      noteOpacityFeedback: "0",
 
       infoShown: false,
       availableNotes: notes
@@ -75,7 +76,7 @@ class Game extends Component {
 
     this.setState({
       promptedNoteLetter: newNote.noteName,
-      // promptedNoteLetter: newNote.noteNameOctave, // @@@@@ DELETE THIS ONCE GRAPHPICS ARE IN! @@@@@
+      promptedNoteLetterOctave: newNote.noteNameOctave, // @@@@@ DELETE THIS ONCE GRAPHPICS ARE IN? @@@@@
       promptedNoteFreq: newNote.frequency.toFixed(2),
       targetFreqRangeLower: targetFreqRangeLower,
       targetFreqRangeUpper: targetFreqRangeUpper
@@ -134,20 +135,25 @@ class Game extends Component {
           this.generateSparkles();
         } else { // A1b
           // devLogger('keep playing');
+          this.generateKeepPlaying();
         }
       } else { // A2
           this.setTargetTime();
+          this.generateKeepPlaying();
       }
 
     } else { // B note is out of target range ("wrong") or null
       if (timerStarted) { // B1
+        this.generateWrongNoteDisplay();
         if (targetTimeReached) { // B1a note changed to null or wrong note, timer has finished
           this.handleSuccessfulRound();
         } else { // B1b
           this.voidTargetTime();
+          this.generateWrongNoteDisplay();
           // devLogger('TIMER VOIDED (B1b)');
         }
       } else { // B2
+        this.generateWrongNoteDisplay();
         // do nothing
         return;
       }
@@ -159,9 +165,12 @@ class Game extends Component {
     if (this.state.targetTime && this.checkTargetTimeReached()) { // C1
       this.generateSparkles();
       // devLogger('sparkles in C1');
-    } else { // C2
+    } else if (this.state.targetTime) { // C2
+      this.generateKeepPlaying();
+      // devLogger(`Keep going, you're SO CONSISTENT!`);
+    } else {
       if (pitch) {
-        // devLogger(`Keep going, you're SO CONSISTENT!`);
+        
       }
     }
   };
@@ -169,13 +178,27 @@ class Game extends Component {
 
   // GAME LOGIC HELPERS
   generateSparkles = () => {
+    this.setState({noteColorFeedback: "#cc33cc", noteOpacityFeedback: "1"});
     // devLogger('* ... sparkles ... * success');
   };
+
+  generateKeepPlaying = () => {
+    this.setState({noteColorFeedback: "#33cc33", noteOpacityFeedback: "1"});
+  }
+
+  generateWrongNoteDisplay = () => {
+    this.setState({noteColorFeedback: "grey", noteOpacityFeedback: ".6"});
+  }
+
+  generateNoUserNoteToDisplay = () => {
+    this.setState({noteColorFeedback: "transparent", noteOpacityFeedback: "0"});
+  }
 
   handleSuccessfulRound = () => {
     this.props.increaseNotesPlayedCorrectlyCallback();
     this.setNewNote();
     this.voidTargetTime();
+    this.generateNoUserNoteToDisplay();
     // devLogger(`You got a point! Here's a new note.`);
   }
 
@@ -207,7 +230,10 @@ class Game extends Component {
     const thisPitch = pitch;
     // let i = 0;
 
-    if (!pitch) {this.setState({userPlayingNote: null, noteColorFeedback: "transparent"})};
+    if (!pitch) {
+      this.setState({userPlayingNote: null},
+      // this.generateNoUserNoteToDisplay()
+      )};
 
     for (let i = 0; i < availableNotes.length; i+=1) {
     // while (!userNote) {
@@ -220,11 +246,13 @@ class Game extends Component {
       }
       // return null;
       if (userNote) this.setState(
-        {userPlayingNote: userNote.noteNameOctave, noteColorFeedback: "teal"},
+        {userPlayingNote: userNote.noteNameOctave},
         devLogger(`userNote: ${userNote.noteNameOctave}`));
       }
 
-      if (!userNote) this.setState({noteColorFeedback: "orange"})
+      if (!userNote) {
+
+      }
       // i += 1;
     };
 
@@ -251,8 +279,9 @@ class Game extends Component {
         <div className="music-canvas">
           < MusicCanvas
             currentUserNote={this.state.userPlayingNote}
-            currentPromptedNote={this.state.currentPromptedNote}
+            currentPromptedNote={this.state.promptedNoteLetterOctave}
             noteColorFeedback={this.state.noteColorFeedback}
+            noteOpacityFeedback={this.state.noteOpacityFeedback}
             />
         </div>
 
