@@ -20,7 +20,7 @@ class Game extends Component {
       userPlayingPitch: null, //number, Hz
       userPlayingNote: null, // noteNameOctave
       targetTime: null,
-      noteColorFeedback: null,
+      noteColorFeedback: "green",
 
       infoShown: false,
       availableNotes: notes
@@ -209,7 +209,7 @@ class Game extends Component {
     const thisPitch = pitch;
     // let i = 0;
 
-    if (!pitch) {this.setState({userPlayingNote: null})};
+    if (!pitch) {this.setState({userPlayingNote: null, noteColorFeedback: "transparent"})};
 
     for (let i = 0; i < availableNotes.length; i+=1) {
     // while (!userNote) {
@@ -222,9 +222,11 @@ class Game extends Component {
       }
       // return null;
       if (userNote) this.setState(
-        {userPlayingNote: userNote.noteNameOctave},
+        {userPlayingNote: userNote.noteNameOctave, noteColorFeedback: "orange"},
         devLogger(`userNote: ${userNote.noteNameOctave}`));
       }
+
+      if (!userNote) this.setState({noteColorFeedback: "green"})
       // i += 1;
     };
 
