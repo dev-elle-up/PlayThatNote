@@ -12,7 +12,7 @@ function Summary(props) {
       <p>Notes played correctly: {props.notesPlayedCorrectly}</p>
       <p>Notes skipped: {props.notesSkipped}</p>
       <p>Time played: {props.time_played}</p>
-      <button className="button mt-1" onClick={props.restartGameCallback}>play again</button>
+      <button className="button is-medium mt-1" onClick={props.restartGameCallback}>play again</button>
     </section>
   )
 }

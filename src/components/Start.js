@@ -23,8 +23,8 @@ class Start extends Component {
       <section>
         <p className="heading">Ready to practice?</p>
         <div className="buttons">
-          <button className="button" onClick={this.props.startGameCallback}>START</button>
-          <button className="button" onClick={this.toggleInfoShown}>INFO</button>
+          <button className="button is-large" onClick={this.props.startGameCallback}>START</button>
+          <button className="button is-large" onClick={this.toggleInfoShown}>INFO</button>
           {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
         </div>
       </section>

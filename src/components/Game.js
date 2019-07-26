@@ -20,7 +20,7 @@ class Game extends Component {
       userPlayingPitch: null, //number, Hz
       userPlayingNote: null, // noteNameOctave
       targetTime: null,
-      noteColorFeedback: "orange",
+      noteColorFeedback: "no note detected",
 
       infoShown: false,
       availableNotes: notes
@@ -68,8 +68,6 @@ class Game extends Component {
     }
 
     this.setState({lastPromptedNote: lastNote, promptedNote: newNote});
-
-
 
     const targetFreq = newNote.frequency
     let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806)*this.props.tuningDifficultyModifier)
@@ -244,34 +242,36 @@ class Game extends Component {
 
 
   render() {
-    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "(no note detected)"
+    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "-"
     return(
       <div >
 
-        <p>Play: {this.state.promptedNoteLetter}</p>
-        <p>{this.state.promptedNoteFreq}</p>
-        <p>You are playing:</p>
-        <p>{isNoteDetected}</p>
-
-        < Analyzer
-          getuserPlayingPitchCallback={this.getuserPlayingPitch}
-          />
+        <p>Play: {this.state.promptedNoteLetter} {this.state.promptedNoteFreq} Hz</p>
 
         <div className="music-canvas">
-        < MusicCanvas
-          currentUserNote={this.state.userPlayingNote}
-          currentPromptedNote={this.state.currentPromptedNote}
-          noteColorFeedback={this.state.noteColorFeedback}
-          />
-          </div>
+          < MusicCanvas
+            currentUserNote={this.state.userPlayingNote}
+            currentPromptedNote={this.state.currentPromptedNote}
+            noteColorFeedback={this.state.noteColorFeedback}
+            />
+        </div>
 
-          <div className="buttons">
-            <button className="button" onClick={this.giveHint}>hint</button>
-            <button className="button" onClick={this.skipNote}>skip</button>
-            <button className="button" onClick={this.props.finishGameCallback}>finished</button>
-            <button className="button" onClick={this.toggleInfoShown}>info</button>
-            {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
-          </div>
+        <section>
+          <p>You are playing:</p>
+          <p>{isNoteDetected}</p>
+          < Analyzer
+            getuserPlayingPitchCallback={this.getuserPlayingPitch}
+          />
+
+        </section>
+
+        <div className="buttons mt-1">
+          <button className="button is-medium" onClick={this.giveHint}>hint</button>
+          <button className="button is-medium" onClick={this.skipNote}>skip</button>
+          <button className="button is-medium" onClick={this.props.finishGameCallback}>finished</button>
+          <button className="button is-medium" onClick={this.toggleInfoShown}>info</button>
+          {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
+        </div>
 
       </div>
     );

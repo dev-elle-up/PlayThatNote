@@ -8,20 +8,21 @@ import { devLogger } from '../modules/helperFunctions.js';
 function MusicCanvas(props) {
 
   // const widthToHeightRatio = 155/94;
-  const svgWidth = 390;//  window.innerWidth * widthScale;
-  const svgHeight = 94;// window.innerHeight * heightScale;
+  // const svgWidth = 390;//  window.innerWidth * widthScale;
+  // const svgHeight = 94;// window.innerHeight * heightScale;
 
   // const containerWidth = window.innerWidth  * 0.6;
   // console.log('MusicCanvas, window.innerWidth: ', window.innerWidth);
-  const scale = 1 //(containerWidth / svgWidth)* 0.6  ;
+  // const scale = 1 //(containerWidth / svgWidth)* 0.6  ;
   // const noteToY_coord = {
 
   // }
-  let color = props.noteColorFeedback;
 
   // const widthScale =  window.innerWidth / svgWidth;
   // const heightScale = window.innerHeight / svgHeight;
 
+  let color = props.noteColorFeedback;
+  
   return (
     <div >
       <svg
@@ -87,7 +88,9 @@ function MusicCanvas(props) {
             // < TestBassClef />
 
 MusicCanvas.propTypes = {
-
+  currentUserNote: PropTypes.string.isRequired,
+  currentPromptedNote: PropTypes.string.isRequired,
+  noteColorFeedback: PropTypes.string.isRequired
 
 
 
