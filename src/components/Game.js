@@ -20,7 +20,7 @@ class Game extends Component {
       userPlayingPitch: null, //number, Hz
       userPlayingNote: null, // noteNameOctave
       targetTime: null,
-      noteColorFeedback: "green",
+      noteColorFeedback: "orange",
 
       infoShown: false,
       availableNotes: notes
@@ -222,11 +222,11 @@ class Game extends Component {
       }
       // return null;
       if (userNote) this.setState(
-        {userPlayingNote: userNote.noteNameOctave, noteColorFeedback: "orange"},
+        {userPlayingNote: userNote.noteNameOctave, noteColorFeedback: "teal"},
         devLogger(`userNote: ${userNote.noteNameOctave}`));
       }
 
-      if (!userNote) this.setState({noteColorFeedback: "green"})
+      if (!userNote) this.setState({noteColorFeedback: "orange"})
       // i += 1;
     };
 
@@ -246,16 +246,9 @@ class Game extends Component {
   render() {
     let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "(no note detected)"
     return(
-      <div class="is-paddingless is-marginless">
-        <p className="heading"> This is where the game goes!</p>
-        <div className="buttons">
-          <button className="button is-small" onClick={this.giveHint}>hint</button>
-          <button className="button is-small" onClick={this.skipNote}>skip</button>
-          <button className="button is-small" onClick={this.props.finishGameCallback}>finished</button>
-          <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
-        </div>
-        <p>Play this note:</p>
-        <p>{this.state.promptedNoteLetter}</p>
+      <div >
+
+        <p>Play: {this.state.promptedNoteLetter}</p>
         <p>{this.state.promptedNoteFreq}</p>
         <p>You are playing:</p>
         <p>{isNoteDetected}</p>
@@ -264,24 +257,28 @@ class Game extends Component {
           getuserPlayingPitchCallback={this.getuserPlayingPitch}
           />
 
+        <div className="music-canvas">
         < MusicCanvas
           currentUserNote={this.state.userPlayingNote}
           currentPromptedNote={this.state.currentPromptedNote}
           noteColorFeedback={this.state.noteColorFeedback}
           />
+          </div>
 
-          <hr/>
-
-        <div>
-          <button className="button" onClick={this.toggleInfoShown}>INFO</button>
-          {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
-        </div>
+          <div className="buttons">
+            <button className="button" onClick={this.giveHint}>hint</button>
+            <button className="button" onClick={this.skipNote}>skip</button>
+            <button className="button" onClick={this.props.finishGameCallback}>finished</button>
+            <button className="button" onClick={this.toggleInfoShown}>info</button>
+            {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
+          </div>
 
       </div>
     );
   }
 }
 
+// <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
 Game.propTypes = {
   finishGameCallback: PropTypes.func.isRequired,
   increaseSkippedCountCallback: PropTypes.func.isRequired,

@@ -24,7 +24,6 @@ function MusicCanvas(props) {
 
   return (
     <div >
-      <p>******************************************************************</p>
       <svg
         version="1.1"
         baseProfile="full"
@@ -34,15 +33,15 @@ function MusicCanvas(props) {
         id="bassClefAndStaff"
         // overflow="visible"
 
-        viewBox="0,0,316,200"
+        viewBox="0,0,316,180"
         >
 
-       <rect width="100%" height="100%" fill="pink" stroke="green"/>
+       <rect width="100%" height="100%" fill="#fbcdcd" fill-opacity=".5" stroke="green"/>
 
        <g id="staff" transform="">
           <path d="M 10,15 V 95" id="staff-line-left-vertical" fill="green" fill-opacity="0.75000000"   stroke="black" stroke-width="3.0000000pt" />
-          <path d="M 275,15 V 95" id="staff-line-left-vertical" fill="green" fill-opacity="0.75000000"   stroke="black" stroke-width="3.0000000pt" />
-          <path d="M 295,15 V 95" id="staff-line-left-vertical" fill="green" fill-opacity="0.75000000"   stroke="black" stroke-width="8.0000000pt" />
+          <path d="M 285,15 V 95" id="staff-line-left-vertical" fill="green" fill-opacity="0.75000000"   stroke="black" stroke-width="3.0000000pt" />
+          <path d="M 302,14 V 96" id="staff-line-left-vertical" fill="green" fill-opacity="0.75000000"   stroke="black" stroke-width="8.0000000pt" />
           <path d="M 8,15 H 300" id="staff-line-5" fill="black" fill-opacity="0.75000000"   stroke="black" stroke-width="1.4pt" />
           <path d="M 8,35 H 300" id="staff-line-4" fill="black" fill-opacity="0.75000000"   stroke="black" stroke-width="1.4pt" />
           <path d="M 8,55 H 300" id="staff-line-3" fill="black" fill-opacity="0.75000000"  stroke="black" stroke-width="1.4pt" />
@@ -52,12 +51,12 @@ function MusicCanvas(props) {
 
         <g id="bass-clef-and-dots" transform="scale(.65) translate(-50,-315)">
           <g id="cleffDots" transform="translate(12.21513,0.000000)">
-            <path d="M 344.56847 325.81644 A 4.3261919 4.3261919 0 1 0 335.91609,325.81644 A 4.3261919 4.3261919 0 1 0 344.56847 325.81644 z" id="path855"  fill="black" fill-opacity="1"   stroke="black" stroke-width="1.0000000pt" transform="translate(-188.5,32.06472)"/>
-            <path d="M 344.56847 325.81644 A 4.3261919 4.3261919 0 1 0 335.91609,325.81644 A 4.3261919 4.3261919 0 1 0 344.56847 325.81644 z" id="path857"  fill="black" fill-opacity="1"   stroke="black" stroke-width="1.0000000pt" transform="translate(-188.5,53.44120)"/>
+            <path d="M 344.56847 325.81644 A 4.3261919 4.3261919 0 1 0 335.91609,325.81644 A 4.3261919 4.3261919 0 1 0 344.56847 325.81644 z" id="path855"  fill="#336699" fill-opacity="1"   stroke="black" stroke-width="1.0000000pt" transform="translate(-188.5,32.06472)"/>
+            <path d="M 344.56847 325.81644 A 4.3261919 4.3261919 0 1 0 335.91609,325.81644 A 4.3261919 4.3261919 0 1 0 344.56847 325.81644 z" id="path857"  fill="#336699" fill-opacity="1"   stroke="black" stroke-width="1.0000000pt" transform="translate(-188.5,53.44120)"/>
           </g>
           <g id="bass-clef">
-            <path d="M 118.07959 368.82385 A 8.6523838 8.6523838 0 1 0 100.77482,368.82385 A 8.6523838 8.6523838 0 1 0 118.07959 368.82385 z" id="clefTipHighlight"  fill="black" fill-opacity="1"   stroke="black" stroke-width="1.0000000pt" transform="matrix(1.397740,0.000000,0.000000,1.397740,-44.92324,-146.3143)"/>
-            <path d="M 95.859988,371.63448 C 90.264914,352.12932 103.76008,339.25423 121.54860,338.83318 C 139.59160,338.41213 151.02486,354.43377 151.40900,369.22065 C 152.04763,384.00753 145.38520,396.15050 131.91497,410.73661 C 120.87703,422.89747 99.665017,432.61417 98.088584,431.20186 C 96.332204,429.78955 114.29957,421.85513 125.47619,409.09796 C 132.40912,401.00465 139.51693,383.91281 138.91821,371.26710 C 137.87516,354.61161 124.48340,345.01552 119.25108,344.06033 C 115.79939,343.34942 112.38667,344.18009 109.07043,345.73636 C 106.34185,347.07037 104.63525,349.73327 104.56631,351.19160 C 104.40330,354.38523 108.47495,356.28672 110.68634,356.95999 C 118.94456,359.45486 107.09689,380.69396 95.859988,371.63448 z " id="mainBassClef"  fill="black"   stroke="#000000" stroke-opacity="1.0000000" stroke-width="1pt"  fill-opacity="1.0000000"/>
+            <path d="M 118.07959 368.82385 A 8.6523838 8.6523838 0 1 0 100.77482,368.82385 A 8.6523838 8.6523838 0 1 0 118.07959 368.82385 z" id="clefTipHighlight"  fill="pink" fill-opacity="1"   stroke="black" stroke-width="1.0000000pt" transform="matrix(1.397740,0.000000,0.000000,1.397740,-44.92324,-146.3143)"/>
+            <path d="M 95.859988,371.63448 C 90.264914,352.12932 103.76008,339.25423 121.54860,338.83318 C 139.59160,338.41213 151.02486,354.43377 151.40900,369.22065 C 152.04763,384.00753 145.38520,396.15050 131.91497,410.73661 C 120.87703,422.89747 99.665017,432.61417 98.088584,431.20186 C 96.332204,429.78955 114.29957,421.85513 125.47619,409.09796 C 132.40912,401.00465 139.51693,383.91281 138.91821,371.26710 C 137.87516,354.61161 124.48340,345.01552 119.25108,344.06033 C 115.79939,343.34942 112.38667,344.18009 109.07043,345.73636 C 106.34185,347.07037 104.63525,349.73327 104.56631,351.19160 C 104.40330,354.38523 108.47495,356.28672 110.68634,356.95999 C 118.94456,359.45486 107.09689,380.69396 95.859988,371.63448 z " id="mainBassClef"  fill="#336699"   stroke="#000000" stroke-opacity="1.0000000" stroke-width="1pt"  fill-opacity="1.0000000"/>
           </g>
         </g>
 
