@@ -268,6 +268,8 @@ class Game extends Component {
           noteColorFeedback={this.state.noteColorFeedback}
           />
 
+          <hr/>
+
         <div>
           <button className="button" onClick={this.toggleInfoShown}>INFO</button>
           {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
