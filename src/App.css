@@ -38,8 +38,19 @@
   justify-content: center;
 }
 
+.user-playing-note {
+  transition: all .15s;
+}
 .mt-1 {
   margin-top: 1em;
+}
+
+.title {
+  font-family: 'Sawarabi Mincho', sans-serif;
+}
+
+.button {
+  background-color: #EDC;
 }
 
 /* h1 {

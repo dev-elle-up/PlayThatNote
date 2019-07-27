@@ -29,7 +29,7 @@ class Analyzer extends Component {
 
      const context = new AudioContext();
      const source = context.createMediaStreamSource(userAudioFromMic);
-     const processor = context.createScriptProcessor(4096, 1, 1);
+     const processor = context.createScriptProcessor(2048, 1, 1);
      // Creates a ScriptProcessorNode for direct audio processing.
      // Arguments: bufferSize (bytes), numberOfInputChannels, numberOfOutputChannels
      // bufferSize: no. of units of sample-frames; values must be: 256, 512, 1024, 2048, 4096, 8192, or 16384. This value controls how frequently the onaudioprocess event handler is called and how many sample-frames need to be processed each call.

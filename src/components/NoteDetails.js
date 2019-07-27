@@ -5,7 +5,8 @@ export const notes = [
     noteNameOctave: "C2",
     isAccidental: false,
     frequency: 65.40639,
-    string: "C"
+    string: "C",
+    hints: ["C string", "open", "Note letter: C", "Play the open C string"]
   },
   // {
   //   noteNum: 17,

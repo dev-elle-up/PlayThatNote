@@ -82,6 +82,8 @@ class Game extends Component {
       targetFreqRangeUpper: targetFreqRangeUpper
     });
 
+    
+
     this.props.increaseNotesTriedCallback();
 
     devLogger(`*** NEW NOTE *** `);
@@ -129,6 +131,8 @@ class Game extends Component {
     let timerStarted = this.checkTimerStarted();
     let targetTimeReached = this.checkTargetTimeReached();
 
+    // if (!pitch) this.generateNoUserNoteToDisplay();
+
     if (pitchInRange) { // A
       if (timerStarted) { // A1
         if (targetTimeReached) { // A1a
@@ -162,6 +166,8 @@ class Game extends Component {
   };
 
   handlePitchNoChange(pitch) { // C
+    if (!pitch) this.generateNoUserNoteToDisplay();
+
     if (this.state.targetTime && this.checkTargetTimeReached()) { // C1
       this.generateSparkles();
       // devLogger('sparkles in C1');
@@ -170,7 +176,7 @@ class Game extends Component {
       // devLogger(`Keep going, you're SO CONSISTENT!`);
     } else {
       if (pitch) {
-        
+
       }
     }
   };
