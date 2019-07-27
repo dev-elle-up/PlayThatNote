@@ -238,7 +238,7 @@ class Game extends Component {
     // let i = 0;
 
     if (!pitch) {
-      this.setState({userPlayingNote: null},
+      this.setState({userPlayingNote: null, userPlayingNoteObject: null},
       // this.generateNoUserNoteToDisplay()
       )};
 
