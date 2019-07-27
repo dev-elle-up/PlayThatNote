@@ -6,38 +6,33 @@ import bassClefPianokeyToYcoord from './BassClefPianokeyToYcoord.js'
 
 function MusicCanvas(props) {
 
-const scaleForWholeNoteSvg = 2.3;
-const noteHeightForWholeNoteSvg = 7;
+  const scaleForWholeNoteSvg = 2.3;
+  const noteHeightForWholeNoteSvg = 7;
 
-const getNoteYfromCanvasY = (svgY, scale, noteHeight) => {
-  // console.log('svgY: ',svgY, " type: ",typeof svgY);
-  return svgY/scale + noteHeight/2;
-}
+  const getNoteYfromCanvasY = (svgY, scale, noteHeight) => {
+    return svgY/scale + noteHeight/2;
+  }
 
+  let userNoteColor = props.noteColorFeedback;
+  let userNoteOpacity = props.noteOpacityFeedback;
 
-let userNoteColor = props.noteColorFeedback;
-let userNoteOpacity = props.noteOpacityFeedback;
+  let heightOnStaffUser = -10;
+  let heightOnStaffPrompted = -10;
 
-let heightOnStaffUser = -10;
-let heightOnStaffPrompted = -10;
+  if (props.currentUserNote) {
+    heightOnStaffUser = getNoteYfromCanvasY(
+      bassClefPianokeyToYcoord[props.currentUserNote.noteNum],
+      scaleForWholeNoteSvg,
+      noteHeightForWholeNoteSvg);
+  }
 
-
-if (props.currentUserNote) {
-  heightOnStaffUser = getNoteYfromCanvasY(
-    bassClefPianokeyToYcoord[props.currentUserNote.noteNum],
-    scaleForWholeNoteSvg,
-    noteHeightForWholeNoteSvg);
-      console.log('heightOnStaffUser:...........', heightOnStaffUser);
-}
-
-if (props.currentPromptedNote) {
-  heightOnStaffPrompted = getNoteYfromCanvasY(
-    bassClefPianokeyToYcoord[props.currentPromptedNote.noteNum],
-    scaleForWholeNoteSvg,
-    noteHeightForWholeNoteSvg
-  )
-}
-
+  if (props.currentPromptedNote) {
+    heightOnStaffPrompted = getNoteYfromCanvasY(
+      bassClefPianokeyToYcoord[props.currentPromptedNote.noteNum],
+      scaleForWholeNoteSvg,
+      noteHeightForWholeNoteSvg
+    )
+  }
 
 
   return (
@@ -88,33 +83,21 @@ if (props.currentPromptedNote) {
         d={`m 66.4,${heightOnStaffPrompted}c -1.86907,-0.09088 -3.32965,-1.61499 -3.91571,-3.19104c-0.35509,-0.92505 -0.16006,-2.31274 1.02287,-2.57263c1.71386,-0.2674 3.13601,1.07001 3.93307,2.34991c0.5678,0.94922 0.8817,2.44415 -0.18289,3.19659c-0.25277,0.15576 -0.55835,0.2182 -0.85734,0.21716zm2.9775,-5.40332c-2.10578,-1.17487 -4.76581,-1.26642 -7.07169,-0.60889c-1.46067,0.46912 -3.13119,1.4671 -3.14501,3.09137c-0.00101,1.59149 1.61108,2.58429 3.03763,3.05713c2.25844,0.67865 4.86424,0.61896 6.97286,-0.46289c1.19358,-0.58337 2.25152,-1.79138 1.89277,-3.13031c-0.19726,-0.86096 -0.91521,-1.50519 -1.68655,-1.94641z`}/>
        </g>
 
-       <g >
-        < path fill="black" d=" "
-        />
-      </g>
        <g transform={`scale(${scaleForWholeNoteSvg})`} id="user-playing-note">
         <path fill={userNoteColor} fillOpacity={userNoteOpacity}
         d={`m 66.4,${heightOnStaffUser}c -1.86907,-0.09088 -3.32965,-1.61499 -3.91571,-3.19104c-0.35509,-0.92505 -0.16006,-2.31274 1.02287,-2.57263c1.71386,-0.2674 3.13601,1.07001 3.93307,2.34991c0.5678,0.94922 0.8817,2.44415 -0.18289,3.19659c-0.25277,0.15576 -0.55835,0.2182 -0.85734,0.21716zm2.9775,-5.40332c-2.10578,-1.17487 -4.76581,-1.26642 -7.07169,-0.60889c-1.46067,0.46912 -3.13119,1.4671 -3.14501,3.09137c-0.00101,1.59149 1.61108,2.58429 3.03763,3.05713c2.25844,0.67865 4.86424,0.61896 6.97286,-0.46289c1.19358,-0.58337 2.25152,-1.79138 1.89277,-3.13031c-0.19726,-0.86096 -0.91521,-1.50519 -1.68655,-1.94641z`}/>
        </g>
 
-
       </svg>
     </div>
-
-        )
-
-      };
-
+  )
+};
 
 
 MusicCanvas.propTypes = {
   currentUserNote: PropTypes.object,
   currentPromptedNote: PropTypes.object,
   noteColorFeedback: PropTypes.string
-
-
-
   }
 
 export default MusicCanvas;
-// <img src={FClef} alt='different bass clef'></img>
