@@ -19,8 +19,10 @@ class Game extends Component {
 
       userPlayingPitch: null, //number, Hz
       userPlayingNote: null, // noteNameOctave
+      userPlayingNoteObject: null,
       targetTime: null,
-      noteColorFeedback: "green",
+      noteColorFeedback: "no note detected",
+      noteOpacityFeedback: "0",
 
       infoShown: false,
       availableNotes: notes
@@ -69,19 +71,19 @@ class Game extends Component {
 
     this.setState({lastPromptedNote: lastNote, promptedNote: newNote});
 
-
-
     const targetFreq = newNote.frequency
     let targetFreqRangeLower = (targetFreq-(targetFreq*0.02806)*this.props.tuningDifficultyModifier)
     let targetFreqRangeUpper = (targetFreq+(targetFreq*0.02973)*this.props.tuningDifficultyModifier)
 
     this.setState({
       promptedNoteLetter: newNote.noteName,
-      // promptedNoteLetter: newNote.noteNameOctave, // @@@@@ DELETE THIS ONCE GRAPHPICS ARE IN! @@@@@
+      promptedNoteLetterOctave: newNote.noteNameOctave, // @@@@@ DELETE THIS ONCE GRAPHPICS ARE IN? @@@@@
       promptedNoteFreq: newNote.frequency.toFixed(2),
       targetFreqRangeLower: targetFreqRangeLower,
       targetFreqRangeUpper: targetFreqRangeUpper
     });
+
+
 
     this.props.increaseNotesTriedCallback();
 
@@ -130,26 +132,33 @@ class Game extends Component {
     let timerStarted = this.checkTimerStarted();
     let targetTimeReached = this.checkTargetTimeReached();
 
+    // if (!pitch) this.generateNoUserNoteToDisplay();
+
     if (pitchInRange) { // A
       if (timerStarted) { // A1
         if (targetTimeReached) { // A1a
           this.generateSparkles();
         } else { // A1b
           // devLogger('keep playing');
+          this.generateKeepPlaying();
         }
       } else { // A2
           this.setTargetTime();
+          this.generateKeepPlaying();
       }
 
     } else { // B note is out of target range ("wrong") or null
       if (timerStarted) { // B1
+        this.generateWrongNoteDisplay();
         if (targetTimeReached) { // B1a note changed to null or wrong note, timer has finished
           this.handleSuccessfulRound();
         } else { // B1b
           this.voidTargetTime();
+          this.generateWrongNoteDisplay();
           // devLogger('TIMER VOIDED (B1b)');
         }
       } else { // B2
+        this.generateWrongNoteDisplay();
         // do nothing
         return;
       }
@@ -158,12 +167,17 @@ class Game extends Component {
   };
 
   handlePitchNoChange(pitch) { // C
+    if (!pitch) this.generateNoUserNoteToDisplay();
+
     if (this.state.targetTime && this.checkTargetTimeReached()) { // C1
       this.generateSparkles();
       // devLogger('sparkles in C1');
-    } else { // C2
+    } else if (this.state.targetTime) { // C2
+      this.generateKeepPlaying();
+      // devLogger(`Keep going, you're SO CONSISTENT!`);
+    } else {
       if (pitch) {
-        // devLogger(`Keep going, you're SO CONSISTENT!`);
+
       }
     }
   };
@@ -171,13 +185,27 @@ class Game extends Component {
 
   // GAME LOGIC HELPERS
   generateSparkles = () => {
+    this.setState({noteColorFeedback: "#cc33cc", noteOpacityFeedback: "1"});
     // devLogger('* ... sparkles ... * success');
   };
+
+  generateKeepPlaying = () => {
+    this.setState({noteColorFeedback: "#33cc33", noteOpacityFeedback: "1"});
+  }
+
+  generateWrongNoteDisplay = () => {
+    this.setState({noteColorFeedback: "grey", noteOpacityFeedback: ".6"});
+  }
+
+  generateNoUserNoteToDisplay = () => {
+    this.setState({noteColorFeedback: "transparent", noteOpacityFeedback: "0"});
+  }
 
   handleSuccessfulRound = () => {
     this.props.increaseNotesPlayedCorrectlyCallback();
     this.setNewNote();
     this.voidTargetTime();
+    this.generateNoUserNoteToDisplay();
     // devLogger(`You got a point! Here's a new note.`);
   }
 
@@ -209,7 +237,10 @@ class Game extends Component {
     const thisPitch = pitch; // this could be removed and use pitch below...?
     // let i = 0;
 
-    if (!pitch) {this.setState({userPlayingNote: null, noteColorFeedback: "transparent"})};
+    if (!pitch) {
+      this.setState({userPlayingNote: null, userPlayingNoteObject: null},
+      // this.generateNoUserNoteToDisplay()
+      )};
 
     for (let i = 0; i < availableNotes.length; i+=1) {
     // while (!userNote) {
@@ -222,11 +253,13 @@ class Game extends Component {
       }
       // return null;
       if (userNote) this.setState(
-        {userPlayingNote: userNote.noteNameOctave, noteColorFeedback: "orange"},
+        {userPlayingNote: userNote.noteNameOctave, userPlayingNoteObject: userNote},
         devLogger(`userNote: ${userNote.noteNameOctave}`));
       }
 
-      if (!userNote) this.setState({noteColorFeedback: "green"})
+      if (!userNote) {
+
+      }
       // i += 1;
     };
 
@@ -244,36 +277,35 @@ class Game extends Component {
 
 
   render() {
-    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "(no note detected)"
+    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "-"
     return(
-      <div class="is-paddingless is-marginless">
-        <p className="heading"> This is where the game goes!</p>
-        <div className="buttons">
-          <button className="button is-small" onClick={this.giveHint}>hint</button>
-          <button className="button is-small" onClick={this.skipNote}>skip</button>
-          <button className="button is-small" onClick={this.props.finishGameCallback}>finished</button>
-          <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
+      <div >
+
+        <p>Play: {this.state.promptedNoteLetter} {this.state.promptedNoteFreq} Hz</p>
+
+        <div className="music-canvas">
+          < MusicCanvas
+            currentUserNote={this.state.userPlayingNoteObject}
+            currentPromptedNote={this.state.promptedNote}
+            noteColorFeedback={this.state.noteColorFeedback}
+            noteOpacityFeedback={this.state.noteOpacityFeedback}
+            />
         </div>
-        <p>Play this note:</p>
-        <p>{this.state.promptedNoteLetter}</p>
-        <p>{this.state.promptedNoteFreq}</p>
-        <p>You are playing:</p>
-        <p>{isNoteDetected}</p>
 
-        < Analyzer
-          getuserPlayingPitchCallback={this.getuserPlayingPitch}
+        <section>
+          <p>You are playing:</p>
+          <p>{isNoteDetected}</p>
+          < Analyzer
+            getuserPlayingPitchCallback={this.getuserPlayingPitch}
           />
 
-        < MusicCanvas
-          currentUserNote={this.state.userPlayingNote}
-          currentPromptedNote={this.state.currentPromptedNote}
-          noteColorFeedback={this.state.noteColorFeedback}
-          />
+        </section>
 
-          <hr/>
-
-        <div>
-          <button className="button" onClick={this.toggleInfoShown}>INFO</button>
+        <div className="buttons mt-1">
+          <button className="button is-medium" onClick={this.giveHint}>hint</button>
+          <button className="button is-medium" onClick={this.skipNote}>skip</button>
+          <button className="button is-medium" onClick={this.props.finishGameCallback}>finished</button>
+          <button className="button is-medium" onClick={this.toggleInfoShown}>info</button>
           {this.state.infoShown ? <Info toggleInfoShownCallback={this.toggleInfoShown} /> : ''}
         </div>
 
@@ -282,6 +314,7 @@ class Game extends Component {
   }
 }
 
+// <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
 Game.propTypes = {
   finishGameCallback: PropTypes.func.isRequired,
   increaseSkippedCountCallback: PropTypes.func.isRequired,

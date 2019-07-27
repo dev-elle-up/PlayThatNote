@@ -5,7 +5,8 @@ export const notes = [
     noteNameOctave: "C2",
     isAccidental: false,
     frequency: 65.40639,
-    string: "C"
+    string: "C",
+    hints: ["C string", "open", "Note letter: C", "Play the open C string"]
   },
   // {
   //   noteNum: 17,
@@ -28,6 +29,7 @@ export const notes = [
     noteName: "E-Flat",
     noteNameOctave: "D#2",
     isAccidental: true,
+    sharpOrFlatPref: "flat",
     frequency: 77.78175,
     string: "C"
   },
@@ -74,7 +76,7 @@ export const notes = [
   {
     noteNum: 25,
     noteName: "A",
-    noteNameOctave: "A2",
+    noteNameOctave: "A3",
     isAccidental: false,
     frequency: 110,
     string: "G"
@@ -82,8 +84,9 @@ export const notes = [
   {
     noteNum: 26,
     noteName: "B-Flat", // can also be A-Sharp
-    noteNameOctave: "A#2",
+    noteNameOctave: "A#3",
     isAccidental: true,
+    sharpOrFlatPref: "flat",
     frequency: 116.5409,
     string: "G"
   },
@@ -148,6 +151,7 @@ export const notes = [
     noteName: "F-Sharp",
     noteNameOctave: "F#3",
     isAccidental: true,
+    sharpOrFlatPref: "sharp",
     frequency: 184.9972,
     string: "D"
   },
@@ -169,7 +173,7 @@ export const notes = [
   {
     noteNum: 37,
     noteName: "A",
-    noteNameOctave: "A3",
+    noteNameOctave: "A4",
     isAccidental: false,
     frequency: 220,
     string: "A"
@@ -184,7 +188,7 @@ export const notes = [
   {
     noteNum: 39,
     noteName: "B",
-    noteNameOctave: "B3",
+    noteNameOctave: "B4",
     isAccidental: false,
     frequency: 246.9417,
     string: "A"
@@ -202,6 +206,7 @@ export const notes = [
     noteName: "C-Sharp",
     noteNameOctave: "C#4",
     isAccidental: true,
+    sharpOrFlatPref: "sharp",
     frequency: 277.1826,
     string: "A"
   },
@@ -214,5 +219,12 @@ export const notes = [
     string: "A"
   }
 ]
+
+// export const bassClefPianokeyToYcoord = {
+//   42: 22.5,
+//   41: 30,
+//   40: 30,
+//   39: 37.5
+// }
 
 export default notes;
