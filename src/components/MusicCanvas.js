@@ -1,30 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// import bassClefPianokeyToYcoord from './NoteDetails.js'
 import { devLogger } from '../modules/helperFunctions.js';
 
 // import { ReactComponent as TestBassClef} from '../images/testBassClef.svg'
 // import { ReactComponent as FClef } from '../images/FClef.svg';
+const bassClefPianokeyToYcoord = {
+  42: 22.5,
+  41: 30,
+  40: 30,
+  39: 37.5
+}
 
 function MusicCanvas(props) {
 
-  // const widthToHeightRatio = 155/94;
-  // const svgWidth = 390;//  window.innerWidth * widthScale;
-  // const svgHeight = 94;// window.innerHeight * heightScale;
+const scaleForWholeNoteSvg = 2.3;
+const noteHeightForWholeNoteSvg = 7;
 
-  // const containerWidth = window.innerWidth  * 0.6;
-  // console.log('MusicCanvas, window.innerWidth: ', window.innerWidth);
-  // const scale = 1 //(containerWidth / svgWidth)* 0.6  ;
-  // const noteToY_coord = {
+const getNoteYfromCanvasY = (svgY, scale, noteHeight) => {
+  // console.log('svgY: ',svgY, " type: ",typeof svgY);
+  return svgY/scale + noteHeight/2;
+}
 
-  // }
 
-  // const widthScale =  window.innerWidth / svgWidth;
-  // const heightScale = window.innerHeight / svgHeight;
+let userNoteColor = props.noteColorFeedback;
+let userNoteOpacity = props.noteOpacityFeedback;
 
-  let userNoteColor = props.noteColorFeedback;
-  let userNoteOpacity = props.noteOpacityFeedback;
+let heightOnStaffUser = -10;
+let heightOnStaffPrompted = -10;
 
-let testValue = "67,13"
+
+if (props.currentUserNote) {
+  heightOnStaffUser = getNoteYfromCanvasY(
+    bassClefPianokeyToYcoord[props.currentUserNote.noteNum],
+    scaleForWholeNoteSvg,
+    noteHeightForWholeNoteSvg);
+
+      console.log('heightOnStaffUser:...........', heightOnStaffUser);
+}
+
+if (props.currentPromptedNote) {
+  heightOnStaffPrompted = getNoteYfromCanvasY(
+    bassClefPianokeyToYcoord[props.currentPromptedNote.noteNum],
+    scaleForWholeNoteSvg,
+    noteHeightForWholeNoteSvg
+  )
+}
+
+
+
   return (
     <div >
       <svg
@@ -39,22 +63,22 @@ let testValue = "67,13"
         viewBox="0,0,300,160"
         >
 
-      <rect width="100%" height="100%" fill="#EDC" fillOpacity="0" strokeOpacity="0" stroke="green"/>
+      <rect width="100%" height="100%" fill="#EDC" fillOpacity="0" strokeOpacity="0.0" stroke="green"/>
 
        <g id="staff" transform="">
-          <path d="M 1.5,45 v 60" id="staff-line-left-vertical" fill="green" fillOpacity="0.75"   stroke="black" strokeWidth="3pt" />
-          <path d="M 278,45 v 60" id="staff-line-right-vertical-1" fill="green" fillOpacity="0.75"   stroke="black" strokeWidth="3pt" />
-          <path d="M 295,45 v 60" id="staff-line-right-vertical-2" fill="green" fillOpacity="0.75"   stroke="black" strokeWidth="8pt" />
+          <path d="M 1.5,45 v 60" id="staff-line-left-vertical" stroke="black" strokeWidth="3pt" />
+          <path d="M 278,45 v 60" id="staff-line-right-vertical-1" stroke="black" strokeWidth="3pt" />
+          <path d="M 295,45 v 60" id="staff-line-right-vertical-2" stroke="black" strokeWidth="8pt" />
 
-          <path d="M 0,15 H 300" id="staff-line-7-E" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
-          <path d="M 0,30 H 300" id="staff-line-6-C" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
+          <path d="M 130,15 h 40" id="staff-line-7-E" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
+          <path d="M 130,30 h 40" id="staff-line-6-C" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
           <path d="M 0,45 H 300" id="staff-line-5-A" stroke="black" strokeWidth="1.4pt" />
           <path d="M 0,60 H 300" id="staff-line-4-F" stroke="black" strokeWidth="1.4pt" />
           <path d="M 0,75 H 300" id="staff-line-3-D" stroke="black" strokeWidth="1.4pt" />
           <path d="M 0,90 H 300" id="staff-line-2-B" stroke="black" strokeWidth="1.4pt" />
           <path d="M 0,105 H 300" id="staff-line-1-G" stroke="black" strokeWidth="1.4pt" />
-          <path d="M 0,120 H 300" id="staff-line--1-E" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
-          <path d="M 0,135 H 300" id="staff-line--2-C" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
+          <path d="M 130,120 h 40" id="staff-line--1-E" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
+          <path d="M 130,135 h 40" id="staff-line--2-C" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
         </g>
 
         <g id="bass-clef-and-dots" transform="scale(.65) translate(-65,-275)">
@@ -68,42 +92,33 @@ let testValue = "67,13"
           </g>
         </g>
 
-
-
-       <g transform="scale(2.5)" id="prompted-note">
-        <path fill="#000000" id="path2918" d={`m${testValue}c -1.86907,-0.09088 -3.32965,-1.61499 -3.91571,-3.19104c-0.35509,-0.92505 -0.16006,-2.31274 1.02287,-2.57263c1.71386,-0.2674 3.13601,1.07001 3.93307,2.34991c0.5678,0.94922 0.8817,2.44415 -0.18289,3.19659c-0.25277,0.15576 -0.55835,0.2182 -0.85734,0.21716zm2.9775,-5.40332c-2.10578,-1.17487 -4.76581,-1.26642 -7.07169,-0.60889c-1.46067,0.46912 -3.13119,1.4671 -3.14501,3.09137c-0.00101,1.59149 1.61108,2.58429 3.03763,3.05713c2.25844,0.67865 4.86424,0.61896 6.97286,-0.46289c1.19358,-0.58337 2.25152,-1.79138 1.89277,-3.13031c-0.19726,-0.86096 -0.91521,-1.50519 -1.68655,-1.94641z`}/>
+       <g transform={`scale(${scaleForWholeNoteSvg})`} id="prompted-note">
+        <path fill="#000000" stroke="black" strokeWidth="0.5pt"
+        d={`m 66.4,${heightOnStaffPrompted}c -1.86907,-0.09088 -3.32965,-1.61499 -3.91571,-3.19104c-0.35509,-0.92505 -0.16006,-2.31274 1.02287,-2.57263c1.71386,-0.2674 3.13601,1.07001 3.93307,2.34991c0.5678,0.94922 0.8817,2.44415 -0.18289,3.19659c-0.25277,0.15576 -0.55835,0.2182 -0.85734,0.21716zm2.9775,-5.40332c-2.10578,-1.17487 -4.76581,-1.26642 -7.07169,-0.60889c-1.46067,0.46912 -3.13119,1.4671 -3.14501,3.09137c-0.00101,1.59149 1.61108,2.58429 3.03763,3.05713c2.25844,0.67865 4.86424,0.61896 6.97286,-0.46289c1.19358,-0.58337 2.25152,-1.79138 1.89277,-3.13031c-0.19726,-0.86096 -0.91521,-1.50519 -1.68655,-1.94641z`}/>
        </g>
 
-
-
-
-        <g transform="scale (.05) translate(3000,-190)" id="user-note">
-
-          <path d="m 339.0261373780306,493.8976702587238 c 166.2765435386572,1.4979868787024 323.5651658049512,64.4134357852374 335.5490608347653,203.7262155068141 C 683.5631194851495,799.5338056089083 548.7443003997542,892.3621799999998 382.4677568611023,892.3621799999998 214.6932264437185,890.8641931212504 58.90259105614777,829.4467310934851 45.42070914760757,690.1807634618676 36.43278787524887,586.7260446498161 172.6559696594483,493.8976702587239 339.0261373780274,493.8976702587239 z m 40.3520215456972,364.0108115305648 c 71.9033701788793,0 118.3409634194051,-68.9542085113809 110.851029025773,-124.3329109343109 -16.4778556659969,-109.3530421470458 -53.9275276341617,-197.7810800818661 -152.7946616301204,-197.7810800818661 -71.9033701788806,0 -113.8470027832237,70.4053833001443 -104.8590815108626,125.8308978130285 16.5714798459128,109.399854237005 48.0292042991697,196.2830932031485 146.8027141152068,196.2830932031485 z"
-          id="path270" className="user-playing-note" fill={userNoteColor} fillOpacity={userNoteOpacity}/>
-        </g>
+       <g >
+        < path fill="black" d=" "
+        />
+      </g>
+       <g transform={`scale(${scaleForWholeNoteSvg})`} id="user-playing-note">
+        <path fill={userNoteColor} fillOpacity={userNoteOpacity}
+        d={`m 66.4,${heightOnStaffUser}c -1.86907,-0.09088 -3.32965,-1.61499 -3.91571,-3.19104c-0.35509,-0.92505 -0.16006,-2.31274 1.02287,-2.57263c1.71386,-0.2674 3.13601,1.07001 3.93307,2.34991c0.5678,0.94922 0.8817,2.44415 -0.18289,3.19659c-0.25277,0.15576 -0.55835,0.2182 -0.85734,0.21716zm2.9775,-5.40332c-2.10578,-1.17487 -4.76581,-1.26642 -7.07169,-0.60889c-1.46067,0.46912 -3.13119,1.4671 -3.14501,3.09137c-0.00101,1.59149 1.61108,2.58429 3.03763,3.05713c2.25844,0.67865 4.86424,0.61896 6.97286,-0.46289c1.19358,-0.58337 2.25152,-1.79138 1.89277,-3.13031c-0.19726,-0.86096 -0.91521,-1.50519 -1.68655,-1.94641z`}/>
+       </g>
 
 
       </svg>
     </div>
-             // < TestBassClef />
-
-             // viewBox={`0 0 ${window.innerWidth/2} ${window.innerHeight/2}`}
-
-      // if (this.props.noteColorFeedback==='green') {
-      //   return( <div className="tag is-primary is-medium">{this.state.pitch} Hz</div> )
 
         )
 
       };
 
-      // < Note noteName={props.userPlayingNote} style="" noteColorFeedback="" height=""/>
-      // < Note noteName={props.currentPromptedNote.noteNameOctave} style="prompted" height=""/>
-            // < TestBassClef />
+
 
 MusicCanvas.propTypes = {
-  currentUserNote: PropTypes.string,
-  currentPromptedNote: PropTypes.string,
+  currentUserNote: PropTypes.object,
+  currentPromptedNote: PropTypes.object,
   noteColorFeedback: PropTypes.string
 
 

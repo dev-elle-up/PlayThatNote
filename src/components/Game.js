@@ -19,6 +19,7 @@ class Game extends Component {
 
       userPlayingPitch: null, //number, Hz
       userPlayingNote: null, // noteNameOctave
+      userPlayingNoteObject: null,
       targetTime: null,
       noteColorFeedback: "no note detected",
       noteOpacityFeedback: "0",
@@ -82,7 +83,7 @@ class Game extends Component {
       targetFreqRangeUpper: targetFreqRangeUpper
     });
 
-    
+
 
     this.props.increaseNotesTriedCallback();
 
@@ -252,7 +253,7 @@ class Game extends Component {
       }
       // return null;
       if (userNote) this.setState(
-        {userPlayingNote: userNote.noteNameOctave},
+        {userPlayingNote: userNote.noteNameOctave, userPlayingNoteObject: userNote},
         devLogger(`userNote: ${userNote.noteNameOctave}`));
       }
 
@@ -284,8 +285,8 @@ class Game extends Component {
 
         <div className="music-canvas">
           < MusicCanvas
-            currentUserNote={this.state.userPlayingNote}
-            currentPromptedNote={this.state.promptedNoteLetterOctave}
+            currentUserNote={this.state.userPlayingNoteObject}
+            currentPromptedNote={this.state.promptedNote}
             noteColorFeedback={this.state.noteColorFeedback}
             noteOpacityFeedback={this.state.noteOpacityFeedback}
             />
