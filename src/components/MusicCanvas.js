@@ -1,16 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import bassClefPianokeyToYcoord from './NoteDetails.js'
-import { devLogger } from '../modules/helperFunctions.js';
+import bassClefPianokeyToYcoord from './BassClefPianokeyToYcoord.js'
+// import { devLogger } from '../modules/helperFunctions.js';
 
 // import { ReactComponent as TestBassClef} from '../images/testBassClef.svg'
 // import { ReactComponent as FClef } from '../images/FClef.svg';
-const bassClefPianokeyToYcoord = {
-  42: 22.5,
-  41: 30,
-  40: 30,
-  39: 37.5
-}
+// const bassClefPianokeyToYcoord = {
+//   42: 22.5,
+//   41: 30,
+//   40: 30,
+//   39: 37.5,
+//   38: 45,
+//   37: 45,
+//   36: 52.5,
+//   35: 52.5,
+//   34: 60,
+//   33: 60,
+//   32: 67.5,
+//   31: 67.5,
+//   30: 75,
+//   29: 82.5,
+//   28: 82.5,
+//   27: 90,
+//   26: 90,
+//   25: 97.5,
+//   24: 97.5,
+//   23: 105,
+//   22: 112.5,
+//   21: 112.5,
+//   20: 120,
+//   19: 120,
+//   18: 127.5,
+//   17: 135,
+//   16: 135
+// }
 
 function MusicCanvas(props) {
 
