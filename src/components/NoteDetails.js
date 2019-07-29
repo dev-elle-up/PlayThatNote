@@ -6,15 +6,18 @@ export const notes = [
     isAccidental: false,
     frequency: 65.40639,
     string: "C",
-    hints: ["C string", "open", "Note letter: C", "Play the open C string"]
+    level: 1,
+    hints: ["C string", "open string", "Note letter: C", "Play the open C string"]
   },
   // {
   //   noteNum: 17,
   //   noteName: "C-Sharp",
   //   noteNameOctave: "C#2",
   //   isAccidental: true,
+    // sharpOrFlat: "sharp",
   //   frequency: 69.29566,
-  //   string: "C"
+  //   string: "C",
+  //   level: 2,
   // },
   {
     noteNum: 18,
@@ -22,16 +25,20 @@ export const notes = [
     noteNameOctave: "D2",
     isAccidental: false,
     frequency: 73.41619,
-    string: "C"
+    string: "C",
+    level: 1,
+    hints: []
   },
 {
     noteNum: 19,
     noteName: "E-Flat",
     noteNameOctave: "D#2",
     isAccidental: true,
-    sharpOrFlatPref: "flat",
+    sharpOrFlat: "flat",
     frequency: 77.78175,
-    string: "C"
+    string: "C",
+    level: 1,
+    hints: []
   },
 {
     noteNum: 20,
@@ -39,7 +46,9 @@ export const notes = [
     noteNameOctave: "E2",
     isAccidental: false,
     frequency: 82.40689,
-    string: "C"
+    string: "C",
+    level: 1,
+    hints: []
   },
   {
     noteNum: 21,
@@ -47,15 +56,20 @@ export const notes = [
     noteNameOctave: "F2",
     isAccidental: false,
     frequency: 87.30706,
-    string: "C"
+    string: "C",
+    level: 1,
+    hints: []
   },
 // {
 //     noteNum: 22,
 //     noteName: "F-Sharp",
 //     noteNameOctave: "F#2",
 //     isAccidental: true,
+//     sharpOrFlat: "sharp",
 //     frequency: 92.49861,
-//     string: "C"
+//     string: "C",
+    // level: 2,
+    // hints: []
 //   },
 {
     noteNum: 23,
@@ -63,15 +77,20 @@ export const notes = [
     noteNameOctave: "G2",
     isAccidental: false,
     frequency: 97.99886,
-    string: "G"
+    string: "G",
+    level: 1,
+    hints: []
   },
   //{
   //   noteNum: 24,
   //   noteName: "A-Flat", // can also be G-Sharp
   //   noteNameOctave: "G#2",
   //   isAccidental: true,
+  //   sharpOrFlat: "flat",
   //   frequency: 103.8262,
-  //   string: "G"
+  //   string: "G",
+    // level: 2,
+    // hints: []
   // },
   {
     noteNum: 25,
@@ -79,16 +98,20 @@ export const notes = [
     noteNameOctave: "A3",
     isAccidental: false,
     frequency: 110,
-    string: "G"
+    string: "G",
+    level: 1,
+    hints: []
   },
   {
     noteNum: 26,
     noteName: "B-Flat", // can also be A-Sharp
     noteNameOctave: "A#3",
     isAccidental: true,
-    sharpOrFlatPref: "flat",
+    sharpOrFlat: "flat",
     frequency: 116.5409,
-    string: "G"
+    string: "G",
+    level: 1,
+    hints: []
   },
   {
     noteNum: 27,
@@ -96,7 +119,9 @@ export const notes = [
     noteNameOctave: "B2",
     isAccidental: false,
     frequency: 123.4708,
-    string: "G"
+    string: "G",
+    level: 1,
+    hints: []
   },
   {
     noteNum: 28,
@@ -104,15 +129,20 @@ export const notes = [
     noteNameOctave: "C3",
     isAccidental: false,
     frequency: 130.8128,
-    string: "G"
+    string: "G",
+    level: 1,
+    hints: []
   },
   //{
   //   noteNum: 29
   //   noteName: "C-Sharp",
   //   noteNameOctave: "C#3",
   //   isAccidental: true,
+  //   sharpOrFlat: "sharp",
   //   frequency: 138.5913,
-  //   string: "G"
+  //   string: "G",
+    // level: 2,
+    // hints: []
   // },
   {
     noteNum: 30,
@@ -120,15 +150,20 @@ export const notes = [
     noteNameOctave: "D3",
     isAccidental: false,
     frequency: 146.8324,
-    string: "D"
+    string: "D",
+    level: 1,
+    hints: []
   },
   // {
   //   noteNum: 31,
   //   noteName: "E-Flat", // can also be D-Sharp
   //   noteNameOctave: "D#3",
   //   isAccidental: true,
+  //   sharpOrFlat: "sharp",
   //   frequency: 155.5635,
-  //   string: "D"
+  //   string: "D",
+    // level: 1,
+    // hints: []
   // },
   {
     noteNum: 32,
@@ -136,7 +171,9 @@ export const notes = [
     noteNameOctave: "E3",
     isAccidental: false,
     frequency: 164.8138,
-    string: "D"
+    string: "D",
+    level: 1,
+    hints: []
   },
   {
     noteNum: 33,
@@ -144,16 +181,20 @@ export const notes = [
     noteNameOctave: "F3",
     isAccidental: false,
     frequency: 174.6141,
-    string: "D"
+    string: "D",
+    level: 1,
+    hints: []
   },
   {
     noteNum: 34,
     noteName: "F-Sharp",
     noteNameOctave: "F#3",
     isAccidental: true,
-    sharpOrFlatPref: "sharp",
+    sharpOrFlat: "sharp",
     frequency: 184.9972,
-    string: "D"
+    string: "D",
+    level: 1,
+    hints: []
   },
   {
     noteNum: 35,
@@ -161,14 +202,19 @@ export const notes = [
     noteNameOctave: "G3",
     isAccidental: false,
     frequency: 195.9977,
-    string: "D"
+    string: "D",
+    level: 1,
+    hints: []
   },
   //{ noteNum: 36,
   //   noteName: "G-Sharp", // can also be A-Flat
   //   noteNameOctave: "G#3",
   //   isAccidental: true,
+  //   sharpOrFlat: "sharp",
   //   frequency: 207.6523,
-  //   string: "D"
+  //   string: "D",
+    // level: 2,
+    // hints: []
   // },
   {
     noteNum: 37,
@@ -176,14 +222,19 @@ export const notes = [
     noteNameOctave: "A4",
     isAccidental: false,
     frequency: 220,
-    string: "A"
+    string: "A",
+    level: 1,
+    hints: []
   },
   // { noteNum: 38,
   //   noteName: "A-Sharp",
   //   noteNameOctave: "A#3",
   //   isAccidental: true,
+  //   sharpOrFlat: "sharp",
   //   frequency: 233.0819,
-  //   string: "A"
+  //   string: "A",
+    // level: 2,
+    // hints: []
   // },
   {
     noteNum: 39,
@@ -191,7 +242,9 @@ export const notes = [
     noteNameOctave: "B4",
     isAccidental: false,
     frequency: 246.9417,
-    string: "A"
+    string: "A",
+    level: 1,
+    hints: []
   },
   {
     noteNum: 40,
@@ -199,16 +252,20 @@ export const notes = [
     noteNameOctave: "C4", // middle C
     isAccidental: false,
     frequency: 261.6256,
-    string: "A"
+    string: "A",
+    level: 1,
+    hints: []
   },
   {
     noteNum: 41,
     noteName: "C-Sharp",
     noteNameOctave: "C#4",
     isAccidental: true,
-    sharpOrFlatPref: "sharp",
+    sharpOrFlat: "sharp",
     frequency: 277.1826,
-    string: "A"
+    string: "A",
+    level: 1,
+    hints: []
   },
   {
     noteNum: 42,
@@ -216,7 +273,9 @@ export const notes = [
     noteNameOctave: "D4",
     isAccidental: false,
     frequency: 293.6648,
-    string: "A"
+    string: "A",
+    level: 1,
+    hints: []
   }
 ]
 
