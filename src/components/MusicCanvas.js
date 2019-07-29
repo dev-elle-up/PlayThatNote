@@ -16,6 +16,10 @@ function MusicCanvas(props) {
 
   let userNoteColor = props.noteColorFeedback;
   let userNoteOpacity = props.noteOpacityFeedback;
+  let ledgerLineOpacityE4 = 0;
+  let ledgerLineOpacityC4 = 0;
+  let ledgerLineOpacityE2 = 0;
+  let ledgerLineOpacityC2 = 0;
 
   let heightOnStaffUserNote = hideMe;
   let heightOnStaffPromptedNote = hideMe;
@@ -34,6 +38,15 @@ function MusicCanvas(props) {
       noteHeightForWholeNoteSvg
     )
   }
+
+  if (props.currentPromptedNote && props.currentPromptedNote.ledgerLine) {
+    let lineToShow = props.currentPromptedNote.ledgerLine;
+    if (lineToShow === "E4") {ledgerLineOpacityC4 = 1; ledgerLineOpacityE4 = 1};
+    if (lineToShow === "C4") {ledgerLineOpacityC4 = 1};
+    if (lineToShow === "E2") {ledgerLineOpacityE2 = 1};
+    if (lineToShow === "C2") {ledgerLineOpacityC2 = 1; ledgerLineOpacityE2 = 1};
+  }
+
 
   let heightOnStaffPromptedSharp = hideMe;
   if (props.currentPromptedNote && props.currentPromptedNote.sharpOrFlat === 'sharp') {
@@ -54,6 +67,10 @@ function MusicCanvas(props) {
   if (props.currentUserNote && props.currentUserNote.sharpOrFlat === 'flat') {
     heightOnStaffUserFlat = bassClefPianokeyToYcoord[props.currentUserNote.noteNum]
   }
+
+  // let heightOnStaffPromptedNatural = hideMe;
+  // let heightOnStaffUserNatural = hideMe;
+
 
   let sharpHeightOffset = 18.5;
   let flatHeightOffset = 20;
@@ -79,25 +96,27 @@ function MusicCanvas(props) {
           <path d="M 278,45 v 60" id="staff-line-right-vertical-1" stroke="black" strokeWidth="3pt" />
           <path d="M 295,45 v 60" id="staff-line-right-vertical-2" stroke="black" strokeWidth="8pt" />
 
-          <path d="M 130,15 h 40" id="staff-line-7-E" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
-          <path d="M 130,30 h 40" id="staff-line-6-C" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
+          <path d="M 130,15 h 40" id="staff-line-7-E4" stroke="black" strokeWidth="1.4pt" strokeOpacity={`${ledgerLineOpacityE4}`} />
+          <path d="M 130,30 h 40" id="staff-line-6-C4" stroke="black" strokeWidth="1.4pt" strokeOpacity={`${ledgerLineOpacityC4}`} />
           <path d="M 0,45 H 300" id="staff-line-5-A" stroke="black" strokeWidth="1.4pt" />
           <path d="M 0,60 H 300" id="staff-line-4-F" stroke="black" strokeWidth="1.4pt" />
           <path d="M 0,75 H 300" id="staff-line-3-D" stroke="black" strokeWidth="1.4pt" />
           <path d="M 0,90 H 300" id="staff-line-2-B" stroke="black" strokeWidth="1.4pt" />
           <path d="M 0,105 H 300" id="staff-line-1-G" stroke="black" strokeWidth="1.4pt" />
-          <path d="M 130,120 h 40" id="staff-line--1-E" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
-          <path d="M 130,135 h 40" id="staff-line--2-C" stroke="orange" strokeWidth="1.4pt" strokeOpacity="0.35" />
+          <path d="M 130,120 h 40" id="staff-line--1-E2" stroke="black" strokeWidth="1.4pt" strokeOpacity={`${ledgerLineOpacityE2}`} />
+          <path d="M 130,135 h 40" id="staff-line--2-C2" stroke="black" strokeWidth="1.4pt" strokeOpacity={`${ledgerLineOpacityC2}`} />
         </g>
 
         <g id="bass-clef-and-dots" transform="scale(.65) translate(-65,-275)">
           <g id="cleffDots" transform="translate(12.21513,0)">
-            <path d="M 344.56847 325.81644 A 4.3261919 4.3261919 0 1 0 335.91609,325.81644 A 4.3261919 4.3261919 0 1 0 344.56847 325.81644 z" id="path855"  fill="#336699" fillOpacity="1"   stroke="black" strokeWidth="1pt" transform="translate(-188.5,32.06472)"/>
-            <path d="M 344.56847 325.81644 A 4.3261919 4.3261919 0 1 0 335.91609,325.81644 A 4.3261919 4.3261919 0 1 0 344.56847 325.81644 z" id="path857"  fill="#336699" fillOpacity="1"   stroke="black" strokeWidth="1pt" transform="translate(-188.5,53.44120)"/>
+            <path d="M 344.56847 325.81644 A 4.3261919 4.3261919 0 1 0 335.91609,325.81644 A 4.3261919 4.3261919 0 1 0 344.56847 325.81644 z" id="path855"  fill="black" fillOpacity="1"   stroke="black" strokeWidth="1pt" transform="translate(-188.5,32.06472)"/>
+            <path d="M 344.56847 325.81644 A 4.3261919 4.3261919 0 1 0 335.91609,325.81644 A 4.3261919 4.3261919 0 1 0 344.56847 325.81644 z" id="path857"  fill="black" fillOpacity="1"   stroke="black" strokeWidth="1pt" transform="translate(-188.5,53.44120)"/>
           </g>
           <g id="bass-clef">
-            <path d="M 118.07959 368.82385 A 8.6523838 8.6523838 0 1 0 100.77482,368.82385 A 8.6523838 8.6523838 0 1 0 118.07959 368.82385 z" id="clefTipHighlight"  fill="#EDC" fillOpacity="1"   stroke="black" strokeWidth="1pt" transform="matrix(1.397740,0.000000,0.000000,1.397740,-44.92324,-146.3143)"/>
-            <path d="M 95.859988,371.63448 C 90.264914,352.12932 103.76008,339.25423 121.54860,338.83318 C 139.59160,338.41213 151.02486,354.43377 151.40900,369.22065 C 152.04763,384.00753 145.38520,396.15050 131.91497,410.73661 C 120.87703,422.89747 99.665017,432.61417 98.088584,431.20186 C 96.332204,429.78955 114.29957,421.85513 125.47619,409.09796 C 132.40912,401.00465 139.51693,383.91281 138.91821,371.26710 C 137.87516,354.61161 124.48340,345.01552 119.25108,344.06033 C 115.79939,343.34942 112.38667,344.18009 109.07043,345.73636 C 106.34185,347.07037 104.63525,349.73327 104.56631,351.19160 C 104.40330,354.38523 108.47495,356.28672 110.68634,356.95999 C 118.94456,359.45486 107.09689,380.69396 95.859988,371.63448 z " id="mainBassClef"  fill="#336699"   stroke="#000000" strokeOpacity="1" strokeWidth="1pt"  fillOpacity="1"/>
+            <path d="M 118.07959 368.82385 A 8.6523838 8.6523838 0 1 0 100.77482,368.82385 A 8.6523838 8.6523838 0 1 0 118.07959 368.82385 z"
+            id="clefTipHighlight"  fill="black" fillOpacity="1"   stroke="black" strokeWidth="1pt" transform="matrix(1.397740,0.000000,0.000000,1.397740,-44.92324,-146.3143)"/>
+            <path d="M 95.859988,371.63448 C 90.264914,352.12932 103.76008,339.25423 121.54860,338.83318 C 139.59160,338.41213 151.02486,354.43377 151.40900,369.22065 C 152.04763,384.00753 145.38520,396.15050 131.91497,410.73661 C 120.87703,422.89747 99.665017,432.61417 98.088584,431.20186 C 96.332204,429.78955 114.29957,421.85513 125.47619,409.09796 C 132.40912,401.00465 139.51693,383.91281 138.91821,371.26710 C 137.87516,354.61161 124.48340,345.01552 119.25108,344.06033 C 115.79939,343.34942 112.38667,344.18009 109.07043,345.73636 C 106.34185,347.07037 104.63525,349.73327 104.56631,351.19160 C 104.40330,354.38523 108.47495,356.28672 110.68634,356.95999 C 118.94456,359.45486 107.09689,380.69396 95.859988,371.63448 z "
+            id="mainBassClef"  fill="black"   stroke="#000000" strokeOpacity="1" strokeWidth="1pt"  fillOpacity="1"/>
           </g>
         </g>
 

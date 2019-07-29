@@ -6,6 +6,7 @@ export const notes = [
     isAccidental: false,
     frequency: 65.40639,
     string: "C",
+    ledgerLine: "C2",
     level: 1,
     hints: ["C string", "open string", "Note letter: C", "Play the open C string"]
   },
@@ -17,6 +18,7 @@ export const notes = [
     // sharpOrFlat: "sharp",
   //   frequency: 69.29566,
   //   string: "C",
+  //   ledgerLine: "C2",
   //   level: 2,
   // },
   {
@@ -26,6 +28,7 @@ export const notes = [
     isAccidental: false,
     frequency: 73.41619,
     string: "C",
+    ledgerLine: "E2",
     level: 1,
     hints: []
   },
@@ -37,6 +40,7 @@ export const notes = [
     sharpOrFlat: "flat",
     frequency: 77.78175,
     string: "C",
+    ledgerLine: "E2",
     level: 1,
     hints: []
   },
@@ -47,6 +51,7 @@ export const notes = [
     isAccidental: false,
     frequency: 82.40689,
     string: "C",
+    ledgerLine: "E2",
     level: 1,
     hints: []
   },
@@ -253,6 +258,7 @@ export const notes = [
     isAccidental: false,
     frequency: 261.6256,
     string: "A",
+    ledgerLine: "C4",
     level: 1,
     hints: []
   },
@@ -264,6 +270,7 @@ export const notes = [
     sharpOrFlat: "sharp",
     frequency: 277.1826,
     string: "A",
+    ledgerLine: "C4",
     level: 1,
     hints: []
   },
@@ -274,6 +281,7 @@ export const notes = [
     isAccidental: false,
     frequency: 293.6648,
     string: "A",
+    ledgerLine: "C4",
     level: 1,
     hints: []
   }
