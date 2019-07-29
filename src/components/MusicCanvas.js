@@ -8,6 +8,7 @@ function MusicCanvas(props) {
 
   const scaleForWholeNoteSvg = 2.3;
   const noteHeightForWholeNoteSvg = 7;
+  const hideMe = -50;
 
   const getNoteYfromCanvasY = (svgY, scale, noteHeight) => {
     return (svgY/scale + noteHeight/2)-0.6;
@@ -16,34 +17,46 @@ function MusicCanvas(props) {
   let userNoteColor = props.noteColorFeedback;
   let userNoteOpacity = props.noteOpacityFeedback;
 
-  let heightOnStaffUser = -10;
-  let heightOnStaffPrompted = -10;
+  let heightOnStaffUserNote = hideMe;
+  let heightOnStaffPromptedNote = hideMe;
 
   if (props.currentUserNote) {
-    heightOnStaffUser = getNoteYfromCanvasY(
+    heightOnStaffUserNote = getNoteYfromCanvasY(
       bassClefPianokeyToYcoord[props.currentUserNote.noteNum],
       scaleForWholeNoteSvg,
       noteHeightForWholeNoteSvg);
   }
 
   if (props.currentPromptedNote) {
-    heightOnStaffPrompted = getNoteYfromCanvasY(
+    heightOnStaffPromptedNote = getNoteYfromCanvasY(
       bassClefPianokeyToYcoord[props.currentPromptedNote.noteNum],
       scaleForWholeNoteSvg,
       noteHeightForWholeNoteSvg
     )
   }
 
-  let heightOnStaffPromptedSharp = -38;
+  let heightOnStaffPromptedSharp = hideMe;
   if (props.currentPromptedNote && props.currentPromptedNote.sharpOrFlat === 'sharp') {
-    heightOnStaffPromptedSharp = bassClefPianokeyToYcoord[props.currentPromptedNote.noteNum] - 18.5;
+    heightOnStaffPromptedSharp = bassClefPianokeyToYcoord[props.currentPromptedNote.noteNum];
   }
 
-  let heightOnStaffUserSharp = -37;
+  let heightOnStaffUserSharp = hideMe;
   if (props.currentUserNote && props.currentUserNote.sharpOrFlat === 'sharp') {
-    heightOnStaffUserSharp = bassClefPianokeyToYcoord[props.currentUserNote.noteNum] - 18.5;
+    heightOnStaffUserSharp = bassClefPianokeyToYcoord[props.currentUserNote.noteNum];
   }
 
+  let heightOnStaffPromptedFlat = hideMe;
+  if (props.currentPromptedNote && props.currentPromptedNote.sharpOrFlat === 'flat') {
+    heightOnStaffPromptedFlat = bassClefPianokeyToYcoord[props.currentPromptedNote.noteNum]
+  }
+
+  let heightOnStaffUserFlat = hideMe;
+  if (props.currentUserNote && props.currentUserNote.sharpOrFlat === 'flat') {
+    heightOnStaffUserFlat = bassClefPianokeyToYcoord[props.currentUserNote.noteNum]
+  }
+
+  let sharpHeightOffset = 18.5;
+  let flatHeightOffset = 20;
 
   return (
     <div >
@@ -90,24 +103,34 @@ function MusicCanvas(props) {
 
        <g transform={`scale(${scaleForWholeNoteSvg})`} id="prompted-note">
         <path fill="#000000" stroke="black" strokeWidth="0.5pt"
-        d={`m 66.4,${heightOnStaffPrompted}c -1.86907,-0.09088 -3.32965,-1.61499 -3.91571,-3.19104c-0.35509,-0.92505 -0.16006,-2.31274 1.02287,-2.57263c1.71386,-0.2674 3.13601,1.07001 3.93307,2.34991c0.5678,0.94922 0.8817,2.44415 -0.18289,3.19659c-0.25277,0.15576 -0.55835,0.2182 -0.85734,0.21716zm2.9775,-5.40332c-2.10578,-1.17487 -4.76581,-1.26642 -7.07169,-0.60889c-1.46067,0.46912 -3.13119,1.4671 -3.14501,3.09137c-0.00101,1.59149 1.61108,2.58429 3.03763,3.05713c2.25844,0.67865 4.86424,0.61896 6.97286,-0.46289c1.19358,-0.58337 2.25152,-1.79138 1.89277,-3.13031c-0.19726,-0.86096 -0.91521,-1.50519 -1.68655,-1.94641z`}/>
+        d={`m 66.4,${heightOnStaffPromptedNote}c -1.86907,-0.09088 -3.32965,-1.61499 -3.91571,-3.19104c-0.35509,-0.92505 -0.16006,-2.31274 1.02287,-2.57263c1.71386,-0.2674 3.13601,1.07001 3.93307,2.34991c0.5678,0.94922 0.8817,2.44415 -0.18289,3.19659c-0.25277,0.15576 -0.55835,0.2182 -0.85734,0.21716zm2.9775,-5.40332c-2.10578,-1.17487 -4.76581,-1.26642 -7.07169,-0.60889c-1.46067,0.46912 -3.13119,1.4671 -3.14501,3.09137c-0.00101,1.59149 1.61108,2.58429 3.03763,3.05713c2.25844,0.67865 4.86424,0.61896 6.97286,-0.46289c1.19358,-0.58337 2.25152,-1.79138 1.89277,-3.13031c-0.19726,-0.86096 -0.91521,-1.50519 -1.68655,-1.94641z`}/>
        </g>
 
-       <g transform={`translate(118,${heightOnStaffPromptedSharp}) `} id="prompted-sharp">
+       <g transform={`translate(118,${heightOnStaffPromptedSharp - sharpHeightOffset}) `} id="prompted-sharp">
          <path fill="#000000" stroke="black" strokeWidth="0.5pt"
          d="M 10.21875 14.234375 L 4.992188 15.910156 L 4.992188 23.714844 L 10.21875 22.039062 L 10.21875 14.234375 M 1.152344 11.71875 L 3.445312 10.988281 L 3.445312 2.449219 L 4.992188 2.449219 L 4.992188 10.460938 L 10.21875 8.785156 L 10.21875 1.140625 L 11.765625 1.140625 L 11.765625 8.316406 L 13.847656 7.632812 L 13.847656 13.082031 L 11.765625 13.761719 L 11.765625 21.515625 L 13.847656 20.886719 L 13.847656 26.28125 L 11.765625 26.960938 L 11.765625 35.5 L 10.21875 35.5 L 10.21875 27.433594 L 4.992188 29.109375 L 4.992188 36.859375 L 3.445312 36.859375 L 3.445312 29.632812 L 1.152344 30.367188 L 1.152344 24.917969 L 3.445312 24.183594 L 3.445312 16.382812 L 1.152344 17.113281 L 1.152344 11.71875 "
        />
        </g>
 
-       <g transform={`scale(${scaleForWholeNoteSvg})`} id="user-playing-note">
-        <path fill={userNoteColor} fillOpacity={userNoteOpacity}
-        d={`m 66.4,${heightOnStaffUser}c -1.86907,-0.09088 -3.32965,-1.61499 -3.91571,-3.19104c-0.35509,-0.92505 -0.16006,-2.31274 1.02287,-2.57263c1.71386,-0.2674 3.13601,1.07001 3.93307,2.34991c0.5678,0.94922 0.8817,2.44415 -0.18289,3.19659c-0.25277,0.15576 -0.55835,0.2182 -0.85734,0.21716zm2.9775,-5.40332c-2.10578,-1.17487 -4.76581,-1.26642 -7.07169,-0.60889c-1.46067,0.46912 -3.13119,1.4671 -3.14501,3.09137c-0.00101,1.59149 1.61108,2.58429 3.03763,3.05713c2.25844,0.67865 4.86424,0.61896 6.97286,-0.46289c1.19358,-0.58337 2.25152,-1.79138 1.89277,-3.13031c-0.19726,-0.86096 -0.91521,-1.50519 -1.68655,-1.94641z`}/>
+       <g transform={`translate(120,${heightOnStaffPromptedFlat - flatHeightOffset})`} id="prompted-flat">
+         <path fill="#000000" stroke="black" strokeWidth="0.5pt"
+         d="M 7.511719 19.332031 C 7.511719 20.65625 7.007812 21.929688 5.628906 23.636719 C 4.164062 25.441406 2.933594 26.476562 1.3125 27.691406 L 1.3125 19.773438 C 1.683594 18.851562 2.226562 18.105469 2.945312 17.535156 C 3.664062 16.964844 4.394531 16.675781 5.132812 16.675781 C 6.347656 16.675781 7.121094 17.359375 7.453125 18.722656 C 7.492188 18.832031 7.511719 19.035156 7.511719 19.332031 Z M 7.335938 13.792969 C 6.332031 13.792969 5.308594 14.066406 4.269531 14.617188 C 3.226562 15.167969 2.242188 15.90625 1.3125 16.820312 L 1.3125 0.0390625 L 0 0.0390625 L 0 28.78125 C 0 29.59375 0.222656 30 0.671875 30 C 0.929688 30 1.253906 29.785156 1.734375 29.5 C 3.09375 28.699219 3.941406 28.160156 4.863281 27.59375 C 5.917969 26.949219 7.101562 26.195312 8.664062 24.71875 C 9.746094 23.644531 10.527344 22.5625 11.011719 21.472656 C 11.496094 20.382812 11.738281 19.300781 11.738281 18.226562 C 11.738281 16.640625 11.3125 15.511719 10.457031 14.84375 C 9.492188 14.144531 8.449219 13.792969 7.335938 13.792969 Z M 7.335938 13.792969 "/>
        </g>
 
-       <g transform={`translate(118,${heightOnStaffUserSharp}) `} id="user-sharp">
-       <path fill={userNoteColor} fillOpacity={userNoteOpacity}
-       d="M 10.21875 14.234375 L 4.992188 15.910156 L 4.992188 23.714844 L 10.21875 22.039062 L 10.21875 14.234375 M 1.152344 11.71875 L 3.445312 10.988281 L 3.445312 2.449219 L 4.992188 2.449219 L 4.992188 10.460938 L 10.21875 8.785156 L 10.21875 1.140625 L 11.765625 1.140625 L 11.765625 8.316406 L 13.847656 7.632812 L 13.847656 13.082031 L 11.765625 13.761719 L 11.765625 21.515625 L 13.847656 20.886719 L 13.847656 26.28125 L 11.765625 26.960938 L 11.765625 35.5 L 10.21875 35.5 L 10.21875 27.433594 L 4.992188 29.109375 L 4.992188 36.859375 L 3.445312 36.859375 L 3.445312 29.632812 L 1.152344 30.367188 L 1.152344 24.917969 L 3.445312 24.183594 L 3.445312 16.382812 L 1.152344 17.113281 L 1.152344 11.71875 "
-       />
+       <g transform={`scale(${scaleForWholeNoteSvg})`} id="user-playing-note">
+        <path fill={userNoteColor} fillOpacity={userNoteOpacity}
+        d={`m 66.4,${heightOnStaffUserNote}c -1.86907,-0.09088 -3.32965,-1.61499 -3.91571,-3.19104c-0.35509,-0.92505 -0.16006,-2.31274 1.02287,-2.57263c1.71386,-0.2674 3.13601,1.07001 3.93307,2.34991c0.5678,0.94922 0.8817,2.44415 -0.18289,3.19659c-0.25277,0.15576 -0.55835,0.2182 -0.85734,0.21716zm2.9775,-5.40332c-2.10578,-1.17487 -4.76581,-1.26642 -7.07169,-0.60889c-1.46067,0.46912 -3.13119,1.4671 -3.14501,3.09137c-0.00101,1.59149 1.61108,2.58429 3.03763,3.05713c2.25844,0.67865 4.86424,0.61896 6.97286,-0.46289c1.19358,-0.58337 2.25152,-1.79138 1.89277,-3.13031c-0.19726,-0.86096 -0.91521,-1.50519 -1.68655,-1.94641z`}/>
+       </g>
+
+       <g transform={`translate(118,${heightOnStaffUserSharp - sharpHeightOffset})`} id="user-sharp">
+         <path fill={userNoteColor} fillOpacity={userNoteOpacity}
+         d="M 10.21875 14.234375 L 4.992188 15.910156 L 4.992188 23.714844 L 10.21875 22.039062 L 10.21875 14.234375 M 1.152344 11.71875 L 3.445312 10.988281 L 3.445312 2.449219 L 4.992188 2.449219 L 4.992188 10.460938 L 10.21875 8.785156 L 10.21875 1.140625 L 11.765625 1.140625 L 11.765625 8.316406 L 13.847656 7.632812 L 13.847656 13.082031 L 11.765625 13.761719 L 11.765625 21.515625 L 13.847656 20.886719 L 13.847656 26.28125 L 11.765625 26.960938 L 11.765625 35.5 L 10.21875 35.5 L 10.21875 27.433594 L 4.992188 29.109375 L 4.992188 36.859375 L 3.445312 36.859375 L 3.445312 29.632812 L 1.152344 30.367188 L 1.152344 24.917969 L 3.445312 24.183594 L 3.445312 16.382812 L 1.152344 17.113281 L 1.152344 11.71875 "
+         />
+       </g>
+
+       <g transform={`translate(120,${heightOnStaffUserFlat - flatHeightOffset})`} id="user-flat">
+         <path fill={userNoteColor} fillOpacity={userNoteOpacity}
+         d="M 7.511719 19.332031 C 7.511719 20.65625 7.007812 21.929688 5.628906 23.636719 C 4.164062 25.441406 2.933594 26.476562 1.3125 27.691406 L 1.3125 19.773438 C 1.683594 18.851562 2.226562 18.105469 2.945312 17.535156 C 3.664062 16.964844 4.394531 16.675781 5.132812 16.675781 C 6.347656 16.675781 7.121094 17.359375 7.453125 18.722656 C 7.492188 18.832031 7.511719 19.035156 7.511719 19.332031 Z M 7.335938 13.792969 C 6.332031 13.792969 5.308594 14.066406 4.269531 14.617188 C 3.226562 15.167969 2.242188 15.90625 1.3125 16.820312 L 1.3125 0.0390625 L 0 0.0390625 L 0 28.78125 C 0 29.59375 0.222656 30 0.671875 30 C 0.929688 30 1.253906 29.785156 1.734375 29.5 C 3.09375 28.699219 3.941406 28.160156 4.863281 27.59375 C 5.917969 26.949219 7.101562 26.195312 8.664062 24.71875 C 9.746094 23.644531 10.527344 22.5625 11.011719 21.472656 C 11.496094 20.382812 11.738281 19.300781 11.738281 18.226562 C 11.738281 16.640625 11.3125 15.511719 10.457031 14.84375 C 9.492188 14.144531 8.449219 13.792969 7.335938 13.792969 Z M 7.335938 13.792969 "/>
        </g>
 
 
