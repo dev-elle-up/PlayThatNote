@@ -5,13 +5,14 @@ import MusicCanvas from './MusicCanvas.js'
 import { notes } from './NoteDetails.js';
 import Info from './Info.js';
 import { devLogger } from '../modules/helperFunctions.js';
+import '../App.css';
 
 class Game extends Component {
   constructor(props){
     super(props);
     this.state={
       lastPrompedNote: null,
-      promptedNote: null,
+      promptedNote: null, // object
       promptedNoteLetter: null,
       targetFreqRangeLower: null,
       targetFreqRangeUpper: null,
@@ -23,6 +24,7 @@ class Game extends Component {
       targetTime: null,
       noteColorFeedback: "no note detected",
       noteOpacityFeedback: "0",
+      pitchMatchFeedback: "---",
 
       infoShown: false,
       availableNotes: notes
@@ -114,8 +116,10 @@ class Game extends Component {
       this.setState({userPlayingPitch: pitch}, ()=>{devLogger(`pitch changed to: ${pitch}`)});
       this.handlePitchChange(pitch);
       this.findUserNoteByPitch(pitch);
+      this.pitchMatch();
     } else { // pitch has not changed, C
       this.handlePitchNoChange(pitch);
+      this.pitchMatch();
     };
   }
 
@@ -275,13 +279,37 @@ class Game extends Component {
     this.setNewNote();
   }
 
+  pitchMatch = () => {
+    // console.log('in pitchMatch');
+    if (this.state.userPlayingNoteObject && this.state.promptedNote) {
+      if (this.state.userPlayingNoteObject.string !== this.state.promptedNote.string) {
+        // console.log(`prompted string: ${this.state.promptedNote.string}, user string: ${this.state.userPlayingNoteObject.string}`);
+        this.setState({pitchMatchFeedback: "try another string"});
+      } else if (this.state.userPlayingNoteObject.string === this.state.promptedNote.string){
+        if (this.state.userPlayingPitch > this.state.targetFreqRangeUpper) {
+          this.setState({pitchMatchFeedback: "move your fingers down the fingerboard"});
+        } else if (this.state.userPlayingPitch < this.state.targetFreqRangeLower) {
+          this.setState({pitchMatchFeedback: "move you fingers up the fingerboard"});
+        } else if (this.state.userPlayingPitch < this.state.targetFreqRangeUpper && this.state.userPlayingPitch > this.state.targetFreqRangeLower) {
+          this.setState({pitchMatchFeedback: "you got it!"});
+        }
+      }
+    } else if (!this.state.userPlayingPitch) {
+      this.setState({pitchMatchFeedback: "---"})
+    }
+  }
 
   render() {
-    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "-"
+    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "(listening...)";
+    let youArePlayingClass = isNoteDetected!=="(listening...)" ? "test tag is-primary is-medium" : "";
+    let youArePlayingId = isNoteDetected!=="(listening...)" ? "test" : "";
+    // console.log('is note detected: ', isNoteDetected);
+
+
+
     return(
       <div >
 
-        <p>Play: {this.state.promptedNoteLetter} {this.state.promptedNoteFreq} Hz</p>
 
         <div className="music-canvas">
           < MusicCanvas
@@ -293,13 +321,19 @@ class Game extends Component {
         </div>
 
         <section>
-          <p>You are playing:</p>
-          <p>{isNoteDetected}</p>
-          < Analyzer
-            getuserPlayingPitchCallback={this.getuserPlayingPitch}
-          />
+          <p>{this.state.pitchMatchFeedback}</p>
+
+          <div  className="fixed-height-div">
+            <p>You are playing:</p>
+            <p id={youArePlayingId} className={youArePlayingClass}> {isNoteDetected} </p>
+          </div>
 
         </section>
+
+        < Analyzer
+          getuserPlayingPitchCallback={this.getuserPlayingPitch}
+        />
+
 
         <div className="buttons mt-1">
           <button className="button is-medium" onClick={this.giveHint}>hint</button>
@@ -314,6 +348,7 @@ class Game extends Component {
   }
 }
 
+// <p>Play: {this.state.promptedNoteLetter} {this.state.promptedNoteFreq} Hz</p>
 // <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
 Game.propTypes = {
   finishGameCallback: PropTypes.func.isRequired,

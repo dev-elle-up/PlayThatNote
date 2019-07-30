@@ -55,6 +55,41 @@
   background-color: #EDC;
 }
 
-/* h1 {
-  background-color: teal;
+.info-box p {
+  font-size: 1em;
+  text-align: left;
+  margin-bottom: 1em;
+}
+
+.info-box h2 {
+  font-size: 1.3em;
+  text-align: left;
+  margin-bottom: .5em;
+}
+
+#test {
+  background-color: #80cbb0;
+  font-size: 1.8em;
+  vertical-align: middle;
+}
+
+.fixed-height-div {
+  min-height: 5.5em;
+  vertical-align: middle;
+}
+
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 0.7em;
+}
+
+/* #prompted-note {
+  animation: whole-note-resize 1s;
+}
+
+@keyframes whole-note-resize {
+  0%{transform: scale(5);}
+  100%{transform: scale(1);}
+
 } */
