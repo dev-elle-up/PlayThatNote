@@ -12,7 +12,7 @@ class Game extends Component {
     super(props);
     this.state={
       lastPrompedNote: null,
-      promptedNote: null,
+      promptedNote: null, // object
       promptedNoteLetter: null,
       targetFreqRangeLower: null,
       targetFreqRangeUpper: null,
@@ -115,6 +115,7 @@ class Game extends Component {
       this.setState({userPlayingPitch: pitch}, ()=>{devLogger(`pitch changed to: ${pitch}`)});
       this.handlePitchChange(pitch);
       this.findUserNoteByPitch(pitch);
+      this.stringMatch();
     } else { // pitch has not changed, C
       this.handlePitchNoChange(pitch);
     };
@@ -277,9 +278,10 @@ class Game extends Component {
   }
 
   stringMatch = () => {
-    if (this.state.userPlayingNoteObject && this.state.currentPromptedNote) {
-      if (this.state.userPlayingNoteObject.string === this.state.currentPromptedNote.string) {
-        console.log(`prompted string: ${this.state.currentPromptedNote.string}, user string: ${this.state.currentUserNote.string}`);
+    // console.log('in stringMatch');
+    if (this.state.userPlayingNoteObject && this.state.promptedNote) {
+      if (this.state.userPlayingNoteObject.string === this.state.promptedNote.string) {
+        // console.log(`prompted string: ${this.state.promptedNote.string}, user string: ${this.state.userPlayingNoteObject.string}`);
       return true;
       }
     }
@@ -290,6 +292,8 @@ class Game extends Component {
     let youArePlayingClass = isNoteDetected!=="(listening...)" ? "test tag is-primary is-medium" : "";
     let youArePlayingId = isNoteDetected!=="(listening...)" ? "test" : "";
     // console.log('is note detected: ', isNoteDetected);
+
+
 
     return(
       <div >
@@ -305,7 +309,7 @@ class Game extends Component {
         </div>
 
         <section>
-          <p>Same string? {this.stringMatch()}</p>
+          <p>{this.stringMatch() ? "there's a match" : "try another string"}</p>
 
           <div  className="fixed-height-div">
             <p>You are playing:</p>
