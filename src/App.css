@@ -55,6 +55,18 @@
   background-color: #EDC;
 }
 
+.info-box p {
+  font-size: 1em;
+  text-align: left;
+  margin-bottom: 1em;
+}
+
+.info-box h2 {
+  font-size: 1.3em;
+  text-align: left;
+  margin-bottom: .5em;
+}
+
 #test {
   background-color: #80cbb0;
   font-size: 1.8em;
