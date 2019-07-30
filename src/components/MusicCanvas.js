@@ -47,6 +47,15 @@ function MusicCanvas(props) {
     if (lineToShow === "C2") {ledgerLineOpacityC2 = 1; ledgerLineOpacityE2 = 1};
   }
 
+  if (props.currentUserNote && props.currentUserNote.ledgerLine && (props.currentUserNote.ledgerLine !== props.currentPromptedNote.ledgerLine)) {
+    let lineToShow = props.currentUserNote.ledgerLine;
+    if (lineToShow === "E4") {ledgerLineOpacityC4 = 0.3; ledgerLineOpacityE4 = 0.3};
+    if (lineToShow === "C4") {ledgerLineOpacityC4 = 0.3};
+    if (lineToShow === "E2") {ledgerLineOpacityE2 = 0.3};
+    if (lineToShow === "C2") {ledgerLineOpacityC2 = 0.3; ledgerLineOpacityE2 = 0.3};
+
+  }
+
 
   let heightOnStaffPromptedSharp = hideMe;
   if (props.currentPromptedNote && props.currentPromptedNote.sharpOrFlat === 'sharp') {
