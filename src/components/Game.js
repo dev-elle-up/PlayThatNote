@@ -5,6 +5,7 @@ import MusicCanvas from './MusicCanvas.js'
 import { notes } from './NoteDetails.js';
 import Info from './Info.js';
 import { devLogger } from '../modules/helperFunctions.js';
+import '../App.css';
 
 class Game extends Component {
   constructor(props){
@@ -275,13 +276,24 @@ class Game extends Component {
     this.setNewNote();
   }
 
+  stringMatch = () => {
+    if (this.state.userPlayingNoteObject && this.state.currentPromptedNote) {
+      if (this.state.userPlayingNoteObject.string === this.state.currentPromptedNote.string) {
+        console.log(`prompted string: ${this.state.currentPromptedNote.string}, user string: ${this.state.currentUserNote.string}`);
+      return true;
+      }
+    }
+  }
 
   render() {
-    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "-"
+    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "(listening...)";
+    let youArePlayingClass = isNoteDetected!=="(listening...)" ? "test tag is-primary is-medium" : "";
+    let youArePlayingId = isNoteDetected!=="(listening...)" ? "test" : "";
+    // console.log('is note detected: ', isNoteDetected);
+
     return(
       <div >
 
-        <p>Play: {this.state.promptedNoteLetter} {this.state.promptedNoteFreq} Hz</p>
 
         <div className="music-canvas">
           < MusicCanvas
@@ -293,13 +305,19 @@ class Game extends Component {
         </div>
 
         <section>
-          <p>You are playing:</p>
-          <p>{isNoteDetected}</p>
-          < Analyzer
-            getuserPlayingPitchCallback={this.getuserPlayingPitch}
-          />
+          <p>Same string? {this.stringMatch()}</p>
+
+          <div  className="fixed-height-div">
+            <p>You are playing:</p>
+            <p id={youArePlayingId} className={youArePlayingClass}> {isNoteDetected} </p>
+          </div>
 
         </section>
+
+        < Analyzer
+          getuserPlayingPitchCallback={this.getuserPlayingPitch}
+        />
+
 
         <div className="buttons mt-1">
           <button className="button is-medium" onClick={this.giveHint}>hint</button>
@@ -314,6 +332,7 @@ class Game extends Component {
   }
 }
 
+// <p>Play: {this.state.promptedNoteLetter} {this.state.promptedNoteFreq} Hz</p>
 // <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
 Game.propTypes = {
   finishGameCallback: PropTypes.func.isRequired,

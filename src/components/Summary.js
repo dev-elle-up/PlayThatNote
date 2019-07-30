@@ -7,7 +7,7 @@ function Summary(props) {
   // console.log(timeElapsed);
   return (
     <section>
-      <p>Great job!</p>
+      <h2>Great job!</h2>
       <p>Notes attempted: {props.notesTried}</p>
       <p>Notes played correctly: {props.notesPlayedCorrectly}</p>
       <p>Notes skipped: {props.notesSkipped}</p>

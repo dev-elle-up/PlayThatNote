@@ -55,6 +55,29 @@
   background-color: #EDC;
 }
 
-/* h1 {
-  background-color: teal;
+#test {
+  background-color: #80cbb0;
+  font-size: 1.8em;
+  vertical-align: middle;
+}
+
+.fixed-height-div {
+  min-height: 5.5em;
+  vertical-align: middle;
+}
+
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 0.7em;
+}
+
+/* #prompted-note {
+  animation: whole-note-resize 1s;
+}
+
+@keyframes whole-note-resize {
+  0%{transform: scale(5);}
+  100%{transform: scale(1);}
+
 } */

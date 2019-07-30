@@ -65,11 +65,7 @@ class Analyzer extends Component {
 
 
   render(){
-    if (this.state.pitch) {
-      return( <div className="tag is-primary is-medium">{this.state.pitch} Hz</div> );
-    }
-
-    return(<div className="tag is-warning is-medium">listening...</div>)
+    return <p> </p>;
   }
 
 }
