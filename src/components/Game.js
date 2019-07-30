@@ -24,6 +24,7 @@ class Game extends Component {
       targetTime: null,
       noteColorFeedback: "no note detected",
       noteOpacityFeedback: "0",
+      pitchMatchFeedback: "---",
 
       infoShown: false,
       availableNotes: notes
@@ -115,9 +116,10 @@ class Game extends Component {
       this.setState({userPlayingPitch: pitch}, ()=>{devLogger(`pitch changed to: ${pitch}`)});
       this.handlePitchChange(pitch);
       this.findUserNoteByPitch(pitch);
-      this.stringMatch();
+      this.pitchMatch();
     } else { // pitch has not changed, C
       this.handlePitchNoChange(pitch);
+      this.pitchMatch();
     };
   }
 
@@ -277,13 +279,23 @@ class Game extends Component {
     this.setNewNote();
   }
 
-  stringMatch = () => {
-    // console.log('in stringMatch');
+  pitchMatch = () => {
+    // console.log('in pitchMatch');
     if (this.state.userPlayingNoteObject && this.state.promptedNote) {
-      if (this.state.userPlayingNoteObject.string === this.state.promptedNote.string) {
+      if (this.state.userPlayingNoteObject.string !== this.state.promptedNote.string) {
         // console.log(`prompted string: ${this.state.promptedNote.string}, user string: ${this.state.userPlayingNoteObject.string}`);
-      return true;
+        this.setState({pitchMatchFeedback: "try another string"});
+      } else if (this.state.userPlayingNoteObject.string === this.state.promptedNote.string){
+        if (this.state.userPlayingPitch > this.state.targetFreqRangeUpper) {
+          this.setState({pitchMatchFeedback: "move your fingers down the fingerboard"});
+        } else if (this.state.userPlayingPitch < this.state.targetFreqRangeLower) {
+          this.setState({pitchMatchFeedback: "move you fingers up the fingerboard"});
+        } else if (this.state.userPlayingPitch < this.state.targetFreqRangeUpper && this.state.userPlayingPitch > this.state.targetFreqRangeLower) {
+          this.setState({pitchMatchFeedback: "you got it!"});
+        }
       }
+    } else if (!this.state.userPlayingPitch) {
+      this.setState({pitchMatchFeedback: "---"})
     }
   }
 
@@ -309,7 +321,7 @@ class Game extends Component {
         </div>
 
         <section>
-          <p>{this.stringMatch() ? "there's a match" : "try another string"}</p>
+          <p>{this.state.pitchMatchFeedback}</p>
 
           <div  className="fixed-height-div">
             <p>You are playing:</p>
