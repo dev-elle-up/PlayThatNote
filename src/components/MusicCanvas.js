@@ -175,13 +175,13 @@ function MusicCanvas(props) {
        </g>
 prompted-svg
 
-      <g id="up-arrow" transform={`translate(200,${heightOnStaffUpArrow})`}>
-    		<path fill="teal" fillOpacity={upArrowOpacity} className="user-feedback-svg smooth-move"
+      <g id="up-arrow" transform={`translate(185,${heightOnStaffUpArrow})`}>
+    		<path fill="#2d67df" fillOpacity={upArrowOpacity*.7} stroke="grey" strokeWidth="0.3pt" strokeOpacity={upArrowOpacity*.7} className="user-feedback-svg smooth-move"
         d="M 0 22.5 L 15 7.5 L 30 22.5 Z M 0 22.5 "/>
     	</g>
 
-      <g id="down-arrow" transform={`translate(200,${heightOnStaffDownArrow})`}>
-    		<path fill="teal" fillOpacity={downArrowOpacity} className="user-feedback-svg smooth-move"
+      <g id="down-arrow" transform={`translate(185,${heightOnStaffDownArrow})`}>
+    		<path fill="#2d67df" fillOpacity={downArrowOpacity*.7} stroke="grey" strokeWidth="0.3pt" strokeOpacity={downArrowOpacity*.7} className="user-feedback-svg smooth-move"
         d="M 0 7.5 L 15 22.5 L 30 7.5 Z M 0 7.5 "/>
     	</g>
 

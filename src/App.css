@@ -13,6 +13,9 @@
   padding-left: 3em;
   padding-bottom: 0em;
   padding-right: 3em;
+  background-color: #e6e6e6;
+  border-radius: 15px;
+  border: 1px solid grey;
 }
 
 .bass-clef-and-staff {
@@ -87,7 +90,7 @@
 }
 
 .fixed-height-div {
-  min-height: 5.5em;
+  height: 1.5em;
   vertical-align: middle;
 }
 
