@@ -119,6 +119,8 @@ function MusicCanvas(props) {
         viewBox="0,0,300,160"
         >
 
+
+
       <rect width="100%" height="100%" fill="#EDC" fillOpacity="0" strokeOpacity="0.0" stroke="green"/>
 
        <g id="staff" transform="">
