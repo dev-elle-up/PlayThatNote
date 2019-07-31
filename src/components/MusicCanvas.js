@@ -90,9 +90,11 @@ function MusicCanvas(props) {
   let sharpHeightOffset = 18.5;
   let flatHeightOffset = 20;
 
-  let heightOnStaffArrow = hiddenElementYcoord;
+  let heightOnStaffDownArrow = hiddenElementYcoord;
+  let heightOnStaffUpArrow = 170;
   if (props.currentUserNote) {
-    heightOnStaffArrow = bassClefPianokeyToYcoord[props.currentUserNote.noteNum]-16;
+    heightOnStaffUpArrow = bassClefPianokeyToYcoord[props.currentUserNote.noteNum]-16;
+    heightOnStaffDownArrow = bassClefPianokeyToYcoord[props.currentUserNote.noteNum]-16;
   }
 
   return (
@@ -173,11 +175,11 @@ function MusicCanvas(props) {
        </g>
 
 
-      <g id="up-arrow" transform={`translate(200,${heightOnStaffArrow})`}>
+      <g id="up-arrow" transform={`translate(200,${heightOnStaffUpArrow})`}>
     		<path fill="teal" fillOpacity={upArrowOpacity} d="M 0 22.5 L 15 7.5 L 30 22.5 Z M 0 22.5 "/>
     	</g>
 
-      <g id="down-arrow" transform={`translate(200,${heightOnStaffArrow})`}>
+      <g id="down-arrow" transform={`translate(200,${heightOnStaffDownArrow})`}>
     		<path fill="teal" fillOpacity={downArrowOpacity} d="M 0 7.5 L 15 22.5 L 30 7.5 Z M 0 7.5 "/>
     	</g>
 

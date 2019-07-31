@@ -339,12 +339,7 @@ class Game extends Component {
         </div>
 
         <section>
-          <div  className="fixed-height-div">
-            <p>You are playing:</p>
-            <p id={youArePlayingId} className={youArePlayingClass}> {isNoteDetected} </p>
-          </div>
-          
-          <p>{this.state.pitchMatchFeedback}</p>
+
 
         </section>
 
@@ -354,7 +349,6 @@ class Game extends Component {
 
 
         <div className="buttons mt-1">
-          <button className="button is-medium" onClick={this.giveHint}>hint</button>
           <button className="button is-medium" onClick={this.skipNote}>skip</button>
           <button className="button is-medium" onClick={this.props.finishGameCallback}>finished</button>
           <button className="button is-medium" onClick={this.toggleInfoShown}>info</button>
@@ -365,6 +359,14 @@ class Game extends Component {
     );
   }
 }
+// <button className="button is-medium" onClick={this.giveHint}>hint</button>
+
+// <div  className="fixed-height-div">
+//   <p>You are playing:</p>
+//   <p id={youArePlayingId} className={youArePlayingClass}> {isNoteDetected} </p>
+// </div>
+//
+// <p>{this.state.pitchMatchFeedback}</p>
 
 // <p>Play: {this.state.promptedNoteLetter} {this.state.promptedNoteFreq} Hz</p>
 // <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
