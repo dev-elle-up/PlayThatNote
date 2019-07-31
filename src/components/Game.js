@@ -340,6 +340,7 @@ class Game extends Component {
 
         <section>
 
+        <p>{this.state.pitchMatchFeedback}</p>
 
         </section>
 
@@ -366,7 +367,6 @@ class Game extends Component {
 //   <p id={youArePlayingId} className={youArePlayingClass}> {isNoteDetected} </p>
 // </div>
 //
-// <p>{this.state.pitchMatchFeedback}</p>
 
 // <p>Play: {this.state.promptedNoteLetter} {this.state.promptedNoteFreq} Hz</p>
 // <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
