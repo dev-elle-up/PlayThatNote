@@ -21,6 +21,7 @@ class Game extends Component {
       userPlayingPitch: null, //number, Hz
       userPlayingNote: null, // noteNameOctave
       userPlayingNoteObject: null,
+      oldPitch: null,
       targetTime: null,
       noteColorFeedback: "no note detected",
       noteOpacityFeedback: "0",
@@ -116,6 +117,9 @@ class Game extends Component {
   checkPitchChange(oldPitch, pitch) {
     if (oldPitch !== pitch ){ // pitch has changed, A or B
       this.setState({userPlayingPitch: pitch}, ()=>{devLogger(`pitch changed to: ${pitch}`)});
+      const oldNote = this.findUserNoteByPitch(pitch);
+      this.setState({oldNote: oldNote});
+
       this.handlePitchChange(pitch);
       this.findUserNoteByPitch(pitch);
       this.pitchMatch();
@@ -329,6 +333,7 @@ class Game extends Component {
 
         <div className="music-canvas">
           < MusicCanvas
+            oldUserNote={this.state.oldNote}
             currentUserNote={this.state.userPlayingNoteObject}
             currentPromptedNote={this.state.promptedNote}
             noteColorFeedback={this.state.noteColorFeedback}

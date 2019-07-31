@@ -34,7 +34,7 @@
   transition: all .5s ease-in-out;
 }
 
-g, path {
+.simpleAnimation {
   transition: all .5s ease-in-out;
 }
 
