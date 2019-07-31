@@ -98,7 +98,7 @@ function MusicCanvas(props) {
   }
 
   return (
-    <div className="bass-clef-and-staff">
+    <div >
       <svg
         version="1.1"
         baseProfile="full"
