@@ -1,11 +1,14 @@
 # PlayThatNote
 Ear-training and sight-reading app for beginner cello students. Capstone project, Ada Developers Academy, C-11.
 
-Trello board 
+Trello Board 
 https://trello.com/b/2u3GHjfK/capstone-elle-play-that-note
 
 Product Plan
 https://gist.github.com/Mello-Cello/aa33fdf748971120fbcd8ac159ce4c12
+
+Deployed Site
+https://playthatnote.netlify.com/
 
 
 ## Requirements
