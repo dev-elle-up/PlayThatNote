@@ -24,7 +24,9 @@ class Game extends Component {
       targetTime: null,
       noteColorFeedback: "no note detected",
       noteOpacityFeedback: "0",
-      pitchMatchFeedback: "---",
+      pitchMatchFeedback: "-",
+      downArrowOpacity: 0,
+      upArrowOpacity: 0,
 
       infoShown: false,
       availableNotes: notes
@@ -141,7 +143,7 @@ class Game extends Component {
     if (pitchInRange) { // A
       if (timerStarted) { // A1
         if (targetTimeReached) { // A1a
-          this.generateSparkles();
+          this.generateSuccessDisplay();
         } else { // A1b
           // devLogger('keep playing');
           this.generateKeepPlaying();
@@ -174,7 +176,7 @@ class Game extends Component {
     if (!pitch) this.generateNoUserNoteToDisplay();
 
     if (this.state.targetTime && this.checkTargetTimeReached()) { // C1
-      this.generateSparkles();
+      this.generateSuccessDisplay();
       // devLogger('sparkles in C1');
     } else if (this.state.targetTime) { // C2
       this.generateKeepPlaying();
@@ -188,13 +190,13 @@ class Game extends Component {
 
 
   // GAME LOGIC HELPERS
-  generateSparkles = () => {
-    this.setState({noteColorFeedback: "#cc33cc", noteOpacityFeedback: "1"});
+  generateSuccessDisplay = () => {
+    this.setState({noteColorFeedback: "#b158fc", noteOpacityFeedback: "1"});
     // devLogger('* ... sparkles ... * success');
   };
 
   generateKeepPlaying = () => {
-    this.setState({noteColorFeedback: "#33cc33", noteOpacityFeedback: "1"});
+    this.setState({noteColorFeedback: "#80cbb0", noteOpacityFeedback: "1"});
   }
 
   generateWrongNoteDisplay = () => {
@@ -281,31 +283,41 @@ class Game extends Component {
 
   pitchMatch = () => {
     // console.log('in pitchMatch');
+    if (this.state.userPlayingPitch && this.state.promptedNote){
+      if (this.state.userPlayingPitch > this.state.targetFreqRangeUpper) {
+        let downArrowOpacity = this.arrowOpacity(this.state.userPlayingPitch, this.state.targetFreqRangeUpper);
+        this.setState({downArrowOpacity: downArrowOpacity, upArrowOpacity: 0})
+        this.setState({pitchMatchFeedback: ""});
+        // this.setState({pitchMatchFeedback: "move your fingers down the fingerboard"});
+      } else if (this.state.userPlayingPitch < this.state.targetFreqRangeLower) {
+        let upArrowOpacity = this.arrowOpacity(this.state.userPlayingPitch, this.state.targetFreqRangeLower);
+        this.setState({upArrowOpacity: upArrowOpacity, downArrowOpacity: 0})
+        this.setState({pitchMatchFeedback: ""});
+        // this.setState({pitchMatchFeedback: "move you fingers up the fingerboard"});
+      } else if (this.state.userPlayingPitch < this.state.targetFreqRangeUpper && this.state.userPlayingPitch > this.state.targetFreqRangeLower) {
+        this.setState({downArrowOpacity: 0, upArrowOpacity: 0})
+        this.setState({pitchMatchFeedback: "you got it!"});
+      }
+    }
     if (this.state.userPlayingNoteObject && this.state.promptedNote) {
       if (this.state.userPlayingNoteObject.string !== this.state.promptedNote.string) {
         // console.log(`prompted string: ${this.state.promptedNote.string}, user string: ${this.state.userPlayingNoteObject.string}`);
         this.setState({pitchMatchFeedback: "try another string"});
-      } else if (this.state.userPlayingNoteObject.string === this.state.promptedNote.string){
-        if (this.state.userPlayingPitch > this.state.targetFreqRangeUpper) {
-          this.setState({pitchMatchFeedback: "move your fingers down the fingerboard"});
-        } else if (this.state.userPlayingPitch < this.state.targetFreqRangeLower) {
-          this.setState({pitchMatchFeedback: "move you fingers up the fingerboard"});
-        } else if (this.state.userPlayingPitch < this.state.targetFreqRangeUpper && this.state.userPlayingPitch > this.state.targetFreqRangeLower) {
-          this.setState({pitchMatchFeedback: "you got it!"});
-        }
+
       }
     } else if (!this.state.userPlayingPitch) {
-      this.setState({pitchMatchFeedback: "---"})
+      this.setState({downArrowOpacity: 0, upArrowOpacity: 0});
+      this.setState({pitchMatchFeedback: ""})
     }
   }
 
+  arrowOpacity = (userPlayingPitch, freqBoundary) => {
+    let opacity = Math.abs(userPlayingPitch - freqBoundary)/freqBoundary;
+    opacity = 28 * opacity <= 1 ? 28 * opacity : 1;
+    return opacity;
+  }
+
   render() {
-    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "(listening...)";
-    let youArePlayingClass = isNoteDetected!=="(listening...)" ? "test tag is-primary is-medium" : "";
-    let youArePlayingId = isNoteDetected!=="(listening...)" ? "test" : "";
-    // console.log('is note detected: ', isNoteDetected);
-
-
 
     return(
       <div >
@@ -317,18 +329,14 @@ class Game extends Component {
             currentPromptedNote={this.state.promptedNote}
             noteColorFeedback={this.state.noteColorFeedback}
             noteOpacityFeedback={this.state.noteOpacityFeedback}
+            upArrowOpacity={this.state.upArrowOpacity}
+            downArrowOpacity={this.state.downArrowOpacity}
             />
         </div>
 
-        <section>
+        <div className="fixed-height-div">
           <p>{this.state.pitchMatchFeedback}</p>
-
-          <div  className="fixed-height-div">
-            <p>You are playing:</p>
-            <p id={youArePlayingId} className={youArePlayingClass}> {isNoteDetected} </p>
-          </div>
-
-        </section>
+        </div>
 
         < Analyzer
           getuserPlayingPitchCallback={this.getuserPlayingPitch}
@@ -336,7 +344,6 @@ class Game extends Component {
 
 
         <div className="buttons mt-1">
-          <button className="button is-medium" onClick={this.giveHint}>hint</button>
           <button className="button is-medium" onClick={this.skipNote}>skip</button>
           <button className="button is-medium" onClick={this.props.finishGameCallback}>finished</button>
           <button className="button is-medium" onClick={this.toggleInfoShown}>info</button>
@@ -348,8 +355,22 @@ class Game extends Component {
   }
 }
 
+// let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "(listening...)";
+// let youArePlayingClass = isNoteDetected!=="(listening...)" ? "test tag is-primary is-medium" : "";
+// let youArePlayingId = isNoteDetected!=="(listening...)" ? "test" : "";
+
+// console.log('is note detected: ', isNoteDetected);
+// <button className="button is-medium" onClick={this.giveHint}>hint</button>
+
+// <div  className="fixed-height-div">
+//   <p>You are playing:</p>
+//   <p id={youArePlayingId} className={youArePlayingClass}> {isNoteDetected} </p>
+// </div>
+//
+
 // <p>Play: {this.state.promptedNoteLetter} {this.state.promptedNoteFreq} Hz</p>
 // <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
+
 Game.propTypes = {
   finishGameCallback: PropTypes.func.isRequired,
   increaseSkippedCountCallback: PropTypes.func.isRequired,

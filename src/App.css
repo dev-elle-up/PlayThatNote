@@ -8,39 +8,50 @@
   font-size: 1.3em;
 }
 
-
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .music-canvas {
   padding-top: 0em;
   padding-left: 3em;
   padding-bottom: 0em;
   padding-right: 3em;
+  background-color: #e6e6e6;
+  border-radius: 15px;
+  border: 1px solid grey;
+}
+
+/* .user-feedback-svg {
+
+  animation-name: fade-in;
+  animation-duration: 1s;
+  animation-tim ing-function: ease-in-out;
+  animation-iteration-count: infinite;
+
+} */
+
+/* .smooth-move {
+ transition: all .3s ease-in-out
+} */
+
+/* @keyframes fade-in {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity: 1;
+  }
+} */
+
+.prompted-svg {
+  transition: all .7s ease-in-out;
 }
 
 .heading {
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .tags, .buttons {
   justify-content: center;
 }
 
-.user-playing-note {
-  transition: all .15s;
-}
 .mt-1 {
   margin-top: 1em;
 }
@@ -49,6 +60,7 @@
   /* font-family: 'Sawarabi Mincho', sans-serif; */
   font-family: 'Tenali Ramakrishna', sans-serif;
   font-size: 3em;
+
 }
 
 .button {
@@ -56,25 +68,20 @@
 }
 
 .info-box p {
-  font-size: 1em;
+  font-size: .8em;
   text-align: left;
-  margin-bottom: 1em;
+  margin-bottom: .8em;
 }
 
 .info-box h2 {
-  font-size: 1.3em;
+  font-size: 1em;
   text-align: left;
-  margin-bottom: .5em;
-}
-
-#test {
-  background-color: #80cbb0;
-  font-size: 1.8em;
-  vertical-align: middle;
+  margin-bottom: .1em;
+  margin-top: 1.5em;
 }
 
 .fixed-height-div {
-  min-height: 5.5em;
+  height: 1.5em;
   vertical-align: middle;
 }
 

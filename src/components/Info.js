@@ -22,6 +22,9 @@ function Info (props) {
               <p>Use the skip button to get another note at any time. Don't worry, you won't lose any points!</p>
               <h2>Done for Now</h2>
               <p>When you're done, click "finished" to see a summary of your session.</p>
+              <h2>Tuning Arrows</h2>
+              <p>Arrows will be displayed to help guide you to match the prompted note. An arrow pointing downward means your pitch is high - move to a lower tone. An upward arrow indicates your pitch is low - move to a higher tone. The arrow will fade as you approach the prompted note.</p>
+              <p>Remember: on string instruments, moving your fingers closer to the scroll will produce a lower note. Moving them closer to the bridge (and nearer the ground on a cello) produces a higher note.</p>
             </section>
         </div>
     </div>

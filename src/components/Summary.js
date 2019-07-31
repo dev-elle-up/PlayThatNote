@@ -11,7 +11,6 @@ function Summary(props) {
       <p>Notes attempted: {props.notesTried}</p>
       <p>Notes played correctly: {props.notesPlayedCorrectly}</p>
       <p>Notes skipped: {props.notesSkipped}</p>
-      <p>Time played: {props.time_played}</p>
       <button className="button is-medium mt-1" onClick={props.restartGameCallback}>play again</button>
     </section>
   )
@@ -26,3 +25,6 @@ Summary.propTypes = {
 }
 
 export default Summary;
+
+
+// <p>Time played: {props.time_played}</p>
