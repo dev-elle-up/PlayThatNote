@@ -30,17 +30,22 @@
   padding-right: 3em;
 }
 
+.bass-clef-and-staff {
+  transition: all .5s ease-in-out;
+}
+
+#prompted-note {
+  transition: all .8s ease-in-out;
+}
+
 .heading {
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .tags, .buttons {
   justify-content: center;
 }
 
-.user-playing-note {
-  transition: all .15s;
-}
 .mt-1 {
   margin-top: 1em;
 }
@@ -49,7 +54,7 @@
   /* font-family: 'Sawarabi Mincho', sans-serif; */
   font-family: 'Tenali Ramakrishna', sans-serif;
   font-size: 3em;
-  
+
 }
 
 .button {

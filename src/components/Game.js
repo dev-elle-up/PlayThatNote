@@ -24,7 +24,7 @@ class Game extends Component {
       targetTime: null,
       noteColorFeedback: "no note detected",
       noteOpacityFeedback: "0",
-      pitchMatchFeedback: "",
+      pitchMatchFeedback: "-",
       downArrowOpacity: 0,
       upArrowOpacity: 0,
 
@@ -305,7 +305,7 @@ class Game extends Component {
       }
     } else if (!this.state.userPlayingPitch) {
       this.setState({downArrowOpacity: 0, upArrowOpacity: 0});
-      this.setState({pitchMatchFeedback: ""})
+      this.setState({pitchMatchFeedback: "-"})
     }
   }
 
@@ -339,12 +339,12 @@ class Game extends Component {
         </div>
 
         <section>
-          <p>{this.state.pitchMatchFeedback}</p>
-
           <div  className="fixed-height-div">
             <p>You are playing:</p>
             <p id={youArePlayingId} className={youArePlayingClass}> {isNoteDetected} </p>
           </div>
+          
+          <p>{this.state.pitchMatchFeedback}</p>
 
         </section>
 

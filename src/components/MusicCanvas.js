@@ -79,19 +79,24 @@ function MusicCanvas(props) {
     heightOnStaffUserFlat = bassClefPianokeyToYcoord[props.currentUserNote.noteNum]
   }
 
-  let heightOnStaffPromptedNatural = hiddenElementYcoord;
-  if (props.currentPromptedNote && !props.currentPromptedNote.sharpOrFlat) {
-    heightOnStaffPromptedNatural = bassClefPianokeyToYcoord[props.currentPromptedNote.noteNum]
-  }
-
-  let heightOnStaffUserNatural = hiddenElementYcoord;
+  // let heightOnStaffPromptedNatural = hiddenElementYcoord;
+  // if (props.currentPromptedNote && !props.currentPromptedNote.sharpOrFlat) {
+  //   heightOnStaffPromptedNatural = bassClefPianokeyToYcoord[props.currentPromptedNote.noteNum]
+  // }
+  //
+  // let heightOnStaffUserNatural = hiddenElementYcoord;
 
 
   let sharpHeightOffset = 18.5;
   let flatHeightOffset = 20;
 
+  let heightOnStaffArrow = hiddenElementYcoord;
+  if (props.currentUserNote) {
+    heightOnStaffArrow = bassClefPianokeyToYcoord[props.currentUserNote.noteNum]-16;
+  }
+
   return (
-    <div >
+    <div className="bass-clef-and-staff">
       <svg
         version="1.1"
         baseProfile="full"
@@ -167,13 +172,13 @@ function MusicCanvas(props) {
          d="M 7.511719 19.332031 C 7.511719 20.65625 7.007812 21.929688 5.628906 23.636719 C 4.164062 25.441406 2.933594 26.476562 1.3125 27.691406 L 1.3125 19.773438 C 1.683594 18.851562 2.226562 18.105469 2.945312 17.535156 C 3.664062 16.964844 4.394531 16.675781 5.132812 16.675781 C 6.347656 16.675781 7.121094 17.359375 7.453125 18.722656 C 7.492188 18.832031 7.511719 19.035156 7.511719 19.332031 Z M 7.335938 13.792969 C 6.332031 13.792969 5.308594 14.066406 4.269531 14.617188 C 3.226562 15.167969 2.242188 15.90625 1.3125 16.820312 L 1.3125 0.0390625 L 0 0.0390625 L 0 28.78125 C 0 29.59375 0.222656 30 0.671875 30 C 0.929688 30 1.253906 29.785156 1.734375 29.5 C 3.09375 28.699219 3.941406 28.160156 4.863281 27.59375 C 5.917969 26.949219 7.101562 26.195312 8.664062 24.71875 C 9.746094 23.644531 10.527344 22.5625 11.011719 21.472656 C 11.496094 20.382812 11.738281 19.300781 11.738281 18.226562 C 11.738281 16.640625 11.3125 15.511719 10.457031 14.84375 C 9.492188 14.144531 8.449219 13.792969 7.335938 13.792969 Z M 7.335938 13.792969 "/>
        </g>
 
-       <g transform={`translate(120,${heightOnStaffPromptedNatural - 18})`} id="prompted-natural">
-       <path
-          d="M 8.859375 35.390625 L 7.546875 35.859375 L 7.546875 25.125 L 0 28.40625 L 0 0.5625 L 1.265625 0 L 1.265625 10.921875 L 8.859375 7.453125 Z M 7.546875 20.390625 L 7.546875 12.890625 L 1.265625 15.65625 L 1.265625 23.15625 Z M 7.546875 20.390625 " />
-      </g>
 
-      <g id="up-arrow" transform="translate(200,50)">
+      <g id="up-arrow" transform={`translate(200,${heightOnStaffArrow})`}>
     		<path fill="teal" fillOpacity={upArrowOpacity} d="M 0 22.5 L 15 7.5 L 30 22.5 Z M 0 22.5 "/>
+    	</g>
+
+      <g id="down-arrow" transform={`translate(200,${heightOnStaffArrow})`}>
+    		<path fill="teal" fillOpacity={downArrowOpacity} d="M 0 7.5 L 15 22.5 L 30 7.5 Z M 0 7.5 "/>
     	</g>
 
       </svg>
@@ -181,6 +186,10 @@ function MusicCanvas(props) {
   )
 };
 
+// <g transform={`translate(120,${heightOnStaffPromptedNatural - 18})`} id="prompted-natural">
+// <path
+// d="M 8.859375 35.390625 L 7.546875 35.859375 L 7.546875 25.125 L 0 28.40625 L 0 0.5625 L 1.265625 0 L 1.265625 10.921875 L 8.859375 7.453125 Z M 7.546875 20.390625 L 7.546875 12.890625 L 1.265625 15.65625 L 1.265625 23.15625 Z M 7.546875 20.390625 " />
+// </g>
 
 MusicCanvas.propTypes = {
   currentUserNote: PropTypes.object,
