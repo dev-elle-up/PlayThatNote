@@ -318,11 +318,12 @@ class Game extends Component {
   }
 
   render() {
+    let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNoteObject.noteName : "(listening...)"; // to show noteNameOctave, delete "Object.noteName"
+    let youArePlayingClass = isNoteDetected!=="(listening...)" ? "test tag is-primary is-medium" : "listening";
+    let youArePlayingId = isNoteDetected!=="(listening...)" ? "test" : "";
 
     return(
       <div >
-
-
         <div className="music-canvas">
           < MusicCanvas
             currentUserNote={this.state.userPlayingNoteObject}
@@ -334,14 +335,18 @@ class Game extends Component {
             />
         </div>
 
-        <div className="fixed-height-div">
+        < Analyzer
+        getuserPlayingPitchCallback={this.getuserPlayingPitch}
+        />
+
+        <div className="fixed-height-div-1">
           <p>{this.state.pitchMatchFeedback}</p>
         </div>
 
-        < Analyzer
-          getuserPlayingPitchCallback={this.getuserPlayingPitch}
-        />
-
+        <div  className="fixed-height-div-3">
+          <p>You are playing:</p>
+          <p id={youArePlayingId} className={youArePlayingClass}> {isNoteDetected} </p>
+        </div>
 
         <div className="buttons mt-1">
           <button className="button is-medium" onClick={this.skipNote}>skip</button>
@@ -355,18 +360,10 @@ class Game extends Component {
   }
 }
 
-// let isNoteDetected = this.state.userPlayingNote ? this.state.userPlayingNote : "(listening...)";
-// let youArePlayingClass = isNoteDetected!=="(listening...)" ? "test tag is-primary is-medium" : "";
-// let youArePlayingId = isNoteDetected!=="(listening...)" ? "test" : "";
 
 // console.log('is note detected: ', isNoteDetected);
 // <button className="button is-medium" onClick={this.giveHint}>hint</button>
 
-// <div  className="fixed-height-div">
-//   <p>You are playing:</p>
-//   <p id={youArePlayingId} className={youArePlayingClass}> {isNoteDetected} </p>
-// </div>
-//
 
 // <p>Play: {this.state.promptedNoteLetter} {this.state.promptedNoteFreq} Hz</p>
 // <button className="button is-small" onClick={this.debugHelper}>debugHelper action</button>
